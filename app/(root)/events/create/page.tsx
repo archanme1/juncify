@@ -5,7 +5,7 @@ import React from "react";
 const CreateJunction = () => {
   const { sessionClaims } = auth();
 
-  const userId = sessionClaims?.userId as String;
+  const userId = sessionClaims?.userId as string;
 
   return (
     <>

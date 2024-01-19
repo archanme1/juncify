@@ -1,9 +1,8 @@
-import React from 'react'
+import { SearchParamProps } from "@/types";
+import React from "react";
 
-const Event = () => {
-  return (
-    <div>Event</div>
-  )
-}
+const SingleEventPage = async () => {
+  return <div>SingleEventPage</div>;
+};
 
-export default Event
+export default SingleEventPage;

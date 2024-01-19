@@ -26,16 +26,25 @@ import { useState } from "react";
 
 import "react-datepicker/dist/react-datepicker.css";
 import { Checkbox } from "../ui/checkbox";
+import { useUploadThing } from "@/lib/uploadthing";
+import { handleError } from "@/lib/utils";
+import { createEvent } from "@/lib/actions/event.actions";
+import { IEvent } from "@/lib/database/models/event.model";
+import { useRouter } from "next/navigation";
 
 type JunctionFormProps = {
-  userId: String;
+  userId: string;
   type: "Create" | "Update";
+  event?: IEvent;
+  eventId?: string;
 };
 
 const JunctionForm = ({ userId, type }: JunctionFormProps) => {
   const [files, setFiles] = useState<File[]>([]);
-
+  const router = useRouter();
   const initialValues = eventDefaultValues;
+
+  const { startUpload } = useUploadThing("imageUploader");
 
   const form = useForm<z.infer<typeof junctionFormSchema>>({
     resolver: zodResolver(junctionFormSchema),
@@ -43,10 +52,37 @@ const JunctionForm = ({ userId, type }: JunctionFormProps) => {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof junctionFormSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof junctionFormSchema>) {
+    // uploading image in uploading things and getting URL
+
+    let uploadedImageUrl = values.imageUrl;
+
+    if (files.length > 0) {
+      const uploadedImages = await startUpload(files);
+
+      if (!uploadedImages) {
+        return;
+      }
+
+      uploadedImageUrl = uploadedImages[0].url;
+    }
+
+    if (type === "Create") {
+      try {
+        const newEvent = await createEvent({
+          event: { ...values, imageUrl: uploadedImageUrl },
+          userId,
+          path: "/profile",
+        });
+
+        if (newEvent) {
+          form.reset();
+          router.push(`/events/${newEvent._id}`);
+        }
+      } catch (error) {
+        handleError(error);
+      }
+    }
   }
 
   return (
@@ -307,7 +343,7 @@ const JunctionForm = ({ userId, type }: JunctionFormProps) => {
           disabled={form.formState.isSubmitting}
           className="button col-span-2 w-full"
         >
-          {form.formState.isSubmitting ? "Submitting" : `${type} Junction`}
+          {form.formState.isSubmitting ? "Hold On!" : `${type} Junction`}
         </Button>
       </form>
     </Form>
