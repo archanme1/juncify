@@ -1,5 +1,5 @@
-import JunctionForm from "@/components/shared/JunctionForm";
 import { auth } from "@clerk/nextjs";
+import EventForm from "@/components/shared/EventForm";
 import React from "react";
 
 const CreateJunction = () => {
@@ -13,7 +13,7 @@ const CreateJunction = () => {
         <h3 className="wrapper font-bold text-center ">Create Your Junction</h3>
       </section>
       <div className="wrapper my-8">
-        <JunctionForm userId={userId} type="Create" />
+        <EventForm userId={userId} type="Create" />
       </div>
     </>
   );
