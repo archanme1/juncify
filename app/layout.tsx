@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   description:
     "An ideal space for individuals to connect and organize gatherings of all kinds.",
   icons: {
-    icon: "add logo in here for seo and also set favicon.ico in app folder ",
+    icon: "/assets/images/logo.svg",
   },
 };
 
@@ -26,11 +26,11 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-    <html lang="en">
-      <body className={poppins.variable}>
+      <html lang="en">
+        <body className={poppins.variable}>
           <main className="flex-1">{children}</main>
-      </body>
-    </html>
+        </body>
+      </html>
     </ClerkProvider>
   );
 }
