@@ -1,9 +1,10 @@
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+
 import { IEvent } from "@/lib/database/models/event.model";
 import { formatDateTime } from "@/lib/utils";
 import { auth } from "@clerk/nextjs";
-import Image from "next/image";
-import Link from "next/link";
-import React from "react";
 import { DeleteConfirmation } from "./DeleteConfirmation";
 
 type CardProps = {
@@ -25,8 +26,8 @@ const Card = ({ event, hasOrderLink, hidePrice }: CardProps) => {
         style={{ backgroundImage: `url(${event?.imageUrl})` }}
         className="flex-center flex-grow bg-gray-50 bg-cover bg-center text-grey-500"
       />
-      {/* IS EVENT CREATOR ... */}
 
+      {/* IS EVENT CREATOR ... */}
       {isEventCreator && !hidePrice && (
         <div className="absolute right-2 top-2 flex  gap-4 rounded-xl bg-white p-3 shadow-sm transition-all">
           <Link href={`/events/${event?._id}/update`}>
@@ -48,7 +49,7 @@ const Card = ({ event, hasOrderLink, hidePrice }: CardProps) => {
             <span className="p-semibold-14 w-min rounded-full bg-red-100 px-4 py-1 text-red-700">
               {event?.isFree ? "FREE" : `$${event?.price}`}
             </span>
-            <p className="p-semibold-14 w-min rounded-full bg-primary-500/10 px-4 py-1 text-grey-500 line-clamp-1">
+            <p className="p-semibold-14 w-min rounded-full bg-grey-500/10 px-4 py-1 text-grey-500 line-clamp-1">
               {event?.category.name.toUpperCase()}
             </p>
           </div>

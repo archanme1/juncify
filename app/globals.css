@@ -276,5 +276,7 @@ body {
 }
 
 .checkbox {
-  background-color: #f05656 !important;
+  background-color: #ffffff !important;
+  color: #f05656 !important;
+  font-weight: bold !important;
 }

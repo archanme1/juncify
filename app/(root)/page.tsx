@@ -6,7 +6,6 @@ import Search from "@/components/shared/Search";
 import { Button } from "@/components/ui/button";
 import { getAllEvents } from "@/lib/actions/event.actions";
 import { SearchParamProps } from "@/types";
-import CategoryFilter from "@/components/shared/CategoryFilter";
 
 export default async function Home({ searchParams }: SearchParamProps) {
   const page = Number(searchParams?.page) || 1;
@@ -30,15 +29,13 @@ export default async function Home({ searchParams }: SearchParamProps) {
               <br /> Our Stage!
             </h1>
             <p className="p-regular-16 md:p-regular-20 ">
-              Your junction take center stage with Juncify, creating moments
-              that resonate and memories that last.
+              Your junction take center stage with{" "}
+              <span className="text-red-500 p-bold-20 uppercase">Juncify</span>,
+              creating moments that resonate and memories that last.
             </p>
             <div className="flex flex-col sm:flex-row gap-5">
               <Button size="lg" asChild className="button w-full sm:w-fit">
-                <Link href="#events">Explore Junctions</Link>
-              </Button>
-              <Button asChild size="lg" className="button w-full sm:w-fit">
-                <Link href="/events/create">Create New Event</Link>
+                <Link href="#events">Explore Recent Junctions</Link>
               </Button>
             </div>
           </div>
@@ -48,7 +45,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
             alt="hero"
             width={1000}
             height={1000}
-            className="max-h-[70vh] object-contain object-center 2xl:max-h-[50vh]"
+            className="max-h-[60vh] object-contain object-center "
           />
         </div>
       </section>
@@ -64,7 +61,6 @@ export default async function Home({ searchParams }: SearchParamProps) {
 
         <div className=" w-full flex flex-col gap-5 md:flex-row">
           <Search placeholder="Search Junctions >= 3 letters..." />
-          <CategoryFilter />
         </div>
 
         <Collection
@@ -77,6 +73,24 @@ export default async function Home({ searchParams }: SearchParamProps) {
           totalPages={events?.totalPages}
         />
       </section>
+
+      <div className="bg-primary-50 bg-dotted-pattern bg-contain py-5 md:py-10">
+        <div className="flex-1 flex flex-col justify-center items-center text-center gap-8 p-6">
+          <h2 className="h2-bold">Junctionize Community Engagement</h2>
+          <p className="p-regular-16">
+            Empower your community through shared experiences. Create a
+            junction, explore and connect effortlessly.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-5">
+            <Button asChild size="lg" className="button w-full sm:w-fit">
+              <Link href="/events/create">Create New Junction</Link>
+            </Button>
+            <Button asChild size="lg" className="button w-full sm:w-fit">
+              <Link href="/events">Explore All Junction</Link>
+            </Button>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

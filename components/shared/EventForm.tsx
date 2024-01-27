@@ -123,7 +123,7 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
               <FormItem className="w-full">
                 <FormControl>
                   <Input
-                    placeholder="Event title"
+                    placeholder="Junction title"
                     {...field}
                     className="input-field"
                   />
@@ -157,7 +157,7 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
               <FormItem className="w-full">
                 <FormControl className="h-72">
                   <Textarea
-                    placeholder="Description"
+                    placeholder="Junction Description"
                     {...field}
                     className="textarea rounded-2xl"
                   />
@@ -200,7 +200,7 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
                     />
 
                     <Input
-                      placeholder="Event location or Online"
+                      placeholder="Junction location or Online"
                       {...field}
                       className="input-field"
                     />
@@ -257,7 +257,7 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
                       alt="calendar"
                       width={24}
                       height={24}
-                      className="filter-grey"
+                      className="icons filter-grey"
                     />
                     <p className="ml-3 whitespace-nowrap text-grey-600">
                       End Date:
@@ -305,18 +305,18 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <div className="flex items-center">
+                            <div className="flex items-center ">
                               <label
                                 htmlFor="isFree"
                                 className="whitespace-nowrap pr-3 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                               >
-                                Free Ticket
+                                Free Junction
                               </label>
                               <Checkbox
                                 onCheckedChange={field.onChange}
                                 checked={field.value}
                                 id="isFree"
-                                className="mr-2 h-5 w-5 border-2 border-primary-500"
+                                className="checkbox mr-2 h-5 w-5 border-2 border-red-500"
                               />
                             </div>
                           </FormControl>
@@ -345,7 +345,7 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
                     />
 
                     <Input
-                      placeholder="URL"
+                      placeholder="Link/URL"
                       {...field}
                       className="input-field"
                     />
@@ -363,7 +363,7 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
           disabled={form.formState.isSubmitting}
           className="button col-span-2 w-full"
         >
-          {form.formState.isSubmitting ? "Submitting..." : `${type} Event `}
+          {form.formState.isSubmitting ? "Submitting..." : `${type} Junction `}
         </Button>
       </form>
     </Form>

@@ -4,11 +4,15 @@ export const headerLinks = [
     forwardingRoute: "/",
   },
   {
-    label: "Create Junction",
+    label: "Explore",
+    forwardingRoute: "/events",
+  },
+  {
+    label: "Create",
     forwardingRoute: "/events/create",
   },
   {
-    label: "My Profile",
+    label: "Profile",
     forwardingRoute: "/profile",
   },
 ];
