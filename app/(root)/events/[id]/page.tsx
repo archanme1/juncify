@@ -38,18 +38,19 @@ const EventDetails = async ({
 
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                 <div className="flex gap-3">
-                  <p className="p-bold-20 rounded-full bg-green-500/10 px-5 py-2 text-green-700">
+                  <p className="p-bold-20 rounded-full bg-red-500/10 px-5 py-2 text-red-700">
                     {event?.isFree ? "FREE" : `$${event?.price}`}
                   </p>
                   <p className="p-medium-16 rounded-full bg-grey-500/10 px-4 py-2.5 text-grey-500">
-                    {event?.category.name}
+                    {(event?.category.name).toUpperCase()}
                   </p>
                 </div>
 
                 <p className="p-medium-18 ml-2 mt-2 sm:mt-0">
                   by{" "}
                   <span className="text-primary-500">
-                    {event?.organizer.firstName} {event?.organizer.lastName}
+                    {event?.organizer.firstName.toUpperCase()}{" "}
+                    {event?.organizer.lastName.toUpperCase()}
                   </span>
                 </p>
               </div>

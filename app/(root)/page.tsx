@@ -1,14 +1,22 @@
-import Collection from "@/components/shared/Collection";
-import { Button } from "@/components/ui/button";
-import { getAllEvents } from "@/lib/actions/event.actions";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function Home() {
+import Collection from "@/components/shared/Collection";
+import Search from "@/components/shared/Search";
+import { Button } from "@/components/ui/button";
+import { getAllEvents } from "@/lib/actions/event.actions";
+import { SearchParamProps } from "@/types";
+import CategoryFilter from "@/components/shared/CategoryFilter";
+
+export default async function Home({ searchParams }: SearchParamProps) {
+  const page = Number(searchParams?.page) || 1;
+  const searchText = (searchParams?.query as string) || "";
+  const category = (searchParams?.category as string) || "";
+
   const events = await getAllEvents({
-    query: "",
-    category: "",
-    page: 1,
+    query: searchText,
+    category: category,
+    page,
     limit: 6,
   });
 
@@ -21,14 +29,18 @@ export default async function Home() {
               Your Gatherings,
               <br /> Our Stage!
             </h1>
-            <p className="p-regular-20 md:p-regular-24">
-              Unite with your audience, engage in meaningful interactions. Your
-              junctions take center stage with <b>Juncify</b>, creating moments
+            <p className="p-regular-16 md:p-regular-20 ">
+              Your junction take center stage with Juncify, creating moments
               that resonate and memories that last.
             </p>
-            <Button size="lg" asChild className="button w-full sm:w-fit">
-              <Link href="#events">Explore Junctions</Link>
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-5">
+              <Button size="lg" asChild className="button w-full sm:w-fit">
+                <Link href="#events">Explore Junctions</Link>
+              </Button>
+              <Button asChild size="lg" className="button w-full sm:w-fit">
+                <Link href="/events/create">Create New Event</Link>
+              </Button>
+            </div>
           </div>
 
           <Image
@@ -46,12 +58,13 @@ export default async function Home() {
         className="wrapper my-8 flex flex-col gap-8 md:gap-12"
       >
         {/* maybe we can use sponsors here later */}
-        <h3 className="h2-bold">
+        {/* <h3 className="h2-bold">
           Trust by <br /> List of Sponsors in Carousel
-        </h3>
+        </h3> */}
 
         <div className=" w-full flex flex-col gap-5 md:flex-row">
-          Search CategoryFilter
+          <Search placeholder="Search Junctions >= 3 letters..." />
+          <CategoryFilter />
         </div>
 
         <Collection
@@ -60,7 +73,7 @@ export default async function Home() {
           emptyStateSubtext="Come back later"
           collectionType="All_Events"
           limit={6}
-          page={1}
+          page={page}
           totalPages={events?.totalPages}
         />
       </section>
