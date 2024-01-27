@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { SignedIn, SignedOut } from "@clerk/nextjs";
 
 import Collection from "@/components/shared/Collection";
 import Search from "@/components/shared/Search";
@@ -45,7 +46,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
             alt="hero"
             width={1000}
             height={1000}
-            className="max-h-[60vh] object-contain object-center "
+            className="max-h-[50vh] object-contain object-center md:max-h-[60vh]"
           />
         </div>
       </section>
@@ -82,12 +83,19 @@ export default async function Home({ searchParams }: SearchParamProps) {
             junction, explore and connect effortlessly.
           </p>
           <div className="flex flex-col sm:flex-row gap-5">
-            <Button asChild size="lg" className="button w-full sm:w-fit">
-              <Link href="/events/create">Create New Junction</Link>
-            </Button>
-            <Button asChild size="lg" className="button w-full sm:w-fit">
-              <Link href="/events">Explore All Junction</Link>
-            </Button>
+            <SignedIn>
+              <Button asChild size="lg" className="button w-full sm:w-fit">
+                <Link href="/events/create">Create New Junction</Link>
+              </Button>
+              <Button asChild size="lg" className="button w-full sm:w-fit">
+                <Link href="/events">Explore All Junction</Link>
+              </Button>
+            </SignedIn>
+            <SignedOut>
+              <Button asChild className="rounded-full" size="lg">
+                <Link href="/sign-in">Sign In to Engage</Link>
+              </Button>
+            </SignedOut>
           </div>
         </div>
       </div>
