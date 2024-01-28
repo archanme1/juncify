@@ -16,7 +16,7 @@ const CheckoutButton = ({ event }: { event: IEvent }) => {
   return (
     <div className="flex items-center gap-3">
       {hasEventFinished ? (
-        <p className="p-2 text-red-900">Sorry, Juntion is Expired!</p>
+        <p className="p-bold-16 text-blue-500">Sorry, Juntion is Expired!</p>
       ) : (
         <>
           <SignedOut>

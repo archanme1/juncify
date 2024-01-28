@@ -30,6 +30,7 @@ const Card = ({ event, hasOrderLink, hidePrice }: CardProps) => {
       {/* IS EVENT CREATOR ... */}
       {isEventCreator && !hidePrice && (
         <div className="absolute right-2 top-2 flex  gap-4 rounded-xl bg-white p-3 shadow-sm transition-all">
+          <DeleteConfirmation eventId={event?._id} />
           <Link href={`/events/${event?._id}/update`}>
             <Image
               src="/assets/icons/edit.svg"
@@ -38,18 +39,16 @@ const Card = ({ event, hasOrderLink, hidePrice }: CardProps) => {
               height={20}
             />
           </Link>
-
-          <DeleteConfirmation eventId={event?._id} />
         </div>
       )}
 
       <div className="flex min-h-[230px] flex-col gap-3 p-5 md:gap-4">
         {!hidePrice && (
           <div className="flex gap-2">
-            <span className="p-semibold-14 w-min rounded-full bg-red-100 px-4 py-1 text-red-700">
+            <span className="p-semibold-14 w-min rounded-full bg-red-100 px-4 py-1 text-red-500">
               {event?.isFree ? "FREE" : `$${event?.price}`}
             </span>
-            <p className="p-semibold-14 w-min rounded-full bg-grey-500/10 px-4 py-1 text-grey-500 line-clamp-1">
+            <p className="p-semibold-14 w-min rounded-full bg-blue-500/10 px-4 py-1 text-blue-500 line-clamp-1">
               {event?.category.name.toUpperCase()}
             </p>
           </div>
@@ -66,7 +65,7 @@ const Card = ({ event, hasOrderLink, hidePrice }: CardProps) => {
         </Link>
 
         <div className="flex-between w-full">
-          <p className="p-medium-14 md:p-medium-16 text-blue-700">
+          <p className="p-medium-14 md:p-medium-16 text-red-500">
             {event?.organizer.firstName.toUpperCase()}{" "}
             {event?.organizer.lastName.toUpperCase()}
           </p>

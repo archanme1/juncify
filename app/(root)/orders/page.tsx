@@ -1,11 +1,8 @@
-import Link from "next/link";
-
 import Search from "@/components/shared/Search";
 import { getOrdersByEvent } from "@/lib/actions/order.actions";
 import { formatDateTime, formatPrice } from "@/lib/utils";
 import { SearchParamProps } from "@/types";
 import { IOrderItem } from "@/lib/database/models/order.model";
-import { Button } from "@/components/ui/button";
 
 const Orders = async ({ searchParams }: SearchParamProps) => {
   const eventId = (searchParams?.eventId as string) || "";
@@ -18,9 +15,6 @@ const Orders = async ({ searchParams }: SearchParamProps) => {
       <section className="bg-primary-50 bg-dotted-pattern bg-cover bg-center py-3 md:py-6">
         <div className="wrapper flex items-center justify-center sm:justify-between">
           <h3 className="wrapper h3-bold text-center sm:text-left ">Orders</h3>
-          <Button asChild size="lg" className="button hidden sm:flex">
-            <Link href="/events/create">Create New Event</Link>
-          </Button>
         </div>
       </section>
 

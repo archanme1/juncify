@@ -1,4 +1,3 @@
-import React from "react";
 import Link from "next/link";
 
 import CategoryFilter from "@/components/shared/CategoryFilter";
@@ -35,7 +34,7 @@ const AllJunction = async ({ searchParams }: SearchParamProps) => {
         className="wrapper my-8 flex flex-col gap-8 md:gap-12"
       >
         <div className=" w-full flex flex-col gap-5 md:flex-row">
-          <Search placeholder="Search Junctions >= 3 letters..." />
+          <Search placeholder="Search junction by title >= 3 letter" />
           <CategoryFilter />
         </div>
         <Collection

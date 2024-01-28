@@ -8,6 +8,19 @@ import { formatDateTime } from "@/lib/utils";
 import { SearchParamProps } from "@/types";
 import Image from "next/image";
 
+export const generateMetadata = async ({
+  params: { id },
+}: {
+  params: { id: string };
+}) => {
+  const event = await getEventById(id);
+
+  return {
+    title: event.title,
+    description: event.description,
+  };
+};
+
 const EventDetails = async ({
   params: { id },
   searchParams,
@@ -38,17 +51,17 @@ const EventDetails = async ({
 
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                 <div className="flex gap-3">
-                  <p className="p-bold-20 rounded-full bg-red-500/10 px-5 py-2 text-red-700">
+                  <p className="p-semibold-20 rounded-full bg-red-500/10 px-5 py-2 text-red-500">
                     {event?.isFree ? "FREE" : `$${event?.price}`}
                   </p>
-                  <p className="p-medium-16 rounded-full bg-grey-500/10 px-4 py-2.5 text-grey-500">
+                  <p className="p-semibold-20 rounded-full bg-blue-500/10 px-4 py-2.5 text-blue-500">
                     {(event?.category.name).toUpperCase()}
                   </p>
                 </div>
 
                 <p className="p-medium-18 ml-2 mt-2 sm:mt-0">
                   by{" "}
-                  <span className="text-primary-500">
+                  <span className="text-red-500">
                     {event?.organizer.firstName.toUpperCase()}{" "}
                     {event?.organizer.lastName.toUpperCase()}
                   </span>
@@ -95,7 +108,7 @@ const EventDetails = async ({
               <p className="p-medium-16 lg:p-regular-18">
                 {event?.description}
               </p>
-              <p className="p-medium-16 lg:p-regular-18 truncate text-primary-500 underline">
+              <p className="p-medium-16 lg:p-regular-18 truncate text-red-500 underline">
                 {event?.url}
               </p>
             </div>

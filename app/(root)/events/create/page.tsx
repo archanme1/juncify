@@ -1,8 +1,5 @@
 import { auth } from "@clerk/nextjs";
 import EventForm from "@/components/shared/EventForm";
-import React from "react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 
 const CreateJunction = () => {
   const { sessionClaims } = auth();

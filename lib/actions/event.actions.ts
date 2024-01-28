@@ -16,6 +16,8 @@ import {
   GetEventsByUserParams,
   GetRelatedEventsByCategoryParams,
 } from "@/types";
+import { ObjectId } from "mongodb";
+import Order from "../database/models/order.model";
 
 const getCategoryByName = async (name: string) => {
   return Category.findOne({ name: { $regex: name, $options: "i" } });
@@ -31,7 +33,7 @@ const populateEvent = (query: any) => {
     .populate({ path: "category", model: Category, select: "_id name" });
 };
 
-// CREATE
+// CREATING EVENT
 export async function createEvent({ userId, event, path }: CreateEventParams) {
   try {
     await connectToDatabase();
@@ -67,7 +69,7 @@ export async function getEventById(eventId: string) {
   }
 }
 
-// UPDATE
+// UPDATING EVENT
 export async function updateEvent({ userId, event, path }: UpdateEventParams) {
   try {
     await connectToDatabase();
@@ -90,13 +92,20 @@ export async function updateEvent({ userId, event, path }: UpdateEventParams) {
   }
 }
 
-// DELETE
+// DELETING EVENT AND ORDER CONSEQUENTLY
 export async function deleteEvent({ eventId, path }: DeleteEventParams) {
   try {
     await connectToDatabase();
 
+    if (!eventId) throw new Error("Event ID is required");
+    const eventObjectId = new ObjectId(eventId);
+
     const deletedEvent = await Event.findByIdAndDelete(eventId);
-    if (deletedEvent) revalidatePath(path);
+    if (deletedEvent) {
+      await Order.deleteMany({ event: eventObjectId });
+
+      revalidatePath(path);
+    }
   } catch (error) {
     handleError(error);
   }
