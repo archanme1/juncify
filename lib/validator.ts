@@ -18,3 +18,12 @@ export const eventFormSchema = z.object({
   isFree: z.boolean(),
   url: z.string().url(),
 });
+
+export const contactFormSchema = z.object({
+  username: z.string().min(3, "Name should Be atleast 3 characters"),
+  email: z.string().email(),
+  message: z
+    .string()
+    .min(3, "Description must be at least 3 characters")
+    .max(400, "Description must be less than 400 characters"),
+});

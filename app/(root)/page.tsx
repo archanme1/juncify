@@ -61,7 +61,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
         </h3> */}
 
         <div className=" w-full flex flex-col gap-5 md:flex-row">
-          <Search placeholder="Search junction by title >= 3 letter" />
+          <Search placeholder="Search by title..." />
         </div>
 
         <Collection

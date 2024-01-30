@@ -12,7 +12,11 @@ export const headerLinks = [
     forwardingRoute: "/events/create",
   },
   {
-    label: "Profile",
+    label: "Contact",
+    forwardingRoute: "/contact",
+  },
+  {
+    label: "My Profile",
     forwardingRoute: "/profile",
   },
 ];
@@ -28,4 +32,10 @@ export const eventDefaultValues = {
   price: "",
   isFree: false,
   url: "",
+};
+
+export const contactDefaultValues = {
+  username: "",
+  email: "",
+  message: "",
 };
