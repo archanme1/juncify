@@ -57,6 +57,8 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
   });
 
   async function onSubmit(values: z.infer<typeof eventFormSchema>) {
+    console.log("data before sending event: ", values);
+
     let uploadedImageUrl = values.imageUrl;
 
     if (files.length > 0) {
@@ -78,6 +80,7 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
         });
 
         if (newEvent) {
+          console.log("data after sending event: ", newEvent);
           form.reset();
           router.push(`/events/${newEvent._id}`);
         }
@@ -141,6 +144,7 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
                   <Dropdown
                     onChangeHandler={field.onChange}
                     value={field.value}
+                    typeOfDropdown="category"
                   />
                 </FormControl>
                 <FormMessage />
@@ -205,6 +209,22 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
                       className="input-field"
                     />
                   </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="available"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormControl>
+                  <Dropdown
+                    onChangeHandler={field.onChange}
+                    value={field.value}
+                    typeOfDropdown="available"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

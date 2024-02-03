@@ -12,11 +12,19 @@ const CheckoutButton = ({ event }: { event: IEvent }) => {
   const userId = user?.publicMetadata.userId as string;
 
   const hasEventFinished = new Date(event.endDateTime) < new Date();
+  const isEventAvailable = event.available;
 
   return (
     <div className="flex items-center gap-3">
-      {hasEventFinished ? (
-        <p className="p-bold-16 text-blue-500">Sorry, Juntion is Expired!</p>
+      {hasEventFinished || isEventAvailable ? (
+        <div className="flex flex-col">
+          <p className="p-bold-16 text-gray-500">
+            Sorry, Juntion is Either Expired or Not Available!
+          </p>
+          <p className="font-light text-gray-500">
+            Please check back later if Date is not Expired.
+          </p>
+        </div>
       ) : (
         <>
           <SignedOut>
