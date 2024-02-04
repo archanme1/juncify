@@ -4,6 +4,8 @@ import {
   getEventById,
   getRelatedEventsByCategory,
 } from "@/lib/actions/event.actions";
+import { getOrdersByEvent } from "@/lib/actions/order.actions";
+import { IOrderItem } from "@/lib/database/models/order.model";
 import { formatDateTime } from "@/lib/utils";
 import { SearchParamProps } from "@/types";
 import Image from "next/image";
@@ -31,6 +33,11 @@ const EventDetails = async ({
     categoryId: event?.category._id,
     eventId: event?._id,
     page: searchParams.page as string,
+  });
+
+  const orders = await getOrdersByEvent({
+    eventId: event._id,
+    searchString: "",
   });
 
   return (
@@ -112,6 +119,24 @@ const EventDetails = async ({
                 {event?.url}
               </p>
             </div>
+
+            {orders.length > 0 && (
+              <div className="flex flex-col gap-2">
+                <p className="p-bold-20 text-grey-600">Joinee:</p>
+                <div className="flex flex-wrap">
+                  {orders.map((order: IOrderItem) => (
+                    <Image
+                      src={order.buyerProfile || "/assets/images/profile.png"}
+                      alt="Profile Image"
+                      width={22}
+                      height={22}
+                      className="rounded-full"
+                      key={order._id}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>

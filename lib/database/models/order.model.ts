@@ -22,6 +22,7 @@ export type IOrderItem = {
   eventTitle: string;
   eventId: string;
   buyer: string;
+  buyerProfile?: string;
 };
 
 const OrderSchema = new Schema({
