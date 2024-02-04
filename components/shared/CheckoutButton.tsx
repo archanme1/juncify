@@ -16,7 +16,7 @@ const CheckoutButton = ({ event }: { event: IEvent }) => {
 
   return (
     <div className="flex items-center gap-3">
-      {hasEventFinished || isEventAvailable ? (
+      {hasEventFinished || isEventAvailable === "no" ? (
         <div className="flex flex-col">
           <p className="p-bold-16 text-gray-500">
             Sorry, Juntion is Either Expired or Not Available!
