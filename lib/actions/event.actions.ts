@@ -18,9 +18,14 @@ import {
 } from "@/types";
 import { ObjectId } from "mongodb";
 import Order from "../database/models/order.model";
+import City from "../database/models/city.model";
 
 const getCategoryByName = async (name: string) => {
   return Category.findOne({ name: { $regex: name, $options: "i" } });
+};
+
+const getCityByName = async (name: string) => {
+  return City.findOne({ name: { $regex: name, $options: "i" } });
 };
 
 const populateEvent = (query: any) => {
@@ -117,6 +122,7 @@ export async function getAllEvents({
   limit = 6,
   page,
   category,
+  city,
 }: GetAllEventsParams) {
   try {
     await connectToDatabase();
@@ -127,10 +133,13 @@ export async function getAllEvents({
     const categoryCondition = category
       ? await getCategoryByName(category)
       : null;
+    const cityCondition = city ? await getCityByName(city) : null;
+
     const conditions = {
       $and: [
         titleCondition,
         categoryCondition ? { category: categoryCondition._id } : {},
+        cityCondition ? { city: cityCondition } : {},
       ],
     };
 

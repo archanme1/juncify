@@ -60,6 +60,7 @@ export type DeleteEventParams = {
 export type GetAllEventsParams = {
   query: string;
   category: string;
+  city: string;
   limit: number;
   page: number;
 };
@@ -103,6 +104,11 @@ export type Event = {
 // ====== CATEGORY PARAMS
 export type CreateCategoryParams = {
   categoryName: string;
+};
+
+// ====== CITY PARAMS
+export type CreateCityParams = {
+  cityName: string;
 };
 
 // ====== ORDER PARAMS

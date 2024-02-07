@@ -14,6 +14,7 @@ export interface IEvent extends Document {
   isFree: boolean;
   url?: string;
   category: { _id: string; name: string };
+  city: { _id: string; name: string };
   organizer: { _id: string; firstName: string; lastName: string };
 }
 
@@ -30,6 +31,7 @@ const EventSchema = new Schema({
   isFree: { type: Boolean, default: false },
   url: { type: String },
   category: { type: Schema.Types.ObjectId, ref: "Category" },
+  city: { type: Schema.Types.ObjectId, ref: "City" },
   organizer: { type: Schema.Types.ObjectId, ref: "User" },
 });
 
