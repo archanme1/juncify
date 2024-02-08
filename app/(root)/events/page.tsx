@@ -6,18 +6,22 @@ import Search from "@/components/shared/Search";
 import { Button } from "@/components/ui/button";
 import { getAllEvents } from "@/lib/actions/event.actions";
 import { SearchParamProps } from "@/types";
+import CityFilter from "@/components/shared/CityFilter";
 
 const AllJunction = async ({ searchParams }: SearchParamProps) => {
   const page = Number(searchParams?.page) || 1;
   const searchText = (searchParams?.query as string) || "";
   const category = (searchParams?.category as string) || "";
+  const city = (searchParams?.city as string) || "";
 
   const events = await getAllEvents({
     query: searchText,
     category: category,
+    city: city,
     page,
     limit: 6,
   });
+
   return (
     <>
       {/* My Tickets */}
@@ -33,9 +37,12 @@ const AllJunction = async ({ searchParams }: SearchParamProps) => {
         id="events"
         className="wrapper my-8 flex flex-col gap-8 md:gap-12"
       >
-        <div className=" w-full flex flex-col gap-5 md:flex-row">
+        <div className=" w-full flex flex-col gap-3">
           <Search placeholder="Search by title..." />
-          <CategoryFilter />
+          <div className=" w-full flex flex-col gap-5 md:flex-row">
+            <CategoryFilter />
+            <CityFilter />
+          </div>
         </div>
         <Collection
           data={events?.data}

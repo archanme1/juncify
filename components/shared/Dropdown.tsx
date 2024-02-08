@@ -26,6 +26,8 @@ import {
   createCategory,
   getAllCategories,
 } from "@/lib/actions/category.action";
+import { ICity } from "@/lib/database/models/city.model";
+import { createCity, getAllCities } from "@/lib/actions/cities.action";
 
 type DropdownProps = {
   value?: string;
@@ -39,13 +41,24 @@ const Dropdown = ({
   typeOfDropdown,
 }: DropdownProps) => {
   const [categories, setCategories] = useState<ICategory[]>([]);
+  const [cities, setCities] = useState<ICity[]>([]);
+
   const [newCategory, setNewCategory] = useState("");
+  const [newCity, setNewCity] = useState("");
 
   const handleAddCategory = () => {
     createCategory({
       categoryName: newCategory.trim(),
     }).then((category) => {
       setCategories((prev) => [...prev, category]);
+    });
+  };
+
+  const handleAddCity = () => {
+    createCity({
+      cityName: newCity.trim(),
+    }).then((city) => {
+      setCities((prev) => [...prev, city]);
     });
   };
 
@@ -56,6 +69,15 @@ const Dropdown = ({
     };
 
     getCategories();
+  }, []);
+
+  useEffect(() => {
+    const getCities = async () => {
+      const cityList = await getAllCities();
+      cityList && setCities(cityList as ICity[]);
+    };
+
+    getCities();
   }, []);
 
   return (
@@ -100,14 +122,54 @@ const Dropdown = ({
             </AlertDialog>
           </SelectContent>
         </Select>
+      ) : typeOfDropdown === "city" ? (
+        <Select onValueChange={onChangeHandler} defaultValue={value}>
+          <SelectTrigger className="select-field">
+            <SelectValue placeholder="City" />
+          </SelectTrigger>
+          <SelectContent>
+            {cities.map((city) => (
+              <SelectItem key={city._id} value={city._id}>
+                {city.name}
+              </SelectItem>
+            ))}
+            <AlertDialog>
+              <AlertDialogTrigger className="p-medium-14 flex w-full rounded-sm py-3 pl-8 text-red-500 hover:bg-primary-50 focus:text-primary-50">
+                Add New City
+              </AlertDialogTrigger>
+              <AlertDialogContent className="bg-white">
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Add New City</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Please Find your Related City!
+                    <Input
+                      type="text"
+                      placeholder="City Name"
+                      className="input-field mt-4"
+                      onChange={(e) => setNewCity(e.target.value)}
+                    />
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() => startTransition(handleAddCity)}
+                  >
+                    Add
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </SelectContent>
+        </Select>
       ) : (
         <Select onValueChange={onChangeHandler} defaultValue={value}>
           <SelectTrigger className="select-field">
             <SelectValue placeholder="Available" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="yes">Yes</SelectItem>
-            <SelectItem value="no">No</SelectItem>
+            <SelectItem value="Yes">Yes</SelectItem>
+            <SelectItem value="No">No</SelectItem>
           </SelectContent>
         </Select>
       )}

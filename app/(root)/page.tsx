@@ -12,10 +12,12 @@ export default async function Home({ searchParams }: SearchParamProps) {
   const page = Number(searchParams?.page) || 1;
   const searchText = (searchParams?.query as string) || "";
   const category = (searchParams?.category as string) || "";
+  const city = (searchParams?.city as string) || "";
 
   const events = await getAllEvents({
     query: searchText,
     category: category,
+    city: city,
     page,
     limit: 6,
   });
@@ -30,9 +32,9 @@ export default async function Home({ searchParams }: SearchParamProps) {
               <br /> Our Stage!
             </h1>
             <p className="p-regular-16 md:p-regular-20 ">
-              Your junction take center stage with{" "}
-              <span className="text-red-500 p-bold-20 uppercase">Juncify</span>,
-              creating moments that resonate and memories that last.
+              Ultimate neighborhood hotspot, where sizzling grills, sports
+              thrill, birthday surprises, poker nights, movie marathons, hiking
+              adventures, and get-togethers create an unbeatable fusion of fun!
             </p>
             <div className="flex flex-col sm:flex-row gap-5">
               <Button size="lg" asChild className="button w-full sm:w-fit">
