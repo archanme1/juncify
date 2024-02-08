@@ -27,6 +27,7 @@ export type CreateEventParams = {
     startDateTime: Date;
     endDateTime: Date;
     categoryId: string;
+    cityId: string;
     price: string;
     isFree: boolean;
     url: string;

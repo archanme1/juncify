@@ -10,17 +10,32 @@ import {
   SelectTrigger,
   SelectContent,
 } from "@/components/ui/select";
-import { ICity } from "@/lib/database/models/city.model";
 import { getAllCities } from "@/lib/actions/cities.action";
+import { ICity } from "@/lib/database/models/city.model";
 import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
-import { getAllCategories } from "@/lib/actions/category.action";
-import { ICategory } from "@/lib/database/models/category.model";
 
 const CityFilter = () => {
   const [cities, setCities] = useState<ICity[]>([]);
-  const [categories, setCategories] = useState<ICategory[]>([]);
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const cachedCities = localStorage.getItem("cities");
+    if (cachedCities) {
+      setCities(JSON.parse(cachedCities));
+    } else {
+      const getCities = async () => {
+        try {
+          const cityList = await getAllCities();
+          localStorage.setItem("cities", JSON.stringify(cityList));
+          setCities(cityList as ICity[]);
+        } catch (error) {
+          console.error("Error fetching cities:", error);
+        }
+      };
+      getCities();
+    }
+  }, []);
 
   const onSelectCity = (city: string) => {
     let newUrl = "";
@@ -40,18 +55,6 @@ const CityFilter = () => {
 
     router.push(newUrl, { scroll: false });
   };
-
-  useEffect(() => {
-    const getCities = async () => {
-      const cityList = await getAllCities();
-
-      cityList && setCities(cityList as ICity[]);
-    };
-
-    getCities();
-  }, []);
-
-  console.log(cities);
 
   return (
     <Select onValueChange={(value: string) => onSelectCity(value)}>

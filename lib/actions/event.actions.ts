@@ -35,7 +35,8 @@ const populateEvent = (query: any) => {
       model: User,
       select: "_id firstName lastName",
     })
-    .populate({ path: "category", model: Category, select: "_id name" });
+    .populate({ path: "category", model: Category, select: "_id name" })
+    .populate({ path: "city", model: City, select: "_id name" });
 };
 
 // CREATING EVENT
@@ -49,6 +50,7 @@ export async function createEvent({ userId, event, path }: CreateEventParams) {
     const newEvent = await Event.create({
       ...event,
       category: event.categoryId,
+      city: event.cityId,
       organizer: userId,
     });
     revalidatePath(path);
@@ -139,7 +141,7 @@ export async function getAllEvents({
       $and: [
         titleCondition,
         categoryCondition ? { category: categoryCondition._id } : {},
-        cityCondition ? { city: cityCondition } : {},
+        cityCondition ? { city: cityCondition._id } : {},
       ],
     };
 
