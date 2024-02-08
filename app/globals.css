@@ -280,3 +280,8 @@ body {
   color: #f05656 !important;
   font-weight: bold !important;
 }
+
+.with-bullets::before {
+  content: "•";
+  margin-right: 8px;
+}

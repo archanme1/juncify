@@ -12,10 +12,6 @@ export const headerLinks = [
     forwardingRoute: "/events/create",
   },
   {
-    label: "Contact",
-    forwardingRoute: "/contact",
-  },
-  {
     label: "My Profile",
     forwardingRoute: "/profile",
   },
