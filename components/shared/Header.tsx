@@ -7,7 +7,7 @@ import MobileNav from "./MobileNav";
 
 const Header = () => {
   return (
-    <header className="w-full border-b ">
+    <header className="w-full border-b sticky top-0 bg-white z-10">
       <div className="wrapper flex items-center justify-between">
         {/* change the logo later on  */}
         <Link href="/">
