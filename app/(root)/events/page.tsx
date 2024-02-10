@@ -3,10 +3,19 @@ import Link from "next/link";
 import CategoryFilter from "@/components/shared/CategoryFilter";
 import Collection from "@/components/shared/Collection";
 import Search from "@/components/shared/Search";
-import { Button } from "@/components/ui/button";
 import { getAllEvents } from "@/lib/actions/event.actions";
 import { SearchParamProps } from "@/types";
 import CityFilter from "@/components/shared/CityFilter";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Juncify - All Junctions",
+  description:
+    "Explore all the junctions and events happening around you. Find the best junctions and events in your city.",
+  icons: {
+    icon: "/assets/images/logo.svg",
+  },
+};
 
 const AllJunction = async ({ searchParams }: SearchParamProps) => {
   const page = Number(searchParams?.page) || 1;
@@ -28,9 +37,6 @@ const AllJunction = async ({ searchParams }: SearchParamProps) => {
       <section className="bg-primary-50 bg-dotted-pattern bg-cover bg-center py-5 md:py-10">
         <div className="wrapper flex items-center justify-center sm:justify-between">
           <h3 className="h3-bold text-center sm:text-left">Explore</h3>
-          <Button asChild size="lg" className="button hidden sm:flex">
-            <Link href="/events/create">Create Junction</Link>
-          </Button>
         </div>
       </section>
       <section
@@ -46,7 +52,7 @@ const AllJunction = async ({ searchParams }: SearchParamProps) => {
         </div>
         <Collection
           data={events?.data}
-          emptyTitle="No Events Found"
+          emptyTitle="No Junctions Found"
           emptyStateSubtext="Come back later"
           collectionType="All_Events"
           limit={9}

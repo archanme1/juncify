@@ -24,16 +24,16 @@ export default async function Home({ searchParams }: SearchParamProps) {
 
   return (
     <>
-      <section className="bg-primary-50 bg-dotted-pattern bg-contain py-5 md:py-10">
+      <section className="bg-primary-50 bg-dotted-pattern bg-contain py-5 md:py-10 z-10">
         <div className="wrapper grid grid-cols-1 gap-5 md:grid-cols-2 2xl:gap-0">
           <div className="flex flex-col justify-center gap-8">
-            <h1 className="h1-bold">
+            <h2 className="h2-bold">
               Your Gatherings,
               <br /> Our Stage!
-            </h1>
+            </h2>
             <p className="p-regular-16 md:p-regular-20 ">
-              Ultimate neighborhood hotspot and get-togethers to create an
-              unbeatable fusion of fun!{" "}
+              Neighborhood hotspot, backyard affair and get-togethers to create
+              an unbeatable fusion of fun!{" "}
               <i className="font-semibold">
                 {" "}
                 Plus, offer your unique services from your chosen location to
@@ -72,7 +72,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
 
         <Collection
           data={events?.data}
-          emptyTitle="No Events Found"
+          emptyTitle="No Junctions Found"
           emptyStateSubtext="Come back later"
           collectionType="All_Events"
           limit={6}
@@ -83,7 +83,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
 
       <div className="bg-primary-50 bg-dotted-pattern bg-contain py-5 md:py-10">
         <div className="flex-1 flex flex-col justify-center items-center text-center gap-8 p-6">
-          <h2 className="h2-bold">Join & Engage</h2>
+          <h3 className="h3-bold">Join & Engage</h3>
           <p className="p-regular-16">
             Where you can create or join a junction, have fun, throw parties,
             play sports, go hiking, and explore endless adventures together!
@@ -91,14 +91,14 @@ export default async function Home({ searchParams }: SearchParamProps) {
           <div className="flex flex-col sm:flex-row gap-5">
             <SignedIn>
               <Button asChild size="lg" className="button w-full sm:w-fit">
-                <Link href="/events/create">Create New Junction</Link>
+                <Link href="/events/create">Create Junction</Link>
               </Button>
               <Button asChild size="lg" className="button w-full sm:w-fit">
-                <Link href="/events">Explore All Junction</Link>
+                <Link href="/events">Explore Junction</Link>
               </Button>
             </SignedIn>
             <SignedOut>
-              <Button asChild className="rounded-full" size="lg">
+              <Button asChild className="rounded-xl" size="lg">
                 <Link href="/sign-in">Sign In to Engage</Link>
               </Button>
             </SignedOut>

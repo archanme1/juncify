@@ -94,7 +94,10 @@ const Dropdown = ({
               </SelectItem>
             ))}
             <AlertDialog>
-              <AlertDialogTrigger className="p-medium-14 flex w-full rounded-sm py-3 pl-8 text-red-500 hover:bg-primary-50 focus:text-primary-50">
+              <AlertDialogTrigger
+                className=" p-medium-14 flex w-full rounded-sm py-3 pl-8 text-red-500 hover:bg-primary-50 focus:text-primary-50 "
+                style={{ display: "none" }}
+              >
                 Add New Category
               </AlertDialogTrigger>
               <AlertDialogContent className="bg-white">
@@ -114,6 +117,7 @@ const Dropdown = ({
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction
                     onClick={() => startTransition(handleAddCategory)}
+                    disabled={true}
                   >
                     Add
                   </AlertDialogAction>
@@ -134,7 +138,10 @@ const Dropdown = ({
               </SelectItem>
             ))}
             <AlertDialog>
-              <AlertDialogTrigger className="p-medium-14 flex w-full rounded-sm py-3 pl-8 text-red-500 hover:bg-primary-50 focus:text-primary-50">
+              <AlertDialogTrigger
+                className="p-medium-14 flex w-full rounded-sm py-3 pl-8 text-red-500 hover:bg-primary-50 focus:text-primary-50"
+                style={{ display: "none" }}
+              >
                 Add New City
               </AlertDialogTrigger>
               <AlertDialogContent className="bg-white">
@@ -154,6 +161,7 @@ const Dropdown = ({
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction
                     onClick={() => startTransition(handleAddCity)}
+                    disabled={true}
                   >
                     Add
                   </AlertDialogAction>
