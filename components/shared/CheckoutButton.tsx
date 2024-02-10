@@ -16,19 +16,19 @@ const CheckoutButton = ({ event }: { event: IEvent }) => {
 
   return (
     <div className="flex items-center gap-3">
-      {hasEventFinished || isEventAvailable === "no" ? (
+      {hasEventFinished || isEventAvailable === "No" ? (
         <div className="flex flex-col">
-          <p className="p-bold-16 text-gray-500">
+          <p className="p-bold-16 text-gray-600">
             Sorry, Juntion is Either Expired or Not Available!
           </p>
-          <p className="font-light text-gray-500">
+          <p className="font-light text-gray-600">
             Please check back later if Date is not Expired.
           </p>
         </div>
       ) : (
         <>
           <SignedOut>
-            <Button asChild className="button rounded-full" size="lg">
+            <Button asChild className="button rounded-xl" size="lg">
               <Link href="/sign-in">Authorize & Purchase</Link>
             </Button>
           </SignedOut>

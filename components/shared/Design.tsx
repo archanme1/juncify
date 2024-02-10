@@ -24,7 +24,7 @@ const Design = () => {
     <div>
       {init && (
         <Particles
-          className="w-100 h-100"
+          className="w-full h-full fixed top-0 left-0 z-0 "
           id="tsparticles"
           particlesLoaded={particlesLoaded}
           options={{

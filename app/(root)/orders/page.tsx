@@ -25,7 +25,7 @@ const Orders = async ({ searchParams }: SearchParamProps) => {
       <section className="wrapper overflow-x-auto">
         <table className="w-full border-collapse border-t">
           <thead>
-            <tr className="p-medium-14 border-b text-grey-500">
+            <tr className="p-medium-14 border-b text-grey-600">
               <th className="min-w-[250px] py-3 text-left">Order ID</th>
               <th className="min-w-[200px] flex-1 py-3 pr-4 text-left">
                 Junction Title
@@ -38,7 +38,7 @@ const Orders = async ({ searchParams }: SearchParamProps) => {
           <tbody>
             {orders && orders.length === 0 ? (
               <tr className="border-b">
-                <td colSpan={5} className="py-4 text-center text-gray-500">
+                <td colSpan={5} className="py-4 text-center text-gray-600">
                   No orders found.
                 </td>
               </tr>

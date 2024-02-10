@@ -1,11 +1,10 @@
 import Collection from "@/components/shared/Collection";
-import { Button } from "@/components/ui/button";
+import Design from "@/components/shared/Design";
 import { getEventsByUser } from "@/lib/actions/event.actions";
 import { getOrdersByUser } from "@/lib/actions/order.actions";
 import { IOrder } from "@/lib/database/models/order.model";
 import { SearchParamProps } from "@/types";
 import { auth } from "@clerk/nextjs";
-import Link from "next/link";
 import React from "react";
 
 const ProfilePage = async ({ searchParams }: SearchParamProps) => {
@@ -26,16 +25,13 @@ const ProfilePage = async ({ searchParams }: SearchParamProps) => {
       <section className="bg-primary-50 bg-dotted-pattern bg-cover bg-center py-5 md:py-10">
         <div className="wrapper flex items-center justify-center sm:justify-between">
           <h3 className="h3-bold text-center sm:text-left">Joined</h3>
-          <Button asChild size="lg" className="button hidden sm:flex">
-            <Link href="/events">Explore</Link>
-          </Button>
         </div>
       </section>
 
       <section className="wrapper my-8">
         <Collection
           data={orderedEvents}
-          emptyTitle="No junctions have been bought so far!"
+          emptyTitle="Not involved yet?"
           emptyStateSubtext="No worries - Plenty of exciting junctions to explore!"
           collectionType="My_Tickets"
           limit={3}
@@ -49,17 +45,14 @@ const ProfilePage = async ({ searchParams }: SearchParamProps) => {
       <section className="bg-primary-50 bg-dotted-pattern bg-cover bg-center py-5 md:py-10">
         <div className="wrapper flex items-center justify-center sm:justify-between">
           <h3 className="h3-bold text-center sm:text-left">Organized</h3>
-          <Button asChild size="lg" className="button hidden sm:flex">
-            <Link href="/events/create">Create</Link>
-          </Button>
         </div>
       </section>
 
       <section className="wrapper my-8">
         <Collection
           data={organizedEvents?.data}
-          emptyTitle="No junctions have been created yet!"
-          emptyStateSubtext="Create some now!"
+          emptyTitle="Create now?"
+          emptyStateSubtext="Create a junction and start something new!"
           collectionType="Events_Organized"
           limit={3}
           page={eventsPage}
