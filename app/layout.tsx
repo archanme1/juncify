@@ -11,8 +11,9 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Juncify Junction",
-  description: "Junction to connect and organize gatherings of all kinds.",
+  title: "Juncify",
+  description:
+    "Your go-to for inviting friends and family to backyard fun with juncify. Plan, coordinate, and make memories with ease.",
   icons: {
     icon: "/assets/images/logo.svg",
   },

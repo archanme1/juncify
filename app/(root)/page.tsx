@@ -32,13 +32,17 @@ export default async function Home({ searchParams }: SearchParamProps) {
               <br /> Our Stage!
             </h1>
             <p className="p-regular-16 md:p-regular-20 ">
-              Ultimate neighborhood hotspot, where sizzling grills, sports
-              thrill, birthday surprises, poker nights, movie marathons, hiking
-              adventures, and get-togethers create an unbeatable fusion of fun!
+              Ultimate neighborhood hotspot and get-togethers to create an
+              unbeatable fusion of fun!{" "}
+              <i className="font-semibold">
+                {" "}
+                Plus, offer your unique services from your chosen location to
+                earn extra income!
+              </i>
             </p>
             <div className="flex flex-col sm:flex-row gap-5">
               <Button size="lg" asChild className="button w-full sm:w-fit">
-                <Link href="#events">Explore Recent Junctions</Link>
+                <Link href="#events">See Recent Junction</Link>
               </Button>
             </div>
           </div>
@@ -79,10 +83,10 @@ export default async function Home({ searchParams }: SearchParamProps) {
 
       <div className="bg-primary-50 bg-dotted-pattern bg-contain py-5 md:py-10">
         <div className="flex-1 flex flex-col justify-center items-center text-center gap-8 p-6">
-          <h2 className="h2-bold">Junctionize Community Engagement</h2>
+          <h2 className="h2-bold">Join & Engage</h2>
           <p className="p-regular-16">
-            Empower your community through shared experiences. Create a
-            junction, explore and connect effortlessly.
+            Where you can create or join a junction, have fun, throw parties,
+            play sports, go hiking, and explore endless adventures together!
           </p>
           <div className="flex flex-col sm:flex-row gap-5">
             <SignedIn>

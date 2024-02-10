@@ -68,8 +68,8 @@ const CityFilter = () => {
 
         {cities.map((city) => (
           <SelectItem
-            value={city.name}
             key={city._id}
+            value={city.name}
             className="select-item p-regular-14"
           >
             {city.name}
