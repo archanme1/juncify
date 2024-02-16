@@ -7,8 +7,12 @@ const Footer = () => {
       <footer className="border-t">
         <div className="flex-center wrapper flex-between flex flex-col gap-4 p-5 text-center sm:flex-row">
           <Link href="/" className="flex gap-1 items-center">
-            {/* change logo later on  */}
-            <p className="p-semibold-16 font-bold text-red-500 ">Juncify</p>
+            <Image
+              src="/assets/images/logo.svg"
+              alt="juncify logo"
+              width={75}
+              height={22}
+            />
             <p className="p-regular-14  text-gray-600">©️2024</p>
             <p className="p-regular-14  text-gray-600">All Right Reserved.</p>
           </Link>
