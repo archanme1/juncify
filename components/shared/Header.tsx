@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import { Sign } from "crypto";
 import NavItems from "./NavItems";
 import MobileNav from "./MobileNav";
+import Image from "next/image";
 
 const Header = () => {
   return (
@@ -11,7 +12,12 @@ const Header = () => {
       <div className="wrapper flex items-center justify-between">
         {/* change the logo later on  */}
         <Link href="/">
-          <p className="p-bold-20 font-bold text-red-500 ">Juncify</p>
+          <Image
+            src="/assets/images/logo.svg"
+            alt="juncify logo"
+            width={140}
+            height={24}
+          />
         </Link>
         <SignedIn>
           <nav className="md:flex-between hidden w-full max-w-xs">
