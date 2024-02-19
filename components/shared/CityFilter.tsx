@@ -20,21 +20,16 @@ const CityFilter = () => {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    const cachedCities = localStorage.getItem("cities");
-    if (cachedCities) {
-      setCities(JSON.parse(cachedCities));
-    } else {
-      const getCities = async () => {
-        try {
-          const cityList = await getAllCities();
-          localStorage.setItem("cities", JSON.stringify(cityList));
-          setCities(cityList as ICity[]);
-        } catch (error) {
-          console.error("Error fetching cities:", error);
-        }
-      };
-      getCities();
-    }
+    const getCities = async () => {
+      try {
+        const cityList = await getAllCities();
+        localStorage.setItem("cities", JSON.stringify(cityList));
+        setCities(cityList as ICity[]);
+      } catch (error) {
+        console.error("Error fetching cities:", error);
+      }
+    };
+    getCities();
   }, []);
 
   const onSelectCity = (city: string) => {

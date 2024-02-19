@@ -20,21 +20,16 @@ const CategoryFilter = () => {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    const cachedCategories = localStorage.getItem("categories");
-    if (cachedCategories) {
-      setCategories(JSON.parse(cachedCategories));
-    } else {
-      const getCategories = async () => {
-        try {
-          const categoryList = await getAllCategories();
-          localStorage.setItem("categories", JSON.stringify(categoryList));
-          setCategories(categoryList as ICategory[]);
-        } catch (error) {
-          console.error("Error fetching categories:", error);
-        }
-      };
-      getCategories();
-    }
+    const getCategories = async () => {
+      try {
+        const categoryList = await getAllCategories();
+        localStorage.setItem("categories", JSON.stringify(categoryList));
+        setCategories(categoryList as ICategory[]);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+    getCategories();
   }, []);
 
   const onSelectCategory = (category: string) => {
