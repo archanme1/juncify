@@ -21,13 +21,8 @@ const CategoryFilter = () => {
 
   useEffect(() => {
     const getCategories = async () => {
-      try {
-        const categoryList = await getAllCategories();
-        localStorage.setItem("categories", JSON.stringify(categoryList));
-        setCategories(categoryList as ICategory[]);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
+      const categoryList = await getAllCategories();
+      setCategories(categoryList as ICategory[]);
     };
     getCategories();
   }, []);
