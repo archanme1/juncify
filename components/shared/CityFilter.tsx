@@ -21,13 +21,8 @@ const CityFilter = () => {
 
   useEffect(() => {
     const getCities = async () => {
-      try {
-        const cityList = await getAllCities();
-        localStorage.setItem("cities", JSON.stringify(cityList));
-        setCities(cityList as ICity[]);
-      } catch (error) {
-        console.error("Error fetching cities:", error);
-      }
+      const cityList = await getAllCities();
+      setCities(cityList as ICity[]);
     };
     getCities();
   }, []);
