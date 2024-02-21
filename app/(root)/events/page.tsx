@@ -1,12 +1,12 @@
 import Link from "next/link";
+import { Metadata } from "next";
 
 import CategoryFilter from "@/components/shared/CategoryFilter";
+import CityFilter from "@/components/shared/CityFilter";
 import Collection from "@/components/shared/Collection";
 import Search from "@/components/shared/Search";
-import { getAllEvents } from "@/lib/actions/event.actions";
 import { SearchParamProps } from "@/types";
-import CityFilter from "@/components/shared/CityFilter";
-import { Metadata } from "next";
+import { getAllEvents } from "@/lib/actions/event.actions";
 
 export const metadata: Metadata = {
   title: "Juncify - All Junctions",
