@@ -171,7 +171,7 @@ const Dropdown = ({
           </SelectContent>
         </Select>
       ) : (
-        <Select onValueChange={onChangeHandler} defaultValue="Yes">
+        <Select onValueChange={onChangeHandler} defaultValue={value}>
           <SelectTrigger className="select-field">
             <SelectValue placeholder="Available" />
           </SelectTrigger>
