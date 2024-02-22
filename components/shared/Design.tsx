@@ -21,10 +21,10 @@ const Design = () => {
   };
 
   return (
-    <div>
+    <div className="relative w-full h-full">
       {init && (
         <Particles
-          className="w-full h-full fixed top-0 left-0 z-0 "
+          className="absolute inset-0 z-0"
           id="tsparticles"
           particlesLoaded={particlesLoaded}
           options={{
@@ -54,13 +54,13 @@ const Design = () => {
             },
             particles: {
               color: {
-                value: "#aaaaaa",
+                value: "#ef5555",
               },
               links: {
-                color: "#aaaaaa",
-                distance: 120,
+                color: "#ef5555",
+                distance: 80,
                 enable: true,
-                opacity: 0.6,
+                opacity: 0.8,
                 width: 1,
               },
               collisions: {
@@ -72,14 +72,14 @@ const Design = () => {
                   default: "bounce",
                 },
                 random: false,
-                speed: 3,
+                speed: 1,
                 straight: false,
               },
               number: {
                 density: {
                   enable: true,
                 },
-                value: 80,
+                value: 580,
               },
               opacity: {
                 value: 0.5,

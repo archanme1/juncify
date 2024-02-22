@@ -171,13 +171,13 @@ const Dropdown = ({
           </SelectContent>
         </Select>
       ) : (
-        <Select onValueChange={onChangeHandler} defaultValue={value}>
+        <Select onValueChange={onChangeHandler} defaultValue="Yes">
           <SelectTrigger className="select-field">
             <SelectValue placeholder="Available" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="Yes">Yes</SelectItem>
-            <SelectItem value="No">No</SelectItem>
+            <SelectItem value="Yes">Available</SelectItem>
+            <SelectItem value="No">Not Available</SelectItem>
           </SelectContent>
         </Select>
       )}
