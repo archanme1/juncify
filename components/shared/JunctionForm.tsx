@@ -13,9 +13,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { eventFormSchema } from "@/lib/validator";
+import { junctionFormSchema } from "@/lib/validator";
 import * as z from "zod";
-import { eventDefaultValues } from "@/constants";
+import { junctionDefaultValues } from "@/constants";
 import Dropdown from "./Dropdown";
 import { Textarea } from "@/components/ui/textarea";
 import { FileUploader } from "./FileUploader";
@@ -27,37 +27,42 @@ import { useUploadThing } from "@/lib/uploadthing";
 import "react-datepicker/dist/react-datepicker.css";
 import { Checkbox } from "../ui/checkbox";
 import { useRouter } from "next/navigation";
-import { createEvent, updateEvent } from "@/lib/actions/event.actions";
-import { IEvent } from "@/lib/database/models/event.model";
+import { createJunction, updateJunction } from "@/lib/actions/junction.actions";
+import { IJunction } from "@/lib/database/models/junction.model";
 
-type EventFormProps = {
+type JunctionFormProps = {
   userId: string;
   type: "Create" | "Update";
-  event?: IEvent;
-  eventId?: string;
+  junction?: IJunction;
+  junctionId?: string;
 };
 
-const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
+const JunctionForm = ({
+  userId,
+  type,
+  junction,
+  junctionId,
+}: JunctionFormProps) => {
   const [files, setFiles] = useState<File[]>([]);
   const initialValues =
-    event && type === "Update"
+    junction && type === "Update"
       ? {
-          ...event,
-          startDateTime: new Date(event.startDateTime),
-          endDateTime: new Date(event.endDateTime),
+          ...junction,
+          startDateTime: new Date(junction.startDateTime),
+          endDateTime: new Date(junction.endDateTime),
         }
-      : eventDefaultValues;
+      : junctionDefaultValues;
   const router = useRouter();
 
   const { startUpload } = useUploadThing("imageUploader");
 
-  const form = useForm<z.infer<typeof eventFormSchema>>({
-    resolver: zodResolver(eventFormSchema),
+  const form = useForm<z.infer<typeof junctionFormSchema>>({
+    resolver: zodResolver(junctionFormSchema),
     defaultValues: initialValues,
   });
 
-  async function onSubmit(values: z.infer<typeof eventFormSchema>) {
-    console.log("data before sending event: ", values);
+  async function onSubmit(values: z.infer<typeof junctionFormSchema>) {
+    console.log("data before sending junction: ", values);
 
     let uploadedImageUrl = values.imageUrl;
 
@@ -73,16 +78,15 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
 
     if (type === "Create") {
       try {
-        const newEvent = await createEvent({
-          event: { ...values, imageUrl: uploadedImageUrl },
+        const newJunction = await createJunction({
+          junction: { ...values, imageUrl: uploadedImageUrl },
           userId,
           path: "/profile",
         });
 
-        if (newEvent) {
-          console.log("data after sending event: ", newEvent);
+        if (newJunction) {
           form.reset();
-          router.push(`/events/${newEvent._id}`);
+          router.push(`/junctions/${newJunction._id}`);
         }
       } catch (error) {
         console.log(error);
@@ -90,21 +94,21 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
     }
 
     if (type === "Update") {
-      if (!eventId) {
+      if (!junctionId) {
         router.back();
         return;
       }
 
       try {
-        const updatedEvent = await updateEvent({
+        const updatedJunction = await updateJunction({
           userId,
-          event: { ...values, imageUrl: uploadedImageUrl, _id: eventId },
-          path: `/events/${eventId}`,
+          junction: { ...values, imageUrl: uploadedImageUrl, _id: junctionId },
+          path: `/junctions/${junctionId}`,
         });
 
-        if (updatedEvent) {
+        if (updatedJunction) {
           form.reset();
-          router.push(`/events/${updatedEvent._id}`);
+          router.push(`/junctions/${updatedJunction._id}`);
         }
       } catch (error) {
         console.log(error);
@@ -382,4 +386,4 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
   );
 };
 
-export default EventForm;
+export default JunctionForm;

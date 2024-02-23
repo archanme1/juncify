@@ -1,14 +1,17 @@
 import Search from "@/components/shared/Search";
-import { getOrdersByEvent } from "@/lib/actions/order.actions";
+import { getOrdersByJunction } from "@/lib/actions/order.actions";
 import { formatDateTime, formatPrice } from "@/lib/utils";
 import { SearchParamProps } from "@/types";
 import { IOrderItem } from "@/lib/database/models/order.model";
 
 const Orders = async ({ searchParams }: SearchParamProps) => {
-  const eventId = (searchParams?.eventId as string) || "";
+  const junctionId = (searchParams?.junctionId as string) || "";
   const searchText = (searchParams?.query as string) || "";
 
-  const orders = await getOrdersByEvent({ eventId, searchString: searchText });
+  const orders = await getOrdersByJunction({
+    junctionId,
+    searchString: searchText,
+  });
 
   return (
     <>
@@ -56,7 +59,7 @@ const Orders = async ({ searchParams }: SearchParamProps) => {
                           {row._id}
                         </td>
                         <td className="min-w-[200px] flex-1 py-4 pr-4">
-                          {row.eventTitle}
+                          {row.junctionTitle}
                         </td>
                         <td className="min-w-[150px] py-4">{row.buyer}</td>
                         <td className="min-w-[100px] py-4">

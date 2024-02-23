@@ -1,6 +1,6 @@
 import { Document, Schema, model, models } from "mongoose";
 
-export interface IEvent extends Document {
+export interface IJunction extends Document {
   _id: string;
   title: string;
   description?: string;
@@ -18,7 +18,7 @@ export interface IEvent extends Document {
   organizer: { _id: string; firstName: string; lastName: string };
 }
 
-const EventSchema = new Schema({
+const JunctionSchema = new Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
   location: { type: String },
@@ -35,6 +35,6 @@ const EventSchema = new Schema({
   organizer: { type: Schema.Types.ObjectId, ref: "User" },
 });
 
-const Event = models.Event || model("Event", EventSchema);
+const Junction = models.Junction || model("Junction", JunctionSchema);
 
-export default Event;
+export default Junction;

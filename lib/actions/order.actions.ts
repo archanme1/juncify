@@ -4,14 +4,14 @@ import Stripe from "stripe";
 import {
   CheckoutOrderParams,
   CreateOrderParams,
-  GetOrdersByEventParams,
+  GetOrdersByJunctionParams,
   GetOrdersByUserParams,
 } from "@/types";
 import { redirect } from "next/navigation";
 import { handleError } from "../utils";
 import { connectToDatabase } from "../database";
 import Order from "../database/models/order.model";
-import Event from "../database/models/event.model";
+import Junction from "../database/models/junction.model";
 import { ObjectId } from "mongodb";
 import User from "../database/models/user.model";
 
@@ -28,14 +28,14 @@ export const checkoutOrder = async (order: CheckoutOrderParams) => {
             currency: "usd",
             unit_amount: price,
             product_data: {
-              name: order.eventTitle,
+              name: order.junctionTitle,
             },
           },
           quantity: 1,
         },
       ],
       metadata: {
-        eventId: order.eventId,
+        junctionId: order.junctionId,
         buyerId: order.buyerId,
       },
       mode: "payment",
@@ -55,7 +55,7 @@ export const createOrder = async (order: CreateOrderParams) => {
 
     const newOrder = await Order.create({
       ...order,
-      event: order.eventId,
+      junction: order.junctionId,
       buyer: order.buyerId,
     });
 
@@ -65,16 +65,16 @@ export const createOrder = async (order: CreateOrderParams) => {
   }
 };
 
-// GET ORDERS BY EVENT
-export async function getOrdersByEvent({
+// GET ORDERS BY junction
+export async function getOrdersByJunction({
   searchString,
-  eventId,
-}: GetOrdersByEventParams) {
+  junctionId,
+}: GetOrdersByJunctionParams) {
   try {
     await connectToDatabase();
 
-    if (!eventId) throw new Error("Event ID is required");
-    const eventObjectId = new ObjectId(eventId);
+    if (!junctionId) throw new Error("junction ID is required");
+    const junctionObjectId = new ObjectId(junctionId);
 
     const orders = await Order.aggregate([
       {
@@ -90,22 +90,22 @@ export async function getOrdersByEvent({
       },
       {
         $lookup: {
-          from: "events",
-          localField: "event",
+          from: "junctions",
+          localField: "junction",
           foreignField: "_id",
-          as: "event",
+          as: "junction",
         },
       },
       {
-        $unwind: "$event",
+        $unwind: "$junction",
       },
       {
         $project: {
           _id: 1,
           totalAmount: 1,
           createdAt: 1,
-          eventTitle: "$event.title",
-          eventId: "$event._id",
+          junctionTitle: "$junction.title",
+          junctionId: "$junction._id",
           buyer: {
             $concat: ["$buyer.firstName", " ", "$buyer.lastName"],
           },
@@ -115,7 +115,7 @@ export async function getOrdersByEvent({
       {
         $match: {
           $and: [
-            { eventId: eventObjectId },
+            { junctionId: junctionObjectId },
             { buyer: { $regex: RegExp(searchString, "i") } },
           ],
         },
@@ -140,14 +140,14 @@ export async function getOrdersByUser({
     const skipAmount = (Number(page) - 1) * limit;
     const conditions = { buyer: userId };
 
-    const orders = await Order.distinct("event._id")
+    const orders = await Order.distinct("junction._id")
       .find(conditions)
       .sort({ createdAt: "desc" })
       .skip(skipAmount)
       .limit(limit)
       .populate({
-        path: "event",
-        model: Event,
+        path: "junction",
+        model: Junction,
         populate: {
           path: "organizer",
           model: User,
@@ -155,7 +155,7 @@ export async function getOrdersByUser({
         },
       });
 
-    const ordersCount = await Order.distinct("event._id").countDocuments(
+    const ordersCount = await Order.distinct("junction._id").countDocuments(
       conditions
     );
 

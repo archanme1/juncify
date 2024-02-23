@@ -1,6 +1,5 @@
 import Collection from "@/components/shared/Collection";
-import Design from "@/components/shared/Design";
-import { getEventsByUser } from "@/lib/actions/event.actions";
+import { getJunctionsByUser } from "@/lib/actions/junction.actions";
 import { getOrdersByUser } from "@/lib/actions/order.actions";
 import { IOrder } from "@/lib/database/models/order.model";
 import { SearchParamProps } from "@/types";
@@ -12,12 +11,16 @@ const ProfilePage = async ({ searchParams }: SearchParamProps) => {
   const userId = sessionClaims?.userId as string;
 
   const ordersPage = Number(searchParams?.ordersPage) || 1;
-  const eventsPage = Number(searchParams?.eventsPage) || 1;
+  const junctionsPage = Number(searchParams?.junctionsPage) || 1;
 
   const orders = await getOrdersByUser({ userId, page: ordersPage });
 
-  const orderedEvents = orders?.data.map((order: IOrder) => order.event) || [];
-  const organizedEvents = await getEventsByUser({ userId, page: eventsPage });
+  const orderedJunctions =
+    orders?.data.map((order: IOrder) => order.junction) || [];
+  const organizedJunctions = await getJunctionsByUser({
+    userId,
+    page: junctionsPage,
+  });
 
   return (
     <>
@@ -30,7 +33,7 @@ const ProfilePage = async ({ searchParams }: SearchParamProps) => {
 
       <section className="wrapper my-8">
         <Collection
-          data={orderedEvents}
+          data={orderedJunctions}
           emptyTitle="Not involved yet?"
           emptyStateSubtext="No worries - Plenty of exciting junctions to explore!"
           collectionType="My_Tickets"
@@ -41,7 +44,7 @@ const ProfilePage = async ({ searchParams }: SearchParamProps) => {
         />
       </section>
 
-      {/* Events Organized */}
+      {/* Junctions Organized */}
       <section className="bg-primary-50 bg-dotted-pattern bg-cover bg-center py-5 md:py-10">
         <div className="wrapper flex items-center justify-center sm:justify-between">
           <h3 className="h3-bold text-center sm:text-left">Organized</h3>
@@ -50,14 +53,14 @@ const ProfilePage = async ({ searchParams }: SearchParamProps) => {
 
       <section className="wrapper my-8">
         <Collection
-          data={organizedEvents?.data}
+          data={organizedJunctions?.data}
           emptyTitle="Create now?"
           emptyStateSubtext="Create a junction and start something new!"
-          collectionType="Events_Organized"
+          collectionType="Junctions_Organized"
           limit={3}
-          page={eventsPage}
-          urlParamName="eventsPage"
-          totalPages={organizedEvents?.totalPages}
+          page={junctionsPage}
+          urlParamName="junctionsPage"
+          totalPages={organizedJunctions?.totalPages}
         />
       </section>
     </>

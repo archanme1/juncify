@@ -5,11 +5,11 @@ export const headerLinks = [
   },
   {
     label: "Explore",
-    forwardingRoute: "/events",
+    forwardingRoute: "/junctions",
   },
   {
     label: "Create",
-    forwardingRoute: "/events/create",
+    forwardingRoute: "/junctions/create",
   },
   {
     label: "My Profile",
@@ -17,7 +17,7 @@ export const headerLinks = [
   },
 ];
 
-export const eventDefaultValues = {
+export const junctionDefaultValues = {
   title: "",
   description: "",
   location: "",
