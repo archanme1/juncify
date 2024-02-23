@@ -2,36 +2,36 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { IEvent } from "@/lib/database/models/event.model";
+import { IJunction } from "@/lib/database/models/junction.model";
 import { formatDateTime } from "@/lib/utils";
 import { auth } from "@clerk/nextjs";
 import { DeleteConfirmation } from "./DeleteConfirmation";
 
 type CardProps = {
-  event: IEvent;
+  junction: IJunction;
   hasOrderLink?: boolean;
   hidePrice?: boolean;
 };
 
-const Card = ({ event, hasOrderLink, hidePrice }: CardProps) => {
+const Card = ({ junction, hasOrderLink, hidePrice }: CardProps) => {
   const { sessionClaims } = auth();
   const userId = sessionClaims?.userId as string;
 
-  const isEventCreator = userId === event?.organizer?._id.toString();
+  const isJunctionCreator = userId === junction?.organizer?._id.toString();
 
   return (
     <div className="group relative flex min-h-[380px] w-full max-w-[400px] flex-col overflow-hidden rounded-xl bg-white shadow-md transition-all hover:shadow-lg md:min-h-[438px]">
       <Link
-        href={`/events/${event?._id}`}
-        style={{ backgroundImage: `url(${event?.imageUrl})` }}
+        href={`/junctions/${junction?._id}`}
+        style={{ backgroundImage: `url(${junction?.imageUrl})` }}
         className="flex-center flex-grow bg-gray-50 bg-cover bg-center text-grey-600"
       />
 
-      {/* IS EVENT CREATOR ... */}
-      {isEventCreator && !hidePrice && (
+      {/* IS JUNCTION CREATOR ... */}
+      {isJunctionCreator && !hidePrice && (
         <div className="absolute right-2 top-2 flex  gap-4 rounded-xl bg-white p-3 shadow-sm transition-all">
-          <DeleteConfirmation eventId={event?._id} />
-          <Link href={`/events/${event?._id}/update`}>
+          <DeleteConfirmation junctionId={junction?._id} />
+          <Link href={`/junctions/${junction?._id}/update`}>
             <Image
               src="/assets/icons/edit.svg"
               alt="edit"
@@ -46,32 +46,35 @@ const Card = ({ event, hasOrderLink, hidePrice }: CardProps) => {
         {!hidePrice && (
           <div className="flex gap-2">
             <span className="p-semibold-14 w-min rounded-xl bg-red-100 px-4 py-1 text-red-500">
-              {event?.isFree ? "FREE" : `$${event?.price}`}
+              {junction?.isFree ? "FREE" : `$${junction?.price}`}
             </span>
             <p className="p-semibold-14 w-max rounded-xl bg-blue-500/10 px-4 py-1 text-blue-500 line-clamp-1">
-              {event?.category?.name.toUpperCase()}
+              {junction?.category?.name.toUpperCase()}
             </p>
           </div>
         )}
 
         <p className="p-medium-16 p-medium-18 text-grey-600">
-          {formatDateTime(event?.startDateTime).dateTime}
+          {formatDateTime(junction?.startDateTime).dateTime}
         </p>
 
-        <Link href={`/events/${event?._id}`}>
+        <Link href={`/junctions/${junction?._id}`}>
           <p className="p-medium-16 md:p-medium-20 flex-1 text-black  truncate">
-            {event?.title}
+            {junction?.title}
           </p>
         </Link>
 
         <div className="flex-between w-full">
           <p className="p-medium-14 md:p-medium-16 text-red-500">
-            {event?.organizer.firstName.toUpperCase()}{" "}
-            {event?.organizer.lastName.toUpperCase()}
+            {junction?.organizer.firstName.toUpperCase()}{" "}
+            {junction?.organizer.lastName.toUpperCase()}
           </p>
 
           {hasOrderLink && (
-            <Link href={`/orders?eventId=${event?._id}`} className="flex gap-2">
+            <Link
+              href={`/orders?junctionId=${junction?._id}`}
+              className="flex gap-2"
+            >
               <p className="text-blue-500">Order Details</p>
               <Image
                 src="/assets/icons/arrow.svg"

@@ -4,7 +4,7 @@ export interface IOrder extends Document {
   createdAt: Date;
   stripeId: string;
   totalAmount: number;
-  event: {
+  junction: {
     _id: string;
     name: string;
   };
@@ -19,8 +19,8 @@ export type IOrderItem = {
   _id: string;
   totalAmount: string;
   createdAt: Date;
-  eventTitle: string;
-  eventId: string;
+  junctionTitle: string;
+  junctionId: string;
   buyer: string;
   buyerProfile?: string;
 };
@@ -38,9 +38,9 @@ const OrderSchema = new Schema({
   totalAmount: {
     type: String,
   },
-  event: {
+  junction: {
     type: Schema.Types.ObjectId,
-    ref: "Event",
+    ref: "Junction",
   },
   buyer: {
     type: Schema.Types.ObjectId,

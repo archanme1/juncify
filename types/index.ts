@@ -15,10 +15,10 @@ export type UpdateUserParams = {
   photo: string;
 };
 
-// ====== EVENT PARAMS
-export type CreateEventParams = {
+// ====== JUNCTION PARAMS
+export type CreateJunctionParams = {
   userId: string;
-  event: {
+  junction: {
     title: string;
     description: string;
     location?: string;
@@ -35,9 +35,9 @@ export type CreateEventParams = {
   path: string;
 };
 
-export type UpdateEventParams = {
+export type UpdateJunctionParams = {
   userId: string;
-  event: {
+  junction: {
     _id: string;
     title: string;
     imageUrl: string;
@@ -53,12 +53,12 @@ export type UpdateEventParams = {
   path: string;
 };
 
-export type DeleteEventParams = {
-  eventId: string;
+export type DeleteJunctionParams = {
+  junctionId: string;
   path: string;
 };
 
-export type GetAllEventsParams = {
+export type GetAllJunctionsParams = {
   query: string;
   category: string;
   city: string;
@@ -66,20 +66,20 @@ export type GetAllEventsParams = {
   page: number;
 };
 
-export type GetEventsByUserParams = {
+export type GetJunctionsByUserParams = {
   userId: string;
   limit?: number;
   page: number;
 };
 
-export type GetRelatedEventsByCategoryParams = {
+export type GetRelatedJunctionsByCategoryParams = {
   categoryId: string;
-  eventId: string;
+  junctionId: string;
   limit?: number;
   page: number | string;
 };
 
-export type Event = {
+export type Junction = {
   _id: string;
   title: string;
   description: string;
@@ -114,8 +114,8 @@ export type CreateCityParams = {
 
 // ====== ORDER PARAMS
 export type CheckoutOrderParams = {
-  eventTitle: string;
-  eventId: string;
+  junctionTitle: string;
+  junctionId: string;
   price: string;
   isFree: boolean;
   buyerId: string;
@@ -123,14 +123,14 @@ export type CheckoutOrderParams = {
 
 export type CreateOrderParams = {
   stripeId: string;
-  eventId: string;
+  junctionId: string;
   buyerId: string;
   totalAmount: string;
   createdAt: Date;
 };
 
-export type GetOrdersByEventParams = {
-  eventId: string;
+export type GetOrdersByJunctionParams = {
+  junctionId: string;
   searchString: string;
 };
 

@@ -1,10 +1,10 @@
 import CheckoutButton from "@/components/shared/CheckoutButton";
 import Collection from "@/components/shared/Collection";
 import {
-  getEventById,
-  getRelatedEventsByCategory,
-} from "@/lib/actions/event.actions";
-import { getOrdersByEvent } from "@/lib/actions/order.actions";
+  getJunctionById,
+  getRelatedJunctionsByCategory,
+} from "@/lib/actions/junction.actions";
+import { getOrdersByJunction } from "@/lib/actions/order.actions";
 import { IOrderItem } from "@/lib/database/models/order.model";
 import { formatDateTime } from "@/lib/utils";
 import { SearchParamProps } from "@/types";
@@ -15,28 +15,28 @@ export const generateMetadata = async ({
 }: {
   params: { id: string };
 }) => {
-  const event = await getEventById(id);
+  const junction = await getJunctionById(id);
 
   return {
-    title: event.title,
-    description: event.description,
+    title: junction.title,
+    description: junction.description,
   };
 };
 
-const EventDetails = async ({
+const JunctionDetails = async ({
   params: { id },
   searchParams,
 }: SearchParamProps) => {
-  const event = await getEventById(id);
+  const junction = await getJunctionById(id);
 
-  const relatedEvents = await getRelatedEventsByCategory({
-    categoryId: event?.category?._id,
-    eventId: event?._id,
+  const relatedJunctions = await getRelatedJunctionsByCategory({
+    categoryId: junction?.category?._id,
+    junctionId: junction?._id,
     page: searchParams.page as string,
   });
 
-  const orders = await getOrdersByEvent({
-    eventId: event._id,
+  const orders = await getOrdersByJunction({
+    junctionId: junction._id,
     searchString: "",
   });
 
@@ -46,7 +46,7 @@ const EventDetails = async ({
         <div className="grid grid-cols-1 md:grid-cols-2 2xl:max-w-7xl">
           <div className="grid-item">
             <Image
-              src={event?.imageUrl}
+              src={junction?.imageUrl}
               alt="hero image"
               width={1000}
               height={1000}
@@ -56,16 +56,16 @@ const EventDetails = async ({
 
           <div className="grid-item flex w-full flex-col gap-5 p-5 md:p-10">
             <div className="flex flex-col gap-6">
-              <h3 className="h3-bold text-grey-600 ">{event?.title}</h3>
+              <h3 className="h3-bold text-grey-600 ">{junction?.title}</h3>
 
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                 <div className="flex items-center gap-3">
                   <p className="p-semibold-20 rounded-xl bg-red-500/10 px-5 py-3 text-red-500">
-                    {event?.isFree || event?.price === ""
+                    {junction?.isFree || junction?.price === ""
                       ? "FREE"
-                      : `$${event?.price}`}
+                      : `$${junction?.price}`}
                   </p>
-                  <CheckoutButton event={event} />
+                  <CheckoutButton junction={junction} />
                 </div>
               </div>
             </div>
@@ -73,13 +73,13 @@ const EventDetails = async ({
             <p className="p-medium-20 ml-2 mt-2 sm:mt-0">
               by{" "}
               <span className="text-red-500">
-                {event?.organizer.firstName.toUpperCase()}{" "}
-                {event?.organizer.lastName.toUpperCase()}
+                {junction?.organizer.firstName.toUpperCase()}{" "}
+                {junction?.organizer.lastName.toUpperCase()}
               </span>
             </p>
 
             <p className="p-semibold-18 rounded-xl bg-blue-500/10 px-4 py-2.5 text-blue-500 w-max">
-              {event?.category?.name?.toUpperCase()}
+              {junction?.category?.name?.toUpperCase()}
             </p>
 
             <div className="flex flex-col gap-5">
@@ -92,13 +92,13 @@ const EventDetails = async ({
                 />
                 <div className="p-medium-14 lg:p-regular-18 flex flex-wrap items-center">
                   <p>
-                    {formatDateTime(event?.startDateTime).dateOnly} -{" "}
-                    {formatDateTime(event?.startDateTime).timeOnly}
+                    {formatDateTime(junction?.startDateTime).dateOnly} -{" "}
+                    {formatDateTime(junction?.startDateTime).timeOnly}
                   </p>
                   <p>_</p>
                   <p>
-                    {formatDateTime(event?.endDateTime).dateOnly} -{" "}
-                    {formatDateTime(event?.endDateTime).timeOnly}
+                    {formatDateTime(junction?.endDateTime).dateOnly} -{" "}
+                    {formatDateTime(junction?.endDateTime).timeOnly}
                   </p>
                 </div>
               </div>
@@ -111,7 +111,7 @@ const EventDetails = async ({
                   height={24}
                 />
                 <p className="p-medium-14 lg:p-regular-16">
-                  {event?.city?.name?.toUpperCase()}
+                  {junction?.city?.name?.toUpperCase()}
                 </p>
               </div>
             </div>
@@ -119,13 +119,13 @@ const EventDetails = async ({
             <div className="flex flex-col gap-2">
               <p className="p-semibold-18 text-grey-600">Brief Intro:</p>
               <p className="p-medium-14 lg:p-regular-16">
-                {event?.description}
+                {junction?.description}
               </p>
               <p className="p-semibold-18 text-grey-600 mt-1">
                 Additional Info:
               </p>
               <p className="p-medium-14 lg:p-regular-16 text-blue-500 underline">
-                {event?.url}
+                {junction?.url}
               </p>
             </div>
 
@@ -150,22 +150,22 @@ const EventDetails = async ({
         </div>
       </section>
 
-      {/* EVENTS with the same category */}
+      {/* JUNCTIONS with the same category */}
       <section className="wrapper my-8 flex flex-col gap-8 md:gap-12">
         <h2 className="h2-bold">Related Junctions</h2>
 
         <Collection
-          data={relatedEvents?.data}
+          data={relatedJunctions?.data}
           emptyTitle="No Junction Found"
           emptyStateSubtext="Come back later"
-          collectionType="All_Events"
+          collectionType="All_Junctions"
           limit={3}
           page={searchParams.page as string}
-          totalPages={relatedEvents?.totalPages}
+          totalPages={relatedJunctions?.totalPages}
         />
       </section>
     </>
   );
 };
 
-export default EventDetails;
+export default JunctionDetails;

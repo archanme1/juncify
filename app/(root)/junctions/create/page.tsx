@@ -1,5 +1,5 @@
 import { auth } from "@clerk/nextjs";
-import EventForm from "@/components/shared/EventForm";
+import JunctionForm from "@/components/shared/JunctionForm";
 
 const CreateJunction = () => {
   const { sessionClaims } = auth();
@@ -14,7 +14,7 @@ const CreateJunction = () => {
         </div>
       </section>
       <div className="wrapper my-8">
-        <EventForm userId={userId} type="Create" />
+        <JunctionForm userId={userId} type="Create" />
       </div>
     </>
   );
