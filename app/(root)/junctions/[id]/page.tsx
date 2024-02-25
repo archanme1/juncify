@@ -28,11 +28,12 @@ const JunctionDetails = async ({
   searchParams,
 }: SearchParamProps) => {
   const junction = await getJunctionById(id);
+  const page = Number(searchParams?.page) || 1;
 
   const relatedJunctions = await getRelatedJunctionsByCategory({
     categoryId: junction?.category?._id,
     junctionId: junction?._id,
-    page: searchParams.page as string,
+    page,
   });
 
   const orders = await getOrdersByJunction({
@@ -160,7 +161,7 @@ const JunctionDetails = async ({
           emptyStateSubtext="Come back later"
           collectionType="All_Junctions"
           limit={3}
-          page={searchParams.page as string}
+          page={page}
           totalPages={relatedJunctions?.totalPages}
         />
       </section>
