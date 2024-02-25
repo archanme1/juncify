@@ -18,7 +18,6 @@ import { contactFormSchema } from "@/lib/validator";
 import { contactDefaultValues } from "@/constants";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Metadata } from "next";
 
 // const EMAILJS_GOOGLE_SERVICE_URI = process.env.EMAILJS_GOOGLE_SERVICE_KEY;
 // const EMAILJS_TEMPLATE_URI = process.env.EMAILJS_TEMPLATE_KEY

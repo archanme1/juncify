@@ -9,12 +9,9 @@ import { SearchParamProps } from "@/types";
 import { getAllJunctions } from "@/lib/actions/junction.actions";
 
 export const metadata: Metadata = {
-  title: "Juncify - All Junctions",
+  title: "All Junctions",
   description:
-    "Explore all the junctions and events happening around you. Find the best junctions and events in your city.",
-  icons: {
-    icon: "/assets/images/logo.svg",
-  },
+    "Explore all the junctions and events happening around you with juncify. Find the best junctions and events in your city.",
 };
 
 const AllJunction = async ({ searchParams }: SearchParamProps) => {
@@ -28,7 +25,7 @@ const AllJunction = async ({ searchParams }: SearchParamProps) => {
     category: category,
     city: city,
     page,
-    limit: 6,
+    limit: 12,
   });
 
   return (

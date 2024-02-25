@@ -4,9 +4,6 @@ export const metadata: Metadata = {
   title: "Juncify Terms & Conditions",
   description:
     "Juncify Terms & Conditions. By accessing or using Juncify, you agree to be bound by these Terms and Conditions and our Privacy Policy.",
-  icons: {
-    icon: "/assets/images/logo.svg",
-  },
 };
 
 const Terms = () => {

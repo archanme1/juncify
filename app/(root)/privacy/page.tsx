@@ -4,9 +4,6 @@ export const metadata: Metadata = {
   title: "Juncify Privacy & Policy",
   description:
     "Juncify Privacy & Policy. Juncify is committed to protecting your privacy and providing a safe online experience for all of our users..",
-  icons: {
-    icon: "/assets/images/logo.svg",
-  },
 };
 
 const Privacy = () => {
