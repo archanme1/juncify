@@ -1,5 +1,12 @@
+import { Metadata } from "next";
 import { auth } from "@clerk/nextjs";
 import JunctionForm from "@/components/shared/JunctionForm";
+
+export const metadata: Metadata = {
+  title: "Create Junctions",
+  description:
+    "Create a junction or events with juncify. Create a best junctions or events in your city. Earn extra income by offering your unique services from your chosen location! ",
+};
 
 const CreateJunction = () => {
   const { sessionClaims } = auth();

@@ -228,7 +228,6 @@ const JunctionForm = ({
             )}
           />
         </div>
-
         <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={form.control}
@@ -372,7 +371,6 @@ const JunctionForm = ({
             )}
           />
         </div>
-
         <Button
           type="submit"
           size="lg"
@@ -381,6 +379,14 @@ const JunctionForm = ({
         >
           {form.formState.isSubmitting ? "Submitting..." : `${type}`}
         </Button>
+        <div className="flex items-center gap-1">
+          <span className="text-blue-500 p-medium-12">NOTE:</span>
+          <span className="text-red-500 p-medium-12">
+            A 3% charge will be deducted for non-free transactions to cover
+            Stripe's service. Currently, we do not impose any additional
+            charges.
+          </span>
+        </div>
       </form>
     </Form>
   );

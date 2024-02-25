@@ -1,10 +1,18 @@
+import React from "react";
+import { Metadata } from "next";
+import { auth } from "@clerk/nextjs";
+
 import Collection from "@/components/shared/Collection";
 import { getJunctionsByUser } from "@/lib/actions/junction.actions";
 import { getOrdersByUser } from "@/lib/actions/order.actions";
 import { IOrder } from "@/lib/database/models/order.model";
 import { SearchParamProps } from "@/types";
-import { auth } from "@clerk/nextjs";
-import React from "react";
+
+export const metadata: Metadata = {
+  title: "My Junctions",
+  description:
+    "See Joined and Organized junctions and events happening around you with juncify. Find the best junctions and events in your city.",
+};
 
 const ProfilePage = async ({ searchParams }: SearchParamProps) => {
   const { sessionClaims } = auth();
