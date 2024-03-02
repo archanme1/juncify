@@ -1,11 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const Footer = () => {
-  const handleEmailClick = () => {
-    window.location.href = "mailto:juncify@gmail.com";
-  };
-
   return (
     <div>
       <footer className="border-t">
@@ -14,14 +16,17 @@ const Footer = () => {
             <Image
               src="/assets/images/logo.svg"
               alt="juncify logo"
-              width={75}
-              height={22}
+              width={90}
+              height={24}
             />
-            <p className="p-regular-14  text-gray-600">©️2024</p>
-            <p className="p-medium-12 gray-600">All Right Reserved.</p>
+            <p className="p-regular-16  text-gray-600">©️2024</p>
+            <p className="p-medium-14 text-gray-600">All Right Reserved.</p>
           </Link>
 
           <div className="sm:flex-center  flex-center gap-3 text-gray-600">
+            <Link href="/contact">
+              <p className="p-medium-12  text-gray-600">Contact Us</p>
+            </Link>
             <Link href="/privacy">
               <p className="p-medium-12  text-gray-600">Privacy Policy</p>
             </Link>
@@ -30,29 +35,39 @@ const Footer = () => {
             </Link>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Image
-              src="/assets/images/language.png"
-              alt="juncify logo"
-              width={18}
-              height={18}
-              className="cursor-pointer"
-            />
-            <Link href="/contact">
+          <div className="flex items-center gap-3">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Image
+                    src="/assets/images/language.png"
+                    alt="juncify logo"
+                    width={22}
+                    height={22}
+                    className="cursor-pointer"
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>English</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            {/* <Link href="/contact">
               <Image
                 src="/assets/images/message.png"
                 alt="juncify logo"
-                width={18}
-                height={18}
+                width={22}
+                height={22}
                 className="cursor-pointer"
               />
-            </Link>
+            </Link> */}
             <a href="mailto:juncify@gmail.com">
               <Image
                 src="/assets/images/google.png"
                 alt="juncify logo"
-                width={18}
-                height={18}
+                width={22}
+                height={22}
                 className="cursor-pointer"
               />
             </a>

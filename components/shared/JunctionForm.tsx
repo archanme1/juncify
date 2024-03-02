@@ -14,6 +14,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { junctionFormSchema } from "@/lib/validator";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import * as z from "zod";
 import { junctionDefaultValues } from "@/constants";
 import Dropdown from "./Dropdown";
@@ -380,10 +386,10 @@ const JunctionForm = ({
           {form.formState.isSubmitting ? "Submitting..." : `${type}`}
         </Button>
         <div className="flex items-center gap-1">
-          <span className="text-red-900 p-medium-12">NOTE:</span>
+          <span className="text-red-500 p-medium-14">NOTE:</span>
           <span className="text-red-500 p-medium-12">
-            A 3% charge will be deducted for non-free transactions to cover
-            payment's service.
+            A fee of 3% plus $0.30 will be applied to non-free transactions in
+            order to cover the cost of payment services.
           </span>
         </div>
       </form>
