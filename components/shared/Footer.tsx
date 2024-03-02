@@ -22,9 +22,6 @@ const Footer = () => {
           </Link>
 
           <div className="sm:flex-center  flex-center gap-3 text-gray-600">
-            <Link href="/contact">
-              <p className="p-medium-12  text-gray-600">Contact US</p>
-            </Link>
             <Link href="/privacy">
               <p className="p-medium-12  text-gray-600">Privacy Policy</p>
             </Link>

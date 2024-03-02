@@ -380,11 +380,10 @@ const JunctionForm = ({
           {form.formState.isSubmitting ? "Submitting..." : `${type}`}
         </Button>
         <div className="flex items-center gap-1">
-          <span className="text-blue-500 p-medium-12">NOTE:</span>
+          <span className="text-red-900 p-medium-12">NOTE:</span>
           <span className="text-red-500 p-medium-12">
             A 3% charge will be deducted for non-free transactions to cover
-            Stripe's service. Currently, we do not impose any additional
-            charges.
+            payment's service.
           </span>
         </div>
       </form>
