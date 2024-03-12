@@ -54,9 +54,17 @@ const Card = ({ junction, hasOrderLink, hidePrice }: CardProps) => {
           </div>
         )}
 
-        <p className="p-medium-16 p-medium-18 text-grey-600">
-          {formatDateTime(junction?.startDateTime).dateTime}
-        </p>
+        <div className="flex gap-2 md:gap-3">
+          <Image
+            src="/assets/icons/calendar.svg"
+            alt="calendar"
+            width={24}
+            height={24}
+          />
+          <p className="p-medium-16 p-medium-18 text-grey-600">
+            {formatDateTime(junction?.startDateTime).dateTime}
+          </p>
+        </div>
 
         <Link href={`/junctions/${junction?._id}`}>
           <p className="p-medium-16 md:p-medium-20 flex-1 text-black  truncate">
@@ -64,12 +72,12 @@ const Card = ({ junction, hasOrderLink, hidePrice }: CardProps) => {
           </p>
         </Link>
 
-        <div className="flex-between w-full">
-          <p className="p-medium-14 md:p-medium-16 text-red-500">
+        <div className="flex items-center gap-1 w-full">
+          <span className="p-medium-16">by</span>
+          <p className="p-medium-14 md:p-medium-16 text-red-500 ">
             {junction?.organizer.firstName.toUpperCase()}{" "}
             {junction?.organizer.lastName.toUpperCase()}
           </p>
-
           {hasOrderLink && (
             <Link
               href={`/orders?junctionId=${junction?._id}`}

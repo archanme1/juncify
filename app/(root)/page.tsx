@@ -40,20 +40,22 @@ export default async function Home({ searchParams }: SearchParamProps) {
                 earn extra income!
               </i>
             </p>
-            <div className="flex flex-col sm:flex-row gap-5">
-              <Button size="lg" asChild className="button w-full sm:w-fit">
-                <Link href="#junctions">See Recent Junction</Link>
-              </Button>
-            </div>
+            {/* <div className="flex flex-col sm:flex-row gap-5">
+        <Button size="lg" asChild className="button w-full sm:w-fit">
+          <Link href="#junctions">See Recent Junction</Link>
+        </Button>
+      </div> */}
           </div>
 
-          <Image
-            src="/assets/images/newlogo.png"
-            alt="hero"
-            width={1000}
-            height={1000}
-            className="max-h-[50vh] object-contain object-center md:max-h-[60vh]"
-          />
+          <div className="relative max-h-[50vh] md:max-h-[60vh] ">
+            <Image
+              src="/assets/images/newlogo.png"
+              alt="hero"
+              width={1000}
+              height={1000}
+              className="max-h-full object-contain object-center transition-transform duration-300 transform-gpu hover:scale-105"
+            />
+          </div>
         </div>
       </section>
 
