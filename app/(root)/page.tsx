@@ -7,6 +7,7 @@ import Search from "@/components/shared/Search";
 import { Button } from "@/components/ui/button";
 import { getAllJunctions } from "@/lib/actions/junction.actions";
 import { SearchParamProps } from "@/types";
+import Design from "@/components/shared/Design";
 
 export default async function Home({ searchParams }: SearchParamProps) {
   const page = Number(searchParams?.page) || 1;
@@ -41,10 +42,11 @@ export default async function Home({ searchParams }: SearchParamProps) {
               </i>
             </p>
             {/* <div className="flex flex-col sm:flex-row gap-5">
-        <Button size="lg" asChild className="button w-full sm:w-fit">
-          <Link href="#junctions">See Recent Junction</Link>
-        </Button>
-      </div> */}
+              <Button size="lg" asChild className="button w-full sm:w-fit">
+                <Link href="#junctions">See Recent Junction</Link>
+              </Button>
+            </div> */}
+            <Design />
           </div>
 
           <div className="relative max-h-[50vh] md:max-h-[60vh] ">

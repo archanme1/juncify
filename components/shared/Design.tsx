@@ -21,7 +21,7 @@ const Design = () => {
   };
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative w-full h-2/5">
       {init && (
         <Particles
           className="absolute inset-0 z-0"

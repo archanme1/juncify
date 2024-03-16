@@ -46,7 +46,9 @@ const Card = ({ junction, hasOrderLink, hidePrice }: CardProps) => {
         {!hidePrice && (
           <div className="flex gap-2">
             <span className="p-semibold-14 w-min rounded-xl bg-red-100 px-4 py-1 text-red-500">
-              {junction?.isFree ? "FREE" : `$${junction?.price}`}
+              {junction?.isFree || junction?.price === ""
+                ? "FREE"
+                : `$${junction?.price}`}
             </span>
             <p className="p-semibold-14 w-max rounded-xl bg-blue-500/10 px-4 py-1 text-blue-500 line-clamp-1">
               {junction?.category?.name.toUpperCase()}
@@ -72,12 +74,14 @@ const Card = ({ junction, hasOrderLink, hidePrice }: CardProps) => {
           </p>
         </Link>
 
-        <div className="flex items-center gap-1 w-full">
-          <span className="p-medium-16">by</span>
-          <p className="p-medium-14 md:p-medium-16 text-red-500 ">
-            {junction?.organizer.firstName.toUpperCase()}{" "}
-            {junction?.organizer.lastName.toUpperCase()}
-          </p>
+        <div className="flex-between  w-full">
+          <div className="flex gap-1">
+            <span className="p-medium-16">by</span>
+            <p className="p-medium-14 md:p-medium-16 text-red-500 ">
+              {junction?.organizer.firstName.toUpperCase()}{" "}
+              {junction?.organizer.lastName.toUpperCase()}
+            </p>
+          </div>
           {hasOrderLink && (
             <Link
               href={`/orders?junctionId=${junction?._id}`}
