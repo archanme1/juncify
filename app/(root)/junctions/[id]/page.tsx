@@ -74,8 +74,8 @@ const JunctionDetails = async ({
             <p className="p-medium-20 ml-2 mt-2 sm:mt-0">
               by{" "}
               <span className="text-red-500">
-                {junction?.organizer.firstName.toUpperCase()}{" "}
-                {junction?.organizer.lastName.toUpperCase()}
+                {junction?.organizer.firstName ?? ""}{" "}
+                {junction?.organizer.lastName ?? ""}
               </span>
             </p>
 
