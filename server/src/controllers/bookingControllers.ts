@@ -8,6 +8,13 @@ export const getBookings = async (
   res: Response
 ): Promise<void> => {
   try {
+    const bookings = await prisma.booking.findMany({
+      include: {
+        customer: true,
+        contractor: true,
+      },
+    });
+    res.json(bookings);
   } catch (error: any) {
     res
       .status(500)
@@ -20,6 +27,11 @@ export const getBookingPayments = async (
   res: Response
 ): Promise<void> => {
   try {
+    const { id } = req.params;
+    const payments = await prisma.payment.findMany({
+      where: { bookingId: Number(id) },
+    });
+    res.json(payments);
   } catch (error: any) {
     res
       .status(500)
