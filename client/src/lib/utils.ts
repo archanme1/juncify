@@ -11,13 +11,24 @@ export function formatEnumString(str: string) {
 }
 
 export function formatPriceValue(value: number | null, isMin: boolean) {
-  if (value === null || value === 0)
-    return isMin ? "Any Min Price" : "Any Max Price";
+  if (value === null || value === 0) return isMin ? " Min Fee" : " Max Fee";
   if (value >= 1000) {
     const kValue = value / 1000;
     return isMin ? `$${kValue}k+` : `<$${kValue}k`;
   }
-  return isMin ? `$${value}+` : `<$${value}`;
+  return isMin ? `$${value}yrs +` : `<$${value}yrs`;
+}
+export function formatYearsofExperienceValue(
+  value: number | null,
+  isMin: boolean
+) {
+  if (value === null || value === 0)
+    return isMin ? "Min Experience" : "Max Experience";
+  if (value >= 1000) {
+    const kValue = value / 1000;
+    return isMin ? `${kValue} yrs` : `<${kValue}yrs`;
+  }
+  return isMin ? `${value}yrs +` : `<${value}yrs`;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

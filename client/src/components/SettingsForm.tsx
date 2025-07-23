@@ -80,7 +80,7 @@ const SettingsForm = ({
               {editMode && (
                 <Button
                   type="submit"
-                  className="bg-secondary-700 text-white cursor-pointer "
+                  className="bg-secondary-500 text-white cursor-pointer "
                 >
                   Save Changes
                 </Button>

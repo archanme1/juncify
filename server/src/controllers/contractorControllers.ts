@@ -53,13 +53,27 @@ export const getContractors = async (
       );
     }
 
-    if (teamSize && teamSize !== "any") {
-      whereConditions.push(Prisma.sql`c.teamSize >= ${Number(teamSize)}`);
+    // if (teamSize && teamSize !== "any") {
+    //   whereConditions.push(Prisma.sql`c.teamSize >= ${Number(teamSize)}`);
+    // }
+
+    // if (serviceAreaCoverage && serviceAreaCoverage !== "any") {
+    //   whereConditions.push(
+    //     Prisma.sql`c.serviceAreaCoverage >= ${Number(serviceAreaCoverage)}`
+    //   );
+    // }
+
+    if (teamSize && teamSize !== "any" && !isNaN(Number(teamSize))) {
+      whereConditions.push(Prisma.sql`c."teamSize" >= ${Number(teamSize)}`);
     }
 
-    if (serviceAreaCoverage && serviceAreaCoverage !== "any") {
+    if (
+      serviceAreaCoverage &&
+      serviceAreaCoverage !== "any" &&
+      !isNaN(Number(serviceAreaCoverage))
+    ) {
       whereConditions.push(
-        Prisma.sql`c.serviceAreaCoverage >= ${Number(serviceAreaCoverage)}`
+        Prisma.sql`c."serviceAreaCoverage" >= ${Number(serviceAreaCoverage)}`
       );
     }
 
@@ -83,7 +97,9 @@ export const getContractors = async (
 
     if (amenities && amenities !== "any") {
       const amenitiesArray = (amenities as string).split(",");
-      whereConditions.push(Prisma.sql`c.amenities @> ${amenitiesArray}`);
+      whereConditions.push(
+        Prisma.sql`c.amenities @> ${amenitiesArray}::"Amenity"[]`
+      );
     }
 
     if (availableFrom && availableFrom !== "any") {
@@ -96,7 +112,7 @@ export const getContractors = async (
             Prisma.sql`EXISTS (
               SELECT 1 FROM "Booking" b 
               WHERE b."contractorId" = c.id 
-              AND b."startDate" <= ${date.toISOString()}
+              AND b."startDate" <= ${date}
             )`
           );
         }
@@ -117,6 +133,8 @@ export const getContractors = async (
         )`
       );
     }
+
+    // console.log("From Server: ", whereConditions);
 
     const completeQuery = Prisma.sql`
       SELECT 

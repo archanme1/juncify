@@ -59,7 +59,7 @@ const AppSidebar = ({ userType }: AppSidebarProps) => {
           },
           {
             icon: Home,
-            label: "serviceRecords",
+            label: "Service Records",
             href: "/customers/servicerecords",
           },
           {

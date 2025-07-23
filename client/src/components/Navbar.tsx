@@ -56,7 +56,7 @@ const Navbar = () => {
               />
               <div className="text-xl font-bold">
                 JUNC
-                <span className="text-secondary-700  hover:!text-primary-300">
+                <span className="text-secondary-500  hover:!text-primary-300">
                   IFY
                 </span>
               </div>
@@ -94,7 +94,7 @@ const Navbar = () => {
         </div>
         {!isDashboardPage && (
           <p className="text-primary-200 hidden md:block">
-            Exclusive, Discreet, On Your in Juncify.
+            Your Community of Trusted Professionals – Inclusively in Juncify.
           </p>
         )}
         <div className="flex items-center gap-5">

@@ -26,14 +26,14 @@ const components = {
           <div className="flex items-center gap-2">
             <Image
               src="/logo1.png"
-              alt="Rentiful Logo"
+              alt="Juncify Logo"
               width={32}
               height={32}
               className="w-6 h-6 scale-100"
             />
             <Heading level={3} className="!text-2xl !font-bold">
               JUNC
-              <span className="text-secondary-700  font-bold ">IFY</span>
+              <span className="text-secondary-500  font-bold ">IFY</span>
             </Heading>
           </div>
           <p className="text-muted-foreground mt-2">
@@ -77,7 +77,7 @@ const components = {
           <div className="flex items-center gap-2">
             <Image
               src="/logo1.png"
-              alt="Rentiful Logo"
+              alt="Juncify Logo"
               width={32}
               height={32}
               className="w-6 h-6 scale-100"

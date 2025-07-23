@@ -1,9 +1,10 @@
+import Header from "@/components/Header";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Juncify Privacy & Policy",
   description:
-    "Juncify Privacy & Policy. Juncify is committed to protecting your privacy and providing a safe online experience for all of our users..",
+    "Juncify Privacy & Policy. Juncify is committed to protecting your privacy and providing a safe online experience for all of our users.",
   icons: {
     icon: "/assets/images/logo.svg",
   },
@@ -11,13 +12,17 @@ export const metadata: Metadata = {
 
 const Privacy = () => {
   return (
-    <>
-      <section className="bg-primary-50 bg-dotted-pattern bg-cover bg-center py-5  md:py-10">
+    <div className="dashboard-container">
+      {/* <section className="bg-primary-50 bg-dotted-pattern bg-cover bg-center py-5  md:py-10">
         <div className="wrapper flex items-center justify-center sm:justify-between">
           <h3 className="h3-bold text-center sm:text-left">Privacy & Policy</h3>
         </div>
-      </section>
-      <div className="wrapper py-8">
+      </section> */}
+      <Header
+        title="Privacy & Policy"
+        subtitle="Juncify Privacy & Policy. Juncify is committed to protecting your privacy and providing a safe online experience for all of our users."
+      />
+      <div className="wrapper py-2">
         <div className="bg-white rounded-lg shadow-md p-5 mb-6">
           <p className="p-semibold-18 mb-2">1. Information We Collect:</p>
           <p className="p-medium-14 text-gray-600 mb-1 with-bullets">
@@ -85,7 +90,7 @@ const Privacy = () => {
           </p>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

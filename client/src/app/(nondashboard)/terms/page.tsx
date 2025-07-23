@@ -1,3 +1,4 @@
+import Header from "@/components/Header";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,15 +12,19 @@ export const metadata: Metadata = {
 
 const Terms = () => {
   return (
-    <>
-      <section className="bg-primary-50 bg-dotted-pattern bg-cover bg-center py-5  md:py-10">
+    <div className="dashboard-container">
+      {/* <section className="bg-primary-50 bg-dotted-pattern bg-cover bg-center py-5  md:py-10">
         <div className="wrapper flex items-center justify-center sm:justify-between">
           <h3 className="h3-bold text-center sm:text-left">
             Terms & Conditions
           </h3>
         </div>
-      </section>
-      <div className="wrapper py-8">
+      </section> */}
+      <Header
+        title="Terms & Conditions"
+        subtitle="Juncify Terms & Conditions. By accessing or using Juncify, you agree to be bound by these Terms and Conditions and our Privacy Policy."
+      />
+      <div className="wrapper py-2">
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <p className="p-semibold-18 mb-2">1. Acceptance of Terms:</p>
           <p className="p-medium-14 text-gray-600 with-bullets">
@@ -78,7 +83,7 @@ const Terms = () => {
           </p>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

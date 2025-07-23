@@ -12,7 +12,7 @@ const CallToActionSection = ({ manager }: { manager: boolean }) => {
     <div className="relative py-24">
       <Image
         src="/landing-splash.jpg"
-        alt="Rentiful Search Section Background"
+        alt="Juncify Search Section Background"
         fill
         className={manager ? "object-cover" : "object-cover object-top"}
       />
@@ -33,14 +33,14 @@ const CallToActionSection = ({ manager }: { manager: boolean }) => {
               {!manager ? (
                 <button
                   onClick={() => router.push("/search")}
-                  className="inline-block text-primary-700 bg-white rounded-lg px-6 py-3 font-semibold hover:bg-primary-700 hover:text-primary-50"
+                  className="cursor-pointer inline-block text-primary-700 bg-white rounded-lg px-6 py-3 font-semibold hover:bg-primary-700 hover:text-primary-50"
                 >
                   Search
                 </button>
               ) : (
                 <Link
                   href="/signup/manager"
-                  className="inline-block text-primary-700 bg-white  rounded-lg px-6 py-3 font-semibold hover:bg-primary-700 hover:text-primary-50"
+                  className="cursor-pointer inline-block text-primary-700 bg-white  rounded-lg px-6 py-3 font-semibold hover:bg-primary-700 hover:text-primary-50"
                   scroll={false}
                 >
                   Become a Manager

@@ -1,4 +1,4 @@
- import { Request, Response } from "express";
+import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import { wktToGeoJSON } from "@terraformer/wkt";
 
@@ -167,33 +167,19 @@ export const removeFavoriteContractor = async (
 ): Promise<void> => {
   try {
     const { cognitoId, contractorId } = req.params;
-    const customer = await prisma.customer.findUnique({
+    const contractorIdNumber = Number(contractorId);
+
+    const updatedCustomer = await prisma.customer.update({
       where: { cognitoId },
+      data: {
+        favorites: {
+          disconnect: { id: contractorIdNumber },
+        },
+      },
       include: { favorites: true },
     });
 
-    if (!customer) {
-      res.status(404).json({ message: "Customer not found" });
-      return;
-    }
-
-    const contractorIdNumber = Number(contractorId);
-    const existingFavorites = customer.favorites || [];
-
-    if (!existingFavorites.some((fav) => fav.id === contractorIdNumber)) {
-      const updatedCustomer = await prisma.customer.update({
-        where: { cognitoId },
-        data: {
-          favorites: {
-            disconnect: { id: contractorIdNumber },
-          },
-        },
-        include: { favorites: true },
-      });
-      res.json(updatedCustomer);
-    } else {
-      res.status(409).json({ message: "Contractor already added as favorite" });
-    }
+    res.json(updatedCustomer);
   } catch (error: any) {
     res.status(500).json({
       message: `Error removing favorite contractor: ${error.message}`,

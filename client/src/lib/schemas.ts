@@ -1,23 +1,23 @@
 import * as z from "zod";
-import { PropertyTypeEnum } from "@/lib/constants";
+import { ContractorTypeEnum } from "@/lib/constants";
 
-export const propertySchema = z.object({
+export const contractorSchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string().min(1, "Description is required"),
-  pricePerMonth: z.coerce.number().positive().min(0).int(),
-  securityDeposit: z.coerce.number().positive().min(0).int(),
-  applicationFee: z.coerce.number().positive().min(0).int(),
-  isPetsAllowed: z.boolean(),
-  isParkingIncluded: z.boolean(),
+  hourlyRate: z.coerce.number().positive().min(0).int(),
+  advancePayment: z.coerce.number().positive().min(0).int(),
+  installationFee: z.coerce.number().positive().min(0).int(),
+  isEmergencyAvailable: z.boolean(),
+  offersOnSiteParking: z.boolean(),
   photoUrls: z
     .array(z.instanceof(File))
     .min(1, "At least one photo is required"),
   amenities: z.string().min(1, "Amenities are required"),
   highlights: z.string().min(1, "Highlights are required"),
-  beds: z.coerce.number().positive().min(0).max(10).int(),
-  baths: z.coerce.number().positive().min(0).max(10).int(),
-  squareFeet: z.coerce.number().int().positive(),
-  propertyType: z.nativeEnum(PropertyTypeEnum),
+  teamSize: z.coerce.number().positive().min(0).max(10).int(),
+  serviceAreaCoverage: z.coerce.number().positive().min(0).max(1000000).int(),
+  yearsOfExperience: z.coerce.number().int().positive(),
+  contractorType: z.nativeEnum(ContractorTypeEnum),
   address: z.string().min(1, "Address is required"),
   city: z.string().min(1, "City is required"),
   state: z.string().min(1, "State is required"),
@@ -25,7 +25,7 @@ export const propertySchema = z.object({
   postalCode: z.string().min(1, "Postal code is required"),
 });
 
-export type PropertyFormData = z.infer<typeof propertySchema>;
+export type ContractorFormData = z.infer<typeof contractorSchema>;
 
 export const applicationSchema = z.object({
   name: z.string().min(1, "Name is required"),

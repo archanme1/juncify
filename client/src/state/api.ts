@@ -1,7 +1,8 @@
-import { createNewUserInDatabase, withToast } from "@/lib/utils";
-import { Customer, Manager } from "@/types/prismaTypes";
+import { cleanParams, createNewUserInDatabase, withToast } from "@/lib/utils";
+import { Contractor, Customer, Manager } from "@/types/prismaTypes";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { fetchAuthSession, getCurrentUser } from "aws-amplify/auth";
+import { FiltersState } from ".";
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
@@ -66,23 +67,7 @@ export const api = createApi({
         }
       },
     }),
-    updateCustomerSettings: build.mutation<
-      Customer,
-      { cognitoId: string } & Partial<Customer>
-    >({
-      query: ({ cognitoId, ...updatedCustomer }) => ({
-        url: `customers/${cognitoId}`,
-        method: "PUT",
-        body: updatedCustomer,
-      }),
-      invalidatesTags: (result) => [{ type: "Customers", id: result?.id }],
-      async onQueryStarted(_, { queryFulfilled }) {
-        await withToast(queryFulfilled, {
-          success: "Settings updated successfully!",
-          error: "Failed to update settings.",
-        });
-      },
-    }),
+
     updateManagerSettings: build.mutation<
       Manager,
       { cognitoId: string } & Partial<Manager>
@@ -100,11 +85,122 @@ export const api = createApi({
         });
       },
     }),
+
+    // contractor related endpoints
+    getContractors: build.query<
+      Contractor[],
+      Partial<FiltersState> & { favoriteIds?: number[] }
+    >({
+      query: (filters) => {
+        const params = cleanParams({
+          location: filters.location,
+          priceMin: filters.priceRange?.[0],
+          priceMax: filters.priceRange?.[1],
+          teamSize: filters.teamSize,
+          serviceAreaCoverage: filters.serviceAreaCoverage,
+          contractorType: filters.contractorType,
+          yearsOfExperienceMin: filters.yearsOfExperience?.[0],
+          yearsOfExperienceMax: filters.yearsOfExperience?.[1],
+          amenities: filters.amenities?.join(","),
+          availableFrom: filters.availableFrom,
+          favoriteIds: filters.favoriteIds?.join(","),
+          latitude: filters.coordinates?.[1],
+          longitude: filters.coordinates?.[0],
+        });
+
+        return { url: "contractors", params };
+      },
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: "Contractors" as const, id })),
+              { type: "Contractors", id: "LIST" },
+            ]
+          : [{ type: "Contractors", id: "LIST" }],
+      async onQueryStarted(_, { queryFulfilled }) {
+        await withToast(queryFulfilled, {
+          error: "Failed to fetch contractors.",
+        });
+      },
+    }),
+
+    // customer related endpoints
+    getCustomer: build.query<Customer, string>({
+      query: (cognitoId) => `customers/${cognitoId}`,
+      providesTags: (result) => [{ type: "Customers", id: result?.id }],
+      async onQueryStarted(_, { queryFulfilled }) {
+        await withToast(queryFulfilled, {
+          error: "Failed to load user customer profile.",
+        });
+      },
+    }),
+
+    updateCustomerSettings: build.mutation<
+      Customer,
+      { cognitoId: string } & Partial<Customer>
+    >({
+      query: ({ cognitoId, ...updatedCustomer }) => ({
+        url: `customers/${cognitoId}`,
+        method: "PUT",
+        body: updatedCustomer,
+      }),
+      invalidatesTags: (result) => [{ type: "Customers", id: result?.id }],
+      async onQueryStarted(_, { queryFulfilled }) {
+        await withToast(queryFulfilled, {
+          success: "Settings updated successfully!",
+          error: "Failed to update settings.",
+        });
+      },
+    }),
+
+    addFavoriteContractor: build.mutation<
+      Customer,
+      { cognitoId: string; contractorId: number }
+    >({
+      query: ({ cognitoId, contractorId }) => ({
+        url: `customers/${cognitoId}/favorites/${contractorId}`,
+        method: "POST",
+      }),
+      invalidatesTags: (result) => [
+        { type: "Customers", id: result?.id },
+        { type: "Contractors", id: "LIST" },
+      ],
+      async onQueryStarted(_, { queryFulfilled }) {
+        await withToast(queryFulfilled, {
+          success: "Added to favorites!!",
+          error: "Failed to add to favorites",
+        });
+      },
+    }),
+
+    removeFavoriteContractor: build.mutation<
+      Customer,
+      { cognitoId: string; contractorId: number }
+    >({
+      query: ({ cognitoId, contractorId }) => ({
+        url: `customers/${cognitoId}/favorites/${contractorId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result) => [
+        { type: "Customers", id: result?.id },
+        { type: "Contractors", id: "LIST" },
+      ],
+      async onQueryStarted(_, { queryFulfilled }) {
+        await withToast(queryFulfilled, {
+          success: "Removed from favorites!",
+          error: "Failed to remove from favorites.",
+        });
+      },
+    }),
   }),
 });
 
 export const {
   useGetAuthUserQuery,
-  useUpdateCustomerSettingsMutation,
   useUpdateManagerSettingsMutation,
+  useGetContractorsQuery,
+  useGetCustomerQuery,
+  useUpdateCustomerSettingsMutation,
+  useAddFavoriteContractorMutation,
+  useRemoveFavoriteContractorMutation,
 } = api;

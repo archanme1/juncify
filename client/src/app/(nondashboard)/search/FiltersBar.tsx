@@ -4,7 +4,12 @@ import React, { useState } from "react";
 import { debounce } from "lodash";
 import { useDispatch } from "react-redux";
 import { usePathname, useRouter } from "next/navigation";
-import { cleanParams, cn, formatPriceValue } from "@/lib/utils";
+import {
+  cleanParams,
+  cn,
+  formatPriceValue,
+  formatYearsofExperienceValue,
+} from "@/lib/utils";
 import {
   FiltersState,
   setFilters,
@@ -143,7 +148,7 @@ const FiltersBar = () => {
           placeholder="Search location"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-120 rounded-l-xl rounded-r-none border-primary-400 border-r-0"
+          className="w-150 rounded-l-xl rounded-r-none border-primary-400 border-r-0"
         />
         <Button
           // onClick={handleLocationSearch}
@@ -171,7 +176,9 @@ const FiltersBar = () => {
           </SelectTrigger>
           <SelectContent className="bg-white">
             <SelectItem value="any">Any Min Price</SelectItem>
-            {[500, 1000, 1500, 2000, 3000, 5000, 10000].map((price) => (
+            {[
+              500, 1000, 3000, 5000, 7000, 10000, 20000, 30000, 40000, 50000,
+            ].map((price) => (
               <SelectItem key={price} value={price.toString()}>
                 ${price / 1000}k+
               </SelectItem>
@@ -180,65 +187,83 @@ const FiltersBar = () => {
         </Select>
       </div>
 
-      {/* Max Price Selector */}
-      <Select
-        value={filters.priceRange[1]?.toString() || "any"}
-        onValueChange={(value) =>
-          handleFilterChange("priceRange", value, false)
-        }
-      >
-        <SelectTrigger className="w-40 rounded-xl border-primary-400">
-          <SelectValue>
-            {formatPriceValue(filters.priceRange[1], false)}
-          </SelectValue>
-        </SelectTrigger>
-        <SelectContent className="bg-white">
-          <SelectItem value="any">Any Max Price</SelectItem>
-          {[1000, 2000, 3000, 5000, 10000].map((price) => (
-            <SelectItem key={price} value={price.toString()}>
-              &lt;${price / 1000}k
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-
-      {/* Team Size and Baths */}
-      <div className="flex gap-1">
-        {/* Team Size */}
+      <div className="flex  gap-1">
+        {/* Max Price Selector */}
         <Select
-          value={filters.teamSize}
-          onValueChange={(value) => handleFilterChange("teamSize", value, null)}
-        >
-          <SelectTrigger className="w-40 rounded-xl border-primary-400">
-            <SelectValue placeholder="Beds" />
-          </SelectTrigger>
-          <SelectContent className="bg-white">
-            <SelectItem value="any">Any Team Sizes</SelectItem>
-            <SelectItem value="1"> Atleast 1+ Team Size</SelectItem>
-            <SelectItem value="2"> Atleast 2+ Team Size</SelectItem>
-            <SelectItem value="3"> Atleast 3+ Team Size</SelectItem>
-            <SelectItem value="4"> Atleast 4+ Team Size</SelectItem>
-          </SelectContent>
-        </Select>
-
-        {/* Service Area Coverage */}
-        <Select
-          value={filters.serviceAreaCoverage}
+          value={filters.priceRange[1]?.toString() || "any"}
           onValueChange={(value) =>
-            handleFilterChange("serviceAreaCoverage", value, null)
+            handleFilterChange("priceRange", value, false)
           }
         >
-          <SelectTrigger className="w-60 rounded-xl border-primary-400">
-            <SelectValue placeholder="Baths" />
+          <SelectTrigger className="w-40 rounded-xl border-primary-400">
+            <SelectValue>
+              {formatPriceValue(filters.priceRange[1], false)}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent className="bg-white">
-            <SelectItem value="any">Any Service Area(*1000km)</SelectItem>
-            <SelectItem value="1">Max 1</SelectItem>
-            <SelectItem value="2">Max 2</SelectItem>
-            <SelectItem value="3">Max 3</SelectItem>
+            <SelectItem value="any">Any Max Price</SelectItem>
+            {[
+              500, 1000, 3000, 5000, 7000, 10000, 20000, 30000, 40000, 50000,
+            ].map((price) => (
+              <SelectItem key={price} value={price.toString()}>
+                &lt;${price / 1000}k
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>
+
+      <div className="flex  gap-1">
+        {/* Min Years of Experiences */}
+        <Select
+          value={filters.yearsOfExperience[0]?.toString() || "any"}
+          onValueChange={(value) =>
+            handleFilterChange("yearsOfExperience", value, true)
+          }
+        >
+          <SelectTrigger className="w-40 rounded-xl border-primary-400">
+            <SelectValue>
+              {formatYearsofExperienceValue(filters.yearsOfExperience[0], true)}
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent className="bg-white">
+            <SelectItem value="any">Any </SelectItem>
+            {[1, 3, 5, 7, 10, 20, 30, 40, 50].map((exp) => (
+              <SelectItem key={exp} value={exp.toString()}>
+                {exp}yrs+
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="flex  gap-1">
+        {/* Max Years of Experiences */}
+        <Select
+          value={filters.yearsOfExperience[1]?.toString() || "any"}
+          onValueChange={(value) =>
+            handleFilterChange("yearsOfExperience", value, false)
+          }
+        >
+          <SelectTrigger className="w-40 rounded-xl border-primary-400">
+            <SelectValue>
+              {formatYearsofExperienceValue(
+                filters.yearsOfExperience[1],
+                false
+              )}
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent className="bg-white">
+            <SelectItem value="any">Any</SelectItem>
+            {[1, 3, 5, 7, 10, 20, 30, 40, 50].map((exp) => (
+              <SelectItem key={exp} value={exp.toString()}>
+                &lt;{exp}yrs
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       {/* Contractor Type */}
       <Select
         value={filters.contractorType || "any"}
