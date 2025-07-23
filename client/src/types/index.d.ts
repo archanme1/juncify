@@ -40,8 +40,8 @@ declare global {
     FreeEstimates = "FreeEstimates",
     SameDayService = "SameDayService",
     EcoFriendly = "EcoFriendly",
-    AffordablePricing = "",
-    LocallyOwned = "AffordablePricing",
+    AffordablePricing = "AffordablePricing",
+    LocallyOwned = "LocallyOwned",
     YearsOfExperience = "YearsOfExperience",
   }
 

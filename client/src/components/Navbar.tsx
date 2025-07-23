@@ -158,7 +158,7 @@ const Navbar = () => {
               </DropdownMenu>
               <Button
                 variant="secondary"
-                className="md:ml-4 bg-primary-50 text-primary-700 hover:bg-secondary-700 hover:text-primary-50"
+                className="md:ml-4 bg-primary-50 text-primary-700 hover:bg-secondary-500 hover:text-primary-50"
                 onClick={() =>
                   router.push(
                     authUser.userRole?.toLowerCase() === "manager"

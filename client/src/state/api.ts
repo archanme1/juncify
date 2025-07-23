@@ -1,5 +1,10 @@
 import { cleanParams, createNewUserInDatabase, withToast } from "@/lib/utils";
-import { Contractor, Customer, Manager } from "@/types/prismaTypes";
+import {
+  Application,
+  Contractor,
+  Customer,
+  Manager,
+} from "@/types/prismaTypes";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { fetchAuthSession, getCurrentUser } from "aws-amplify/auth";
 import { FiltersState } from ".";
@@ -124,6 +129,16 @@ export const api = createApi({
       },
     }),
 
+    getContractor: build.query<Contractor, number>({
+      query: (id) => `contractors/${id}`,
+      providesTags: (result, error, id) => [{ type: "ContractorDetails", id }],
+      async onQueryStarted(_, { queryFulfilled }) {
+        await withToast(queryFulfilled, {
+          error: "Failed to load Contractor details.",
+        });
+      },
+    }),
+
     // customer related endpoints
     getCustomer: build.query<Customer, string>({
       query: (cognitoId) => `customers/${cognitoId}`,
@@ -192,6 +207,22 @@ export const api = createApi({
         });
       },
     }),
+
+    // Application
+    createApplication: build.mutation<Application, Partial<Application>>({
+      query: (body) => ({
+        url: `applications`,
+        method: "POST",
+        body: body,
+      }),
+      invalidatesTags: ["Applications"],
+      async onQueryStarted(_, { queryFulfilled }) {
+        await withToast(queryFulfilled, {
+          success: "Application created successfully!",
+          error: "Failed to create applications.",
+        });
+      },
+    }),
   }),
 });
 
@@ -203,4 +234,6 @@ export const {
   useUpdateCustomerSettingsMutation,
   useAddFavoriteContractorMutation,
   useRemoveFavoriteContractorMutation,
+  useGetContractorQuery,
+  useCreateApplicationMutation,
 } = api;
