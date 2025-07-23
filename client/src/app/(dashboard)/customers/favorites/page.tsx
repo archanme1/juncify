@@ -28,7 +28,15 @@ const Favorites = () => {
   );
 
   if (isLoading) return <Loading />;
-  if (error) return <div>Error loading favorites</div>;
+  if (error)
+    return (
+      <div className="dashboard-container">
+        <Header
+          title="Something went wrong!"
+          subtitle="Error loading your favroites or liked contractors."
+        />
+      </div>
+    );
 
   return (
     <div className="dashboard-container">

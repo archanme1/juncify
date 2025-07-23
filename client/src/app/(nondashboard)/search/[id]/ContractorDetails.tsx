@@ -5,6 +5,7 @@ import { formatEnumString } from "@/lib/utils";
 import { HelpCircle } from "lucide-react";
 import Loading from "@/components/Loading";
 import { useGetContractorQuery } from "@/state/api";
+import Header from "@/components/Header";
 
 const ContractorDetails = ({ contractorId }: ContractorOverviewProps) => {
   const {
@@ -15,7 +16,14 @@ const ContractorDetails = ({ contractorId }: ContractorOverviewProps) => {
 
   if (isLoading) return <Loading />;
   if (isError || !contractor) {
-    return <>Contractor not Found</>;
+    return (
+      <div className="dashboard-container">
+        <Header
+          title="Something went wrong!"
+          subtitle="Error Fetching Contractor"
+        />
+      </div>
+    );
   }
 
   return (

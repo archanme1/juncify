@@ -11,7 +11,8 @@ export function formatEnumString(str: string) {
 }
 
 export function formatPriceValue(value: number | null, isMin: boolean) {
-  if (value === null || value === 0) return isMin ? " Min Fee" : " Max Fee";
+  if (value === null || value === 0)
+    return isMin ? " Min Install Fee" : " Max Install Fee";
   if (value >= 1000) {
     const kValue = value / 1000;
     return isMin ? `$${kValue}k+` : `<$${kValue}k`;

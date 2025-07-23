@@ -1,5 +1,6 @@
 import Card from "@/components/Card";
 import CardCompact from "@/components/CardCompact";
+import Header from "@/components/Header";
 import Loading from "@/components/Loading";
 import {
   useAddFavoriteContractorMutation,
@@ -52,7 +53,15 @@ const Listings = () => {
   };
 
   if (isLoading) return <Loading />;
-  if (isError || !contractors) return <div>Failed to fetch contractors</div>;
+  if (isError || !contractors)
+    return (
+      <div className="dashboard-container">
+        <Header
+          title="Something went wrong!"
+          subtitle="Error Fetching Contractors"
+        />
+      </div>
+    );
 
   return (
     <div className="w-full">

@@ -4,6 +4,7 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useGetContractorQuery } from "@/state/api";
 import Loading from "@/components/Loading";
+import Header from "@/components/Header";
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN as string;
 
@@ -44,7 +45,14 @@ const ContractorLocation = ({ contractorId }: ContractorDetailsProps) => {
 
   if (isLoading) return <Loading />;
   if (isError || !contractor) {
-    return <>Contractor not Found</>;
+    return (
+      <div className="dashboard-container">
+        <Header
+          title="Something went wrong!"
+          subtitle="Error Fetching Contractor"
+        />
+      </div>
+    );
   }
 
   return (

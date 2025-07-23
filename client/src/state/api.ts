@@ -1,9 +1,11 @@
 import { cleanParams, createNewUserInDatabase, withToast } from "@/lib/utils";
 import {
   Application,
+  Booking,
   Contractor,
   Customer,
   Manager,
+  Payment,
 } from "@/types/prismaTypes";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { fetchAuthSession, getCurrentUser } from "aws-amplify/auth";
@@ -208,6 +210,22 @@ export const api = createApi({
       },
     }),
 
+    getServiceRecords: build.query<Contractor[], string>({
+      query: (cognitoId) => `customers/${cognitoId}/service-records`,
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: "Contractors" as const, id })),
+              { type: "Contractors", id: "LIST" },
+            ]
+          : [{ type: "Contractors", id: "LIST" }],
+      async onQueryStarted(_, { queryFulfilled }) {
+        await withToast(queryFulfilled, {
+          error: "Failed to fetch service records.",
+        });
+      },
+    }),
+
     // Application
     createApplication: build.mutation<Application, Partial<Application>>({
       query: (body) => ({
@@ -220,6 +238,37 @@ export const api = createApi({
         await withToast(queryFulfilled, {
           success: "Application created successfully!",
           error: "Failed to create applications.",
+        });
+      },
+    }),
+
+    // Bookings
+    getBookings: build.query<Booking[], number>({
+      query: () => "bookings",
+      providesTags: ["Bookings"],
+      async onQueryStarted(_, { queryFulfilled }) {
+        await withToast(queryFulfilled, {
+          error: "Failed to fetch Bookings.",
+        });
+      },
+    }),
+
+    getContractorBookings: build.query<Booking[], number>({
+      query: (propertyId) => `properties/${propertyId}/bookings`,
+      providesTags: ["Bookings"],
+      async onQueryStarted(_, { queryFulfilled }) {
+        await withToast(queryFulfilled, {
+          error: "Failed to fetch contractor bookings.",
+        });
+      },
+    }),
+
+    getPayments: build.query<Payment[], number>({
+      query: (bookingId) => `bookings/${bookingId}/payments`,
+      providesTags: ["Payments"],
+      async onQueryStarted(_, { queryFulfilled }) {
+        await withToast(queryFulfilled, {
+          error: "Failed to fetch payment info.",
         });
       },
     }),
@@ -236,4 +285,8 @@ export const {
   useRemoveFavoriteContractorMutation,
   useGetContractorQuery,
   useCreateApplicationMutation,
+  useGetServiceRecordsQuery,
+  useGetBookingsQuery,
+  useGetContractorBookingsQuery,
+  useGetPaymentsQuery,
 } = api;

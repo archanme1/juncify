@@ -84,7 +84,7 @@ export const getServiceRecords = async (
 ): Promise<void> => {
   try {
     const { cognitoId } = req.params;
-    const properties = await prisma.contractor.findMany({
+    const contractors = await prisma.contractor.findMany({
       where: { customers: { some: { cognitoId } } },
       include: {
         location: true,
@@ -92,7 +92,7 @@ export const getServiceRecords = async (
     });
 
     const serviceRecordsWithFormattedLocation = await Promise.all(
-      properties.map(async (contractor) => {
+      contractors.map(async (contractor) => {
         const coordinates: { coordinates: string }[] =
           await prisma.$queryRaw`SELECT ST_asText(coordinates) as coordinates from "Location" where id = ${contractor.location.id}`;
 
@@ -116,7 +116,7 @@ export const getServiceRecords = async (
     res.status(200).json(serviceRecordsWithFormattedLocation);
   } catch (err: any) {
     res.status(500).json({
-      message: `Error retrieving manager contractors for service records: ${err.message}`,
+      message: `Error retrieving contractors for service records: ${err.message}`,
     });
   }
 };
