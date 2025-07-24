@@ -75,6 +75,23 @@ export const api = createApi({
       },
     }),
 
+    // Manager
+    getManagerContractors: build.query<Contractor[], string>({
+      query: (cognitoId) => `managers/${cognitoId}/contractors`,
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: "Contractors" as const, id })),
+              { type: "Contractors", id: "LIST" },
+            ]
+          : [{ type: "Contractors", id: "LIST" }],
+      async onQueryStarted(_, { queryFulfilled }) {
+        await withToast(queryFulfilled, {
+          error: "Failed to load manager contractors.",
+        });
+      },
+    }),
+
     updateManagerSettings: build.mutation<
       Manager,
       { cognitoId: string } & Partial<Manager>
@@ -254,7 +271,7 @@ export const api = createApi({
     }),
 
     getContractorBookings: build.query<Booking[], number>({
-      query: (propertyId) => `properties/${propertyId}/bookings`,
+      query: (contractorId) => `contractors/${contractorId}/bookings`,
       providesTags: ["Bookings"],
       async onQueryStarted(_, { queryFulfilled }) {
         await withToast(queryFulfilled, {
@@ -277,6 +294,7 @@ export const api = createApi({
 
 export const {
   useGetAuthUserQuery,
+  useGetManagerContractorsQuery,
   useUpdateManagerSettingsMutation,
   useGetContractorsQuery,
   useGetCustomerQuery,

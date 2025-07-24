@@ -265,7 +265,7 @@ const ServiceRecord = () => {
     <div className="dashboard-container">
       {/* Back to contractors page */}
       <Link
-        href="/tenants/residences"
+        href="/customers/servicerecords"
         className="flex items-center mb-4 hover:text-secondary-500"
         scroll={false}
       >
@@ -274,8 +274,8 @@ const ServiceRecord = () => {
       </Link>
 
       <Header
-        title={contractor?.name || "My Listing"}
-        subtitle="Manage this listing"
+        title={contractor?.name || "My Contractor"}
+        subtitle="Manage this contractor"
       />
       <div className="w-full mx-auto">
         <div className="md:flex gap-10">
