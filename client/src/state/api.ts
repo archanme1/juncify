@@ -76,6 +76,24 @@ export const api = createApi({
     }),
 
     // Manager
+    createContractor: build.mutation<Contractor, FormData>({
+      query: (newContractor) => ({
+        url: `contractors`,
+        method: "POST",
+        body: newContractor,
+      }),
+      invalidatesTags: (result) => [
+        { type: "Contractors", id: "LIST" },
+        { type: "Managers", id: result?.manager?.id },
+      ],
+      async onQueryStarted(_, { queryFulfilled }) {
+        await withToast(queryFulfilled, {
+          success: "Contractor created successfully!",
+          error: "Failed to create Contractor.",
+        });
+      },
+    }),
+
     getManagerContractors: build.query<Contractor[], string>({
       query: (cognitoId) => `managers/${cognitoId}/contractors`,
       providesTags: (result) =>
@@ -294,6 +312,7 @@ export const api = createApi({
 
 export const {
   useGetAuthUserQuery,
+  useCreateContractorMutation,
   useGetManagerContractorsQuery,
   useUpdateManagerSettingsMutation,
   useGetContractorsQuery,
