@@ -26,9 +26,9 @@ const NewContractor = () => {
     defaultValues: {
       name: "",
       description: "",
-      hourlyRate: 1000,
+      hourlyRate: 100,
       advancePayment: 500,
-      installationFee: 100,
+      installationFee: 1000,
       isEmergencyAvailable: true,
       offersOnSiteParking: true,
       photoUrls: [],

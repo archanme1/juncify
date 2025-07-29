@@ -31,7 +31,7 @@ app.get("/", (req, res) => {
 // DOES NOT REQUIRE AUTH INITALLY
 app.use("/api/applications", applicationRoutes);
 app.use("/api/contractors", contractorRoutes);
-app.use("/api/booking", bookingRoutes);
+app.use("/api/bookings", bookingRoutes);
 
 // REQUIRED AUTH INITALLY
 app.use("/api/customers", authMiddleware(["customer"]), customerRoutes);

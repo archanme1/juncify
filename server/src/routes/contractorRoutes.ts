@@ -4,6 +4,7 @@ import { authMiddleware } from "../middleware/authMiddleware";
 import {
   createContractor,
   getContractor,
+  getContractorBookings,
   getContractors,
 } from "../controllers/contractorControllers";
 
@@ -14,6 +15,7 @@ const router = express.Router();
 
 router.get("/", getContractors);
 router.get("/:id", getContractor);
+router.get("/:id/bookings", getContractorBookings);
 router.post(
   "/",
   authMiddleware(["manager"]),

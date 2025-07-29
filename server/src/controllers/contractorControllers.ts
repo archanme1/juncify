@@ -275,7 +275,7 @@ export const createContractor = async (
       RETURNING id, address, city, state, country, "postalCode", ST_AsText(coordinates) as coordinates;
     `;
 
-    // create property
+    // create contractor
     const newContractor = await prisma.contractor.create({
       data: {
         ...contractorData,
@@ -310,5 +310,38 @@ export const createContractor = async (
     res
       .status(500)
       .json({ message: `Error creating contractor: ${err.message}` });
+  }
+};
+
+export const getContractorBookings = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+
+    const contractorLeases = await prisma.contractor.findUnique({
+      where: {
+        id: Number(id),
+      },
+      include: {
+        bookings: {
+          include: {
+            customer: true,
+          },
+        },
+      },
+    });
+
+    if (!contractorLeases) {
+      res.status(404).json({ message: "Contractor not found" });
+      return;
+    }
+
+    res.status(200).json(contractorLeases.bookings);
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: `Error fetching contractor leases: ${error.message}` });
   }
 };

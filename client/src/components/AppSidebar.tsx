@@ -13,8 +13,8 @@ import {
   Building,
   FileText,
   Heart,
-  Home,
   Menu,
+  Pen,
   Search,
   Settings,
   Signpost,
@@ -58,8 +58,8 @@ const AppSidebar = ({ userType }: AppSidebarProps) => {
             href: "/customers/applications",
           },
           {
-            icon: Home,
-            label: "Service Records",
+            icon: Pen,
+            label: "Records",
             href: "/customers/servicerecords",
           },
           {
