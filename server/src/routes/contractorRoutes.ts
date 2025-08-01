@@ -6,6 +6,7 @@ import {
   getContractor,
   getContractorBookings,
   getContractors,
+  removeManagedContractor,
 } from "../controllers/contractorControllers";
 
 const storage = multer.memoryStorage();
@@ -16,11 +17,17 @@ const router = express.Router();
 router.get("/", getContractors);
 router.get("/:id", getContractor);
 router.get("/:id/bookings", getContractorBookings);
+
 router.post(
   "/",
   authMiddleware(["manager"]),
   upload.array("photos"),
   createContractor
+);
+router.delete(
+  "/:contractorId/managers/:cognitoId",
+  authMiddleware(["manager"]),
+  removeManagedContractor
 );
 
 export default router;

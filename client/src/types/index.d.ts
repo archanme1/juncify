@@ -111,7 +111,9 @@ declare global {
   interface CardProps {
     contractor: Contractor;
     isFavorite: boolean;
+    isManager?: boolean;
     onFavoriteToggle: () => void;
+    onHandleDelete?: () => void;
     showFavoriteButton?: boolean;
     contractorLink?: string;
   }

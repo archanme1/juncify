@@ -19,7 +19,7 @@ const NewContractor = () => {
   const [createContractor] = useCreateContractorMutation();
   const { data: authUser } = useGetAuthUserQuery();
 
-  console.log("auth user: ", authUser);
+  // console.log("auth user: ", authUser);
 
   const form = useForm<ContractorFormData>({
     resolver: zodResolver(contractorSchema),
@@ -68,6 +68,8 @@ const NewContractor = () => {
 
     await createContractor(formData);
   };
+
+
   return (
     <div className="dashboard-container">
       <Header

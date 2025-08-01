@@ -345,3 +345,45 @@ export const getContractorBookings = async (
       .json({ message: `Error fetching contractor leases: ${error.message}` });
   }
 };
+
+export const removeManagedContractor = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { contractorId, cognitoId } = req.params;
+
+    const manager = await prisma.manager.findUnique({
+      where: { cognitoId },
+      include: { managedContractors: true },
+    });
+
+    if (!manager) {
+      res.status(404).json({ message: "Manager not found" });
+      return;
+    }
+
+    const contractorIdNumber = Number(contractorId);
+
+    const isContractorManaged = manager.managedContractors.some(
+      (contractor) => contractor.id === contractorIdNumber
+    );
+
+    if (!isContractorManaged) {
+      res.status(403).json({
+        message: "Contractor does not belong to this manager",
+      });
+      return;
+    }
+
+    const deletedContractor = await prisma.contractor.delete({
+      where: { id: contractorIdNumber },
+    });
+
+    res.status(200).json(deletedContractor);
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: `Error deleting contractor: ${error.message}` });
+  }
+};

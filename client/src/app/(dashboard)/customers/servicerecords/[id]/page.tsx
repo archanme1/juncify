@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -180,8 +182,8 @@ const ServiceRecordCard = ({
             </div>
           </div>
           <div className="text-xl font-bold">
-            ${currentBooking.rent}{" "}
-            <span className="text-gray-500 text-sm font-normal">/ night</span>
+            ${currentBooking.totalFee}{" "}
+            <span className="text-gray-500 text-sm font-normal">/ install</span>
           </div>
         </div>
       </div>
@@ -218,7 +220,7 @@ const ServiceRecordCard = ({
           <User className="w-5 h-5 mr-2" />
           Manager
         </button>
-        <button className=" cursor-not-allowed bg-secondary-700 border border-gray-300 text-primary-50 py-2 px-4 rounded-md flex items-center justify-center hover:bg-primary-00 hover:text-primary-50 ">
+        <button className=" cursor-not-allowed bg-secondary-500 border border-gray-300 text-primary-50 py-2 px-4 rounded-md flex items-center justify-center hover:bg-primary-00 hover:text-primary-50 ">
           <Download className="w-5 h-5 mr-2" />
           Download Invoice (N/A)
         </button>
@@ -285,9 +287,9 @@ const ServiceRecord = () => {
               currentBooking={currentBooking}
             />
           )}
-          <PaymentMethod />
+          {/* <PaymentMethod /> */}
         </div>
-        <BillingHistory payments={payments || []} />
+        {/* <BillingHistory payments={payments || []} /> */}
       </div>
     </div>
   );

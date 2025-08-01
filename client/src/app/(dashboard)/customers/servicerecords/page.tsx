@@ -52,7 +52,7 @@ const Residences = () => {
             isFavorite={customer?.favorites.includes(serviceRecord.id) || false}
             onFavoriteToggle={() => {}}
             showFavoriteButton={false}
-            contractorLink={`/customers/serviceRecords/${serviceRecord.id}`}
+            contractorLink={`/customers/servicerecords/${serviceRecord.id}`}
           />
         ))}
       </div>

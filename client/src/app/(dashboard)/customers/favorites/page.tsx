@@ -11,7 +11,7 @@ import Header from "@/components/Header";
 
 const Favorites = () => {
   const { data: authUser } = useGetAuthUserQuery();
-  const { data: tenant } = useGetCustomerQuery(
+  const { data: contractor } = useGetCustomerQuery(
     authUser?.cognitoInfo?.userId || "",
     {
       skip: !authUser?.cognitoInfo?.userId,
@@ -23,8 +23,10 @@ const Favorites = () => {
     isLoading,
     error,
   } = useGetContractorsQuery(
-    { favoriteIds: tenant?.favorites?.map((fav: { id: number }) => fav.id) },
-    { skip: !tenant?.favorites || tenant?.favorites.length === 0 }
+    {
+      favoriteIds: contractor?.favorites?.map((fav: { id: number }) => fav.id),
+    },
+    { skip: !contractor?.favorites || contractor?.favorites.length === 0 }
   );
 
   if (isLoading) return <Loading />;

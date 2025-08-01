@@ -176,6 +176,26 @@ export const api = createApi({
       },
     }),
 
+    deleteManagedContractor: build.mutation<
+      Contractor,
+      { cognitoId: string; contractorId: number }
+    >({
+      query: ({ contractorId, cognitoId }) => ({
+        url: `/contractors/${contractorId}/managers/${cognitoId}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result) => [
+        { type: "Managers", id: result?.id },
+        { type: "Contractors", id: "LIST" },
+      ],
+      async onQueryStarted(_, { queryFulfilled }) {
+        await withToast(queryFulfilled, {
+          success: "Contractor has been removed!!",
+          error: "Failed to remove contractor",
+        });
+      },
+    }),
+
     // customer related endpoints
     getCustomer: build.query<Customer, string>({
       query: (cognitoId) => `customers/${cognitoId}`,
@@ -197,6 +217,7 @@ export const api = createApi({
         body: updatedCustomer,
       }),
       invalidatesTags: (result) => [{ type: "Customers", id: result?.id }],
+
       async onQueryStarted(_, { queryFulfilled }) {
         await withToast(queryFulfilled, {
           success: "Settings updated successfully!",
@@ -370,4 +391,5 @@ export const {
   useCreateApplicationMutation,
   useGetApplicationsQuery,
   useUpdateApplicationStatusMutation,
+  useDeleteManagedContractorMutation
 } = api;

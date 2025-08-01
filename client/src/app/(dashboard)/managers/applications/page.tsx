@@ -48,7 +48,7 @@ const Applications = () => {
     <div className="dashboard-container">
       <Header
         title="Applications"
-        subtitle="View and manage applications for your properties"
+        subtitle="View and manage applications for your contractors"
       />
       <Tabs
         value={activeTab}
@@ -117,13 +117,13 @@ const Applications = () => {
                     {/* Right Buttons */}
                     <div className="flex gap-2">
                       <Link
-                        href={`/managers/properties/${application.property.id}`}
+                        href={`/managers/contractors/${application.contractor.id}`}
                         className={`bg-white border border-gray-300 text-gray-700 py-2 px-4 
                           rounded-md flex items-center justify-center hover:bg-primary-700 hover:text-primary-50`}
                         scroll={false}
                       >
                         <Hospital className="w-5 h-5 mr-2" />
-                        Property Details
+                        Contractor Details
                       </Link>
                       {application.status === "Approved" && (
                         <button

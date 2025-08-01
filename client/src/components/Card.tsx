@@ -1,5 +1,5 @@
 "use client";
-import { Clock, Heart, LandPlot, Star, Users } from "lucide-react";
+import { Clock, Heart, LandPlot, Star, Trash, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -7,7 +7,9 @@ import React, { useState } from "react";
 const Card = ({
   contractor,
   isFavorite,
+  isManager,
   onFavoriteToggle,
+  onHandleDelete,
   showFavoriteButton = true,
   contractorLink,
 }: CardProps) => {
@@ -50,6 +52,14 @@ const Card = ({
                 isFavorite ? "text-red-500 fill-red-500" : "text-gray-600"
               } `}
             />
+          </button>
+        )}
+        {isManager && (
+          <button
+            className="absolute top-4 right-4 bg-white hover:bg-white/90 rounded-full p-2 cursor-pointer"
+            onClick={onHandleDelete}
+          >
+            <Trash className={`w-5 h-5 ${"text-red-500 fill-red-500"} `} />
           </button>
         )}
       </div>

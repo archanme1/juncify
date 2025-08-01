@@ -38,8 +38,10 @@ const Applications = () => {
               {application.status === "Approved" ? (
                 <div className="bg-green-100 p-4 text-green-700 grow flex items-center">
                   <CircleCheckBig className="w-5 h-5 mr-2" />
-                  The property is being rented by you until{" "}
-                  {new Date(application.booking?.endDate).toLocaleDateString()}
+                  The contractor is being booked by you on{" "}
+                  {new Date(
+                    application.booking?.startDate
+                  ).toLocaleDateString()}
                 </div>
               ) : application.status === "Pending" ? (
                 <div className="bg-yellow-100 p-4 text-yellow-700 grow flex items-center">
@@ -54,11 +56,11 @@ const Applications = () => {
               )}
 
               <button
-                className={`bg-white border border-gray-300 text-gray-700 py-2 px-4
-                          rounded-md flex items-center justify-center hover:bg-primary-700 hover:text-primary-50`}
+                className={`cursor-not-allowed bg-secondary-500  py-2 px-4 text-primary-50
+                          rounded-md flex items-center justify-cente `}
               >
-                <Download className="w-5 h-5 mr-2" />
-                Download Agreement
+                <Download className="w-5 h-5 mr-2 " />
+                Download Agreement (N/A)
               </button>
             </div>
           </ApplicationCard>

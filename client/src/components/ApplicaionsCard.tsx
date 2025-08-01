@@ -8,7 +8,7 @@ const ApplicationCard = ({
   children,
 }: ApplicationCardProps) => {
   const [imgSrc, setImgSrc] = useState(
-    application.contractor.photoUrls?.[0] || "/placeholder.jpg"
+    application.contractor.photoUrls?.[0] || "/landing-splash.jpg"
   );
 
   const statusColor =
@@ -33,7 +33,7 @@ const ApplicationCard = ({
             height={150}
             className="rounded-xl object-cover w-full lg:w-[200px] h-[150px]"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            onError={() => setImgSrc("/placeholder.jpg")}
+            onError={() => setImgSrc("/landing-splash.jpg")}
           />
           <div className="flex flex-col justify-between">
             <div>
@@ -46,8 +46,8 @@ const ApplicationCard = ({
               </div>
             </div>
             <div className="text-xl font-semibold">
-              ${application.contractor.pricePerMonth}{" "}
-              <span className="text-sm font-normal">/ month</span>
+              ${application.contractor.installationFee}{" "}
+              <span className="text-sm font-normal">/ install</span>
             </div>
           </div>
         </div>
@@ -98,7 +98,7 @@ const ApplicationCard = ({
           <div className="flex gap-4">
             <div>
               <Image
-                src="/landing-i1.png"
+                src="/landing-splash.jpg"
                 alt={contactPerson.name}
                 width={40}
                 height={40}
