@@ -8,11 +8,11 @@ import {
   useGetManagerContractorsQuery,
 } from "@/state/api";
 import Card from "@/components/Card";
-import DeleteApplicationModal from "./DeleteApplicationModal";
+// import DeleteApplicationModal from "./DeleteApplicationModal";
 
 const ContractorsPage = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedContractorId, setSelectedContractorId] = useState<number | null>(null);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [selectedContractorId, setSelectedContractorId] = useState<number | null>(null);
 
   const { data: authUser } = useGetAuthUserQuery();
   const {
@@ -68,8 +68,7 @@ const ContractorsPage = () => {
         <p>You don’t manage any contractors</p>
       )}
 
-      {/* Render a single global modal */}
-      {selectedContractorId !== null && (
+      {/* {selectedContractorId !== null && (
         <DeleteApplicationModal
           isOpen={isModalOpen}
           onClose={() => {
@@ -78,7 +77,7 @@ const ContractorsPage = () => {
           }}
           contractorId={selectedContractorId}
         />
-      )}
+      )} */}
     </div>
   );
 };

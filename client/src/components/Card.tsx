@@ -54,14 +54,14 @@ const Card = ({
             />
           </button>
         )}
-        {isManager && (
+        {/* {isManager && (
           <button
             className="absolute top-4 right-4 bg-white hover:bg-white/90 rounded-full p-2 cursor-pointer"
             onClick={onHandleDelete}
           >
             <Trash className={`w-5 h-5 ${"text-red-500 fill-red-500"} `} />
           </button>
-        )}
+        )} */}
       </div>
       <div className="p-4">
         <h2 className="text-xl font-bold mb-1">

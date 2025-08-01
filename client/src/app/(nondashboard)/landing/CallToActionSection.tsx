@@ -5,18 +5,30 @@ import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useGetAuthUserQuery } from "@/state/api";
 
-const CallToActionSection = ({ manager }: { manager: boolean }) => {
+const CallToActionSection = () => {
   const router = useRouter();
+  const { data: authUser } = useGetAuthUserQuery();
+  const isManager = authUser?.userRole?.toLowerCase() === "manager";
+
+  const title = isManager
+    ? "Let Juncify Do the Hiring"
+    : "Browse Trusted Professionals.";
+
+  const subtitle = isManager
+    ? "Post jobs, manage applicants, and get your work done efficiently with professionals ready to go."
+    : "Search, compare, and connect with verified contractors—on your terms, at your price.";
+
   return (
     <div className="relative py-24">
       <Image
         src="/landing-splash.jpg"
         alt="Juncify Search Section Background"
         fill
-        className={manager ? "object-cover" : "object-cover object-top"}
+        className={!isManager ? "object-cover" : "object-cover object-top"}
       />
-      {/* <div className="absolute inset-0 bg-primary-700 bg-opacity-60"></div> */}
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         transition={{ duration: 0.5 }}
@@ -24,26 +36,29 @@ const CallToActionSection = ({ manager }: { manager: boolean }) => {
         viewport={{ once: true }}
         className="relative max-w-4xl xl:max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 xl:px-16 py-12"
       >
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          <div>
-            <p className="text-black mb-3 font-bold uppercase">
-              {manager ? "" : "Need a service? Browse trusted professionals."}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="text-center md:text-left">
+            <h2 className="text-primary-900 mb-3 font-extrabold text-xl md:text-2xl">
+              {title}
+            </h2>
+            <p className="text-primary-600 mb-6 max-w-lg text-sm md:text-base">
+              {subtitle}
             </p>
+
             <div className="flex justify-center md:justify-start gap-4">
-              {!manager ? (
+              {!isManager ? (
                 <button
                   onClick={() => router.push("/search")}
                   className="cursor-pointer inline-block text-primary-700 bg-white rounded-lg px-6 py-3 font-semibold hover:bg-primary-700 hover:text-primary-50"
                 >
-                  Search
+                  Search Services
                 </button>
               ) : (
                 <Link
-                  href="/signup/manager"
-                  className="cursor-pointer inline-block text-primary-700 bg-white  rounded-lg px-6 py-3 font-semibold hover:bg-primary-700 hover:text-primary-50"
-                  scroll={false}
+                  href="/managers/newcontractor"
+                  className="cursor-pointer inline-block text-primary-700 bg-white rounded-lg px-6 py-3 font-semibold hover:bg-primary-700 hover:text-primary-50"
                 >
-                  Become a Manager
+                  Post a Job
                 </Link>
               )}
             </div>

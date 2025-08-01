@@ -4,16 +4,19 @@ import FeaturesSection from "./FeaturesSection";
 import DiscoverSection from "./DiscoverSection";
 import CallToActionSection from "./CallToActionSection";
 import FooterSection from "./FooterSection";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import Image from "next/image";
 
 const LandingPage = () => {
   return (
     <div>
       <HeroSection />
-      <DiscoverSection />
-      {/* <FeaturesSection manager={false} /> */}
-      <CallToActionSection manager={false} />
-      <FeaturesSection manager={true} />
-      <CallToActionSection manager={true} />
+      {<DiscoverSection />}
+      {/* <FeaturesSection  /> */}
+      <CallToActionSection />
+      <FeaturesSection />
+      {/* <CallToActionSection  /> */}
       <FooterSection />
     </div>
   );
