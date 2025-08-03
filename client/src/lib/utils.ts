@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { toast } from "sonner";
+import axios from "axios";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -94,3 +95,54 @@ export const createNewUserInDatabase = async (
 
   return createUserResponse;
 };
+
+export interface ReverseGeocodeData {
+  address?: string;
+  city?: string;
+  country?: string;
+  region?: string;
+  postalCode?: string;
+}
+
+export async function reverseGeocode(
+  lat: number,
+  lon: number
+): Promise<ReverseGeocodeData | null> {
+  const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lon},${lat}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}`;
+
+  try {
+    const response = await axios.get<{
+      features: {
+        place_type: string[];
+        text: string;
+        context?: { id: string; text: string }[];
+      }[];
+    }>(url);
+
+    const features = response.data.features;
+
+    let city = "";
+    let country = "";
+    let region = "";
+    let postalCode = "";
+    let address = "";
+
+    for (const feature of features) {
+      // console.log("feature", feature);
+
+      if (feature.place_type.includes("place")) city = feature.text;
+      if (feature.place_type.includes("address")) address = feature.text;
+
+      feature.context?.forEach((ctx) => {
+        if (ctx.id.startsWith("country")) country = ctx.text;
+        if (ctx.id.startsWith("region")) region = ctx.text;
+        if (ctx.id.startsWith("postcode")) postalCode = ctx.text;
+      });
+    }
+
+    return { address, city, country, region, postalCode };
+  } catch (error) {
+    console.error("Reverse geocoding failed:", error);
+    return null;
+  }
+}

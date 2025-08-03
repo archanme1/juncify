@@ -10,13 +10,17 @@ import { cleanParams } from "@/lib/utils";
 import { setFilters } from "@/state";
 import Map from "./Map";
 import Listings from "./Listings";
+import { useGeoLocation } from "@/hooks/useGeoLocation";
 
 const SearchPage = () => {
+  useGeoLocation();
   const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
   const isFiltersFullOpen = useAppSelector(
     (state) => state.global.isFiltersFullOpen
   );
+  // console.log("ksald", location);
+  // console.log("filters", filters);
 
   useEffect(() => {
     const initialFilters = Array.from(searchParams.entries()).reduce(
@@ -37,6 +41,7 @@ const SearchPage = () => {
     const cleanedFilters = cleanParams(initialFilters);
     dispatch(setFilters(cleanedFilters));
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <div
       className="w-full mx-auto flex flex-col"

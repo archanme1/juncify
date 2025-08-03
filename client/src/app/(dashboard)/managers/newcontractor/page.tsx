@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CustomFormField } from "@/components/FormField";
@@ -14,10 +14,20 @@ import {
   HighlightEnum,
   ContractorTypeEnum,
 } from "@/lib/constants";
+import { useGeoLocation } from "@/hooks/useGeoLocation";
+
+// FOR GOOGLE DEVELOPER API WAY
+// interface FormValues {
+//   address: string;
+//   city: string;
+//   state: string;
+//   postalCode: string;
+// }
 
 const NewContractor = () => {
   const [createContractor] = useCreateContractorMutation();
   const { data: authUser } = useGetAuthUserQuery();
+  const { location } = useGeoLocation();
 
   // console.log("auth user: ", authUser);
 
@@ -45,6 +55,36 @@ const NewContractor = () => {
     },
   });
 
+  const { reset } = form;
+  useEffect(() => {
+    if (location?.city && location?.country) {
+      reset((prev) => ({
+        ...prev,
+        address: location.address ?? "",
+        city: location.city ?? "",
+        state: location.region ?? "",
+        country: location.country ?? "",
+        postalCode: location.postalCode ?? "",
+      }));
+    }
+  }, [location, reset]);
+
+  // FOR GOOGLE DEVELOPER API WAY
+  // const handleLocationSelect = (details: {
+  //   address: string;
+  //   city: string;
+  //   state: string;
+  //   postalCode: string;
+  //   country: string;
+  //   fullAddress: string;
+  // }) => {
+  //   form.setValue("address", details.address, { shouldValidate: true });
+  //   form.setValue("city", details.city, { shouldValidate: true });
+  //   form.setValue("state", details.state, { shouldValidate: true });
+  //   form.setValue("postalCode", details.postalCode, { shouldValidate: true });
+  //   form.setValue("country", details.country, { shouldValidate: true });
+  // };
+
   const onSubmit = async (data: ContractorFormData) => {
     if (!authUser?.cognitoInfo?.userId) {
       throw new Error("No manager ID found");
@@ -68,7 +108,6 @@ const NewContractor = () => {
 
     await createContractor(formData);
   };
-
 
   return (
     <div className="dashboard-container">
@@ -215,9 +254,20 @@ const NewContractor = () => {
               <h2 className="text-lg font-semibold mb-4">
                 Additional Information
               </h2>
+              {/* <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Address
+                </label>
+                <LocationAutocomplete onSelect={handleLocationSelect} />
+              </div> */}
               <CustomFormField name="address" label="Address" />
+
               <div className="flex justify-between gap-4">
-                <CustomFormField name="city" label="City" className="w-full" />
+                <CustomFormField
+                  name="city"
+                  label="City"
+                  className="w-full           "
+                />
                 <CustomFormField
                   name="state"
                   label="State"

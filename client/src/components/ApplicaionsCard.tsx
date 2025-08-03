@@ -11,6 +11,8 @@ const ApplicationCard = ({
     application.contractor.photoUrls?.[0] || "/landing-splash.jpg"
   );
 
+  // console.log(application);
+
   const statusColor =
     application.status === "Approved"
       ? "bg-green-500"
@@ -109,7 +111,9 @@ const ApplicationCard = ({
               <div className="font-semibold">{contactPerson.name}</div>
               <div className="text-sm flex items-center text-primary-600">
                 <PhoneCall className="w-5 h-5 mr-2" />
-                {contactPerson.phoneNumber}
+                {userType === "manager"
+                  ? application.phoneNumber
+                  : contactPerson.phoneNumber}
               </div>
               <div className="text-sm flex items-center text-primary-600">
                 <Mail className="w-5 h-5 mr-2" />

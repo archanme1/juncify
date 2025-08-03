@@ -7,10 +7,12 @@ import { Provider } from "react-redux";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import globalReducer from "@/state";
 import { api } from "@/state/api";
+import locationReducer from "@/state/locationSlice";
 
 /* REDUX STORE */
 const rootReducer = combineReducers({
-  global: globalReducer,
+  global: globalReducer,  
+  location: locationReducer,
   [api.reducerPath]: api.reducer,
 });
 

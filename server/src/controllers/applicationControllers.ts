@@ -26,6 +26,9 @@ export const listApplications = async (
 
     const applications = await prisma.application.findMany({
       where: whereClause,
+      orderBy: {
+        applicationDate: "desc",
+      },
       include: {
         contractor: {
           include: {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { debounce } from "lodash";
 import { useDispatch } from "react-redux";
 import { usePathname, useRouter } from "next/navigation";
@@ -39,6 +39,10 @@ const FiltersBar = () => {
   );
   const viewMode = useAppSelector((state) => state.global.viewMode);
   const [searchQuery, setSearchQuery] = useState(filters.location || "");
+
+  useEffect(() => {
+    setSearchQuery(filters.location || "");
+  }, [filters.location]);
 
   const updateURL = debounce((newFilters: FiltersState) => {
     const cleanFilters = cleanParams(newFilters);

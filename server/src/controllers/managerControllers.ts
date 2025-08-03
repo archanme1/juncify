@@ -83,6 +83,9 @@ export const getManagerContractors = async (
     const { cognitoId } = req.params;
     const contractors = await prisma.contractor.findMany({
       where: { managerCognitoId: cognitoId },
+      orderBy: {
+        postedDate: "desc",
+      },
       include: {
         location: true,
       },

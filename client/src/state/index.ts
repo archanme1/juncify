@@ -20,7 +20,7 @@ interface InitialStateTypes {
 
 export const initialState: InitialStateTypes = {
   filters: {
-    location: "Los Angeles",
+    location: "Toronto",
     teamSize: "any",
     serviceAreaCoverage: "any",
     contractorType: "any",

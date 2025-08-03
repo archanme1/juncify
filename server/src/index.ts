@@ -11,6 +11,7 @@ import managerRoutes from "./routes/managerRoutes";
 import contractorRoutes from "./routes/contractorRoutes";
 import bookingRoutes from "./routes/bookingRoutes";
 import applicationRoutes from "./routes/applicationRoutes";
+import placeRoutes from "./routes/placeRoutes";
 
 /* CONFIGURATIONS */
 dotenv.config();
@@ -36,6 +37,8 @@ app.use("/api/bookings", bookingRoutes);
 // REQUIRED AUTH INITALLY
 app.use("/api/customers", authMiddleware(["customer"]), customerRoutes);
 app.use("/api/managers", authMiddleware(["manager"]), managerRoutes);
+// FOR GOOGLE DEVELOPER API 
+// app.use("/api/places", placeRoutes);
 
 /* LISTENING TO SERVER */
 const port = Number(process.env.PORT) || 3002;
