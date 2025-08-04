@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Header from "@/components/Header";
 import Loading from "@/components/Loading";
 import {
@@ -26,11 +26,11 @@ const ContractorsPage = () => {
   const userType = authUser?.userRole.toLowerCase() ?? "";
   const isManager = userType === "manager";
 
-  const handleDeleteClick = (contractorId: number) => {
-    if (!authUser) return;
-    setSelectedContractorId(contractorId);
-    setIsModalOpen(true);
-  };
+  // const handleDeleteClick = (contractorId: number) => {
+  //   if (!authUser) return;
+  //   setSelectedContractorId(contractorId);
+  //   setIsModalOpen(true);
+  // };
 
   if (isLoading) return <Loading />;
   if (error)
@@ -57,7 +57,7 @@ const ContractorsPage = () => {
             contractor={contractor}
             isFavorite={false}
             onFavoriteToggle={() => {}}
-            onHandleDelete={() => handleDeleteClick(contractor.id)}
+            // onHandleDelete={() => handleDeleteClick(contractor.id)}
             showFavoriteButton={false}
             contractorLink={`/managers/contractors/${contractor.id}`}
           />

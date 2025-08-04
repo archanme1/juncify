@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import Loading from "@/components/Loading";
 import { useGetContractorQuery } from "@/state/api";
-import { MapPin, Star } from "lucide-react";
+import { MapPin } from "lucide-react";
 import React from "react";
 
 const ContractorOverview = ({ contractorId }: ContractorOverviewProps) => {
@@ -42,9 +42,9 @@ const ContractorOverview = ({ contractorId }: ContractorOverviewProps) => {
           </span>
           <div className="flex justify-between items-center gap-3">
             <span className="flex items-center text-yellow-500">
-              <Star className="w-4 h-4 mr-1 fill-current" />
-              {contractor.averageRating.toFixed(1)} (
-              {contractor.numberOfReviews} Visitors)
+              {/* <Star className="w-4 h-4 mr-1 fill-current" /> */}
+              {/* {contractor.averageRating.toFixed(1)} */}(
+              {contractor.numberOfReviews} Views)
             </span>
             <span className="text-green-600">Verified Listing</span>
           </div>
@@ -67,7 +67,9 @@ const ContractorOverview = ({ contractorId }: ContractorOverviewProps) => {
           </div>
           <div className="border-l border-gray-300 h-10"></div>
           <div>
-            <div className="text-sm text-gray-500">Service Area Coverage</div>
+            <div className="text-sm text-gray-500">
+              Service Area Coverage (*1000km)
+            </div>
             <div className="font-semibold">
               {contractor.serviceAreaCoverage}km
             </div>

@@ -176,13 +176,19 @@ export const getContractor = async (
 ): Promise<void> => {
   try {
     const { id } = req.params;
-    const contractor = await prisma.contractor.findUnique({
+
+    // 1. findUnique or update does not really matters with prisma for view mutation
+    const contractor = await prisma.contractor.update({
       where: { id: Number(id) },
+      data: {
+        numberOfReviews: {
+          increment: 1,
+        },
+      },
       include: {
         location: true,
       },
     });
-
     if (contractor) {
       const coordinates: { coordinates: string }[] =
         await prisma.$queryRaw`SELECT ST_asText(coordinates) as coordinates from "Location" where id = ${contractor.location.id}`;

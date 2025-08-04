@@ -47,6 +47,15 @@ const ApplicationCard = ({
                 <span>{`${application.contractor.location.city}, ${application.contractor.location.country}`}</span>
               </div>
             </div>
+            <div className="flex items-center mb-2">
+              {/* <Star className="w-4 h-4 text-yellow-400 mr-1" />
+            <span className="font-semibold">
+              {contractor.averageRating.toFixed(1)}
+            </span> */}
+              <span className="text-gray-600 ml-1">
+                {application.contractor.numberOfReviews} Views
+              </span>
+            </div>
             <div className="text-xl font-semibold">
               ${application.contractor.installationFee}{" "}
               <span className="text-sm font-normal">/ install</span>
@@ -71,19 +80,24 @@ const ApplicationCard = ({
             <hr className="mt-3" />
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-500">Start Date:</span>{" "}
+            <span className="text-gray-500">Application Date:</span>{" "}
             {new Date(application.booking?.startDate).toLocaleDateString()}
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-500">End Date:</span>{" "}
+            <span className="text-gray-500">
+              {" "}
+              {application.status === "Approved"
+                ? "Expected Completion:"
+                : "Updated On:"}
+            </span>{" "}
             {new Date(application.booking?.endDate).toLocaleDateString()}
           </div>
-          <div className="flex justify-between">
+          {/* <div className="flex justify-between">
             <span className="text-gray-500">Next Payment:</span>{" "}
             {new Date(
               application.booking?.nextPaymentDate
             ).toLocaleDateString()}
-          </div>
+          </div> */}
         </div>
 
         {/* Divider - visible only on desktop */}

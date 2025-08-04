@@ -54,14 +54,12 @@ const Applications = () => {
                   Your application has been denied
                 </div>
               )}
-
-              <button
-                className={`cursor-not-allowed bg-primary-700  py-2 px-4 text-primary-50
-                          rounded-md flex items-center justify-cente `}
-              >
-                <Download className="w-5 h-5 mr-2 " />
-                Download Agreement (N/A)
-              </button>
+              {application.status === "Approved" && (
+                <button className="cursor-not-allowed bg-secondary-300 py-2 px-4 text-primary-50 rounded-md flex items-center justify-center">
+                  <Download className="w-5 h-5 mr-2" />
+                  Agreement (N/A)
+                </button>
+              )}
             </div>
           </ApplicationCard>
         ))}

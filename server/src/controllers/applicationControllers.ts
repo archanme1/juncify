@@ -196,9 +196,7 @@ export const updateApplicationStatus = async (
       const newBooking = await prisma.booking.create({
         data: {
           startDate: new Date(),
-          endDate: new Date(
-            new Date().setFullYear(new Date().getFullYear() + 1)
-          ),
+          endDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
           totalFee: application.contractor.installationFee,
           advanceFee: application.contractor.advancePayment,
           contractorId: application.contractorId,
@@ -216,7 +214,7 @@ export const updateApplicationStatus = async (
         },
       });
 
-      // Update the application with the new lease ID
+      // Update the application with the new booking ID
       await prisma.application.update({
         where: { id: Number(id) },
         data: { status, bookingId: newBooking.id },
@@ -228,10 +226,20 @@ export const updateApplicationStatus = async (
       });
     } else {
       // Update the application status (for both "Denied" and other statuses)
-      await prisma.application.update({
+      const updatedApp = await prisma.application.update({
         where: { id: Number(id) },
         data: { status },
       });
+
+      // If application already has a booking, update its endDate to today
+      if (updatedApp.bookingId) {
+        await prisma.booking.update({
+          where: { id: updatedApp.bookingId },
+          data: {
+            endDate: new Date(),
+          },
+        });
+      }
     }
 
     // Respond with the updated application details

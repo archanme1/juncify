@@ -83,8 +83,8 @@ const createContractorMarker = (contractor: Contractor, map: mapboxgl.Map) => {
           <div>
             <a href="/search/${contractor.id}" target="_blank" class="marker-popup-title">${contractor.name}</a>
             <p class="marker-popup-price">
-              $${contractor.hourlyRate}
-              <span class="marker-popup-price-unit"> / hr</span>
+              $${contractor.installationFee}
+              <span class="marker-popup-price-unit"> / install</span>
             </p>
           </div>
         </div>

@@ -27,7 +27,7 @@ const ContractorDetails = ({ contractorId }: ContractorOverviewProps) => {
   }
 
   return (
-    <div className="mb-6">
+    <div className=" mb-6">
       {/* Amenities */}
       <div>
         <h2 className="text-xl font-semibold my-3">Contractor Amenities</h2>

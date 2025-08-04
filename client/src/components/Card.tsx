@@ -1,5 +1,5 @@
 "use client";
-import { Clock, Heart, LandPlot, Star, Trash, Users } from "lucide-react";
+import { Clock, Heart, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -7,9 +7,7 @@ import React, { useState } from "react";
 const Card = ({
   contractor,
   isFavorite,
-  isManager,
   onFavoriteToggle,
-  onHandleDelete,
   showFavoriteButton = true,
   contractorLink,
 }: CardProps) => {
@@ -82,12 +80,12 @@ const Card = ({
         </p>
         <div className="flex justify-between items-center">
           <div className="flex items-center mb-2">
-            <Star className="w-4 h-4 text-yellow-400 mr-1" />
+            {/* <Star className="w-4 h-4 text-yellow-400 mr-1" />
             <span className="font-semibold">
               {contractor.averageRating.toFixed(1)}
-            </span>
+            </span> */}
             <span className="text-gray-600 ml-1">
-              ({contractor.numberOfReviews} Visitors)
+              ({contractor.numberOfReviews} Views)
             </span>
           </div>
           <p className="text-lg font-bold mb-3">
@@ -104,10 +102,10 @@ const Card = ({
             <Users className="w-5 h-5 mr-2" />
             {contractor.teamSize}
           </span>
-          <span className="flex items-center">
+          {/* <span className="flex items-center">
             <LandPlot className="w-5 h-5 mr-2" />
             {contractor.serviceAreaCoverage} *1000km
-          </span>
+          </span> */}
           <span className="flex items-center">
             <Clock className="w-5 h-5 mr-2" />
             {contractor.yearsOfExperience} yrs

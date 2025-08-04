@@ -71,12 +71,12 @@ const CardCompact = ({
             {contractor?.location?.address}, {contractor?.location?.city}
           </p>
           <div className="flex text-sm items-center">
-            <Star className="w-3 h-3 text-yellow-400 mr-1" />
+            {/* <Star className="w-3 h-3 text-yellow-400 mr-1" />
             <span className="font-semibold">
               {contractor.averageRating.toFixed(1)}
-            </span>
+            </span> */}
             <span className="text-gray-600 ml-1">
-              ({contractor.numberOfReviews} Visitors)
+              ({contractor.numberOfReviews} Views)
             </span>
           </div>
         </div>
@@ -92,7 +92,7 @@ const CardCompact = ({
             </span> */}
             <span className="flex items-center">
               <Clock className="w-4 h-4 mr-1" />
-              {contractor.yearsOfExperience} yrs of experience
+              {contractor.yearsOfExperience} yrs
             </span>
           </div>
 
