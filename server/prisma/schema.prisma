@@ -110,6 +110,8 @@ model Manager {
   phoneNumber String
 
   managedContractors Contractor[]
+  // Optional relation to User (social feature)
+  user               User?
 }
 
 model Customer {
@@ -123,6 +125,8 @@ model Customer {
   favorites    Contractor[]  @relation("CustomerFavorites")
   applications Application[]
   bookings     Booking[]
+  // Optional relation to User (social feature)
+  user         User?
 }
 
 model Location {
@@ -179,4 +183,91 @@ model Payment {
   bookingId     Int
 
   booking Booking @relation(fields: [bookingId], references: [id])
+}
+
+// ─────────────────────────────────────────────
+// New Social System Models
+// ─────────────────────────────────────────────
+model User {
+  id String @id
+
+  // RELATION TO EXISTING SYSTEM
+  managerCognitoId String?  @unique
+  manager          Manager? @relation(fields: [managerCognitoId], references: [cognitoId])
+
+  customerCognitoId String?   @unique
+  customer          Customer? @relation(fields: [customerCognitoId], references: [cognitoId])
+
+  // SOCIAL RELATIONS
+  posts Post[]
+
+  likes Like[]
+
+  saves SavedPosts[]
+
+  followers  Follow[] @relation("UserFollowers")
+  followings Follow[] @relation("UserFollowings")
+}
+
+model Post {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  desc        String?  @db.VarChar(255)
+  img         String?
+  imgHeight   Int?
+  video       String?
+  isSensitive Boolean  @default(false)
+
+  // RELATIONS
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  rePostId Int?
+  rePost   Post?  @relation("RePosts", fields: [rePostId], references: [id])
+  rePosts  Post[] @relation("RePosts")
+
+  parentPostId Int?
+  parentPost   Post?  @relation("PostComments", fields: [parentPostId], references: [id])
+  comments     Post[] @relation("PostComments")
+
+  likes Like[]
+
+  saves SavedPosts[]
+}
+
+model Like {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  // RELATIONS
+  userId String
+  postId Int
+
+  user User @relation(fields: [userId], references: [id])
+  post Post @relation(fields: [postId], references: [id])
+}
+
+model SavedPosts {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  // RELATIONS
+  userId String
+  postId Int
+
+  user User @relation(fields: [userId], references: [id])
+  post Post @relation(fields: [postId], references: [id])
+}
+
+model Follow {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  // RELATIONS
+  followerId  String
+  followingId String
+
+  follower  User @relation("UserFollowers", fields: [followerId], references: [id])
+  following User @relation("UserFollowings", fields: [followingId], references: [id])
 }
