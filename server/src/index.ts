@@ -12,6 +12,7 @@ import contractorRoutes from "./routes/contractorRoutes";
 import bookingRoutes from "./routes/bookingRoutes";
 import applicationRoutes from "./routes/applicationRoutes";
 import placeRoutes from "./routes/placeRoutes";
+import postRoutes from "./routes/postRoutes";
 
 /* CONFIGURATIONS */
 dotenv.config();
@@ -33,11 +34,12 @@ app.get("/", (req, res) => {
 app.use("/api/applications", applicationRoutes);
 app.use("/api/contractors", contractorRoutes);
 app.use("/api/bookings", bookingRoutes);
+app.use("/api/posts", postRoutes);
 
 // REQUIRED AUTH INITALLY
 app.use("/api/customers", authMiddleware(["customer"]), customerRoutes);
 app.use("/api/managers", authMiddleware(["manager"]), managerRoutes);
-// FOR GOOGLE DEVELOPER API 
+// FOR GOOGLE DEVELOPER API
 // app.use("/api/places", placeRoutes);
 
 /* LISTENING TO SERVER */

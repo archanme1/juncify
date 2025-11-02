@@ -6,6 +6,7 @@ import {
   Customer,
   Manager,
   Payment,
+  Post,
 } from "@/types/prismaTypes";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { fetchAuthSession, getCurrentUser } from "aws-amplify/auth";
@@ -32,6 +33,7 @@ export const api = createApi({
     "Bookings",
     "Payments",
     "Applications",
+    "Posts",
   ],
   endpoints: (build) => ({
     getAuthUser: build.query<User, void>({
@@ -370,6 +372,18 @@ export const api = createApi({
         });
       },
     }),
+
+    // GET all posts
+    // ───────────────────────────────
+    getPosts: build.query<Post[], void>({
+      query: () => "posts", // no parameters, fetch all
+      providesTags: ["Posts"],
+      async onQueryStarted(_, { queryFulfilled }) {
+        await withToast(queryFulfilled, {
+          error: "Failed to fetch posts.",
+        });
+      },
+    }),
   }),
 });
 
@@ -391,5 +405,6 @@ export const {
   useCreateApplicationMutation,
   useGetApplicationsQuery,
   useUpdateApplicationStatusMutation,
-  useDeleteManagedContractorMutation
+  useDeleteManagedContractorMutation,
+  useGetPostsQuery,
 } = api;
