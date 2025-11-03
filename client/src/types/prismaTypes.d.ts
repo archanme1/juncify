@@ -148,29 +148,60 @@ export type PaymentStatus = $Enums.PaymentStatus;
 
 export const PaymentStatus: typeof $Enums.PaymentStatus;
 
-export interface Post {
+// SOCIAL TYPES 
+export interface UserType {
+  id: string;
+  managerCognitoId: string | null;
+  customerCognitoId: string | null;
+  manager?: ManagerType | null;
+  customer?: CustomerType | null;
+}
+
+export interface LikeType {
   id: number;
-  createdAt: string; // Prisma returns DateTime as ISO string over JSON
-  updatedAt: string;
-  desc?: string | null;
-  img?: string | null;
-  imgHeight?: number | null;
-  video?: string | null;
-  isSensitive: boolean;
-
+  createdAt: string;
   userId: string;
-  user?: User; // optional nested relation
+  postId: number;
+}
 
-  rePostId?: number | null;
-  rePost?: Post | null;
-  rePosts?: Post[];
+export interface SaveType {
+  id: number;
+  createdAt: string;
+  userId: string;
+  postId: number;
+}
 
-  parentPostId?: number | null;
-  parentPost?: Post | null;
-  comments?: Post[];
+export interface CommentType {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  desc: string | null;
+  img: string | null;
+  imgHeight: number | null;
+  video: string | null;
+  isSensitive: boolean;
+  userId: string;
+  rePostId: number | null;
+  parentPostId: number | null;
+}
 
-  likes?: Like[];
-  saves?: SavedPost[];
+export interface PostType {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  desc: string | null;
+  img: string | null;
+  imgHeight: number | null;
+  video: string | null;
+  isSensitive: boolean;
+  userId: string;
+  rePostId: number | null;
+  parentPostId: number | null;
+  user?: UserType | null;
+  rePost?: PostType | null;
+  likes?: LikeType[];
+  saves?: SaveType[];
+  comments?: CommentType[];
 }
 
 /**

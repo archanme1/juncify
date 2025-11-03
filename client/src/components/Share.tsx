@@ -18,7 +18,7 @@ const Share = () => {
   };
 
   return (
-    <div className="p-4 flex gap-4">
+    <div className="p-4 flex gap-4 ">
       {/* avatar  */}
       <Avatar>
         <AvatarImage src={authUser?.userInfo?.image} />

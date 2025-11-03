@@ -15,6 +15,11 @@ import "@aws-amplify/ui-react/styles.css";
 import { useRouter, usePathname } from "next/navigation";
 import { awsExports, formFields } from "@/lib/awsexports";
 import Image from "next/image";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 Amplify.configure(awsExports);
 
@@ -73,7 +78,7 @@ const components = {
   SignUp: {
     Header() {
       return (
-        <View className="mt-4 mb-7">
+        <View className="mt-4 mb-4">
           <div className="flex items-center gap-2">
             <Image
               src="/logo1.png"
@@ -109,9 +114,45 @@ const components = {
             hasError={!!validationErrors?.["custom:role"]}
             isRequired
           >
-            <Radio value="customer">User</Radio>
-            <Radio value="manager">Manager</Radio>
+            <Radio value="customer">
+              Customer{" "}
+              <span className="text-sm ">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="cursor-pointer">❓</span>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-primary-500 text-white">
+                    <p>
+                      Sign up as a <strong className="">Customer</strong> <br />{" "}
+                      if you’re looking to hire one.
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </span>
+            </Radio>
+            <Radio value="manager">
+              Manager{" "}
+              <span className="text-sm ">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="cursor-pointer">❓</span>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-primary-500 text-white">
+                    <p>
+                      Sign up as a <strong className="">Manager</strong> <br />
+                      if you’re a contractor or manage contractors.
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </span>
+            </Radio>
           </RadioGroupField>
+          <p className="text-xs">
+            By signing up, you agree to the{" "}
+            <span className="text-secondary-500">Terms of Service</span> and{" "}
+            <span className="text-secondary-500">Privacy Policy</span>.
+            {/* including <span className="text-secondary-500">Cookie Use</span>. */}
+          </p>
         </>
       );
     },

@@ -1,29 +1,35 @@
 import React from "react";
 import Post from "./Post";
-import { useGetPostsQuery } from "@/state/api";
+import { useGetAuthUserQuery, useGetPostsQuery } from "@/state/api";
+import Loading from "./Loading";
+import { skipToken } from "@reduxjs/toolkit/query";
+import { PostType } from "@/types/prismaTypes";
 
 const Feed = () => {
-  const { data: posts, error, isLoading } = useGetPostsQuery();
+  const { data: authUser } = useGetAuthUserQuery();
 
-  if (isLoading) return <p>Loading posts...</p>;
+  const {
+    data: posts,
+    error,
+    isLoading,
+  } = useGetPostsQuery(
+    authUser?.cognitoInfo.userId
+      ? { userId: authUser.cognitoInfo.userId }
+      : skipToken
+  );
+
+  console.log("data: ", posts);
+
+  if (isLoading) return <Loading />;
   if (error) return <p>Failed to load posts.</p>;
-
-  console.log("posts: ", posts);
 
   return (
     <div>
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
+      {posts?.map((post: PostType) => (
+        <div key={post.id}>
+          <Post post={post} />
+        </div>
+      ))}
     </div>
   );
 };

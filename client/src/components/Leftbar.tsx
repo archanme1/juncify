@@ -28,7 +28,7 @@ const Leftbar = () => {
         </TabsList>
 
         {/* --- Tab Contents --- */}
-        <TabsContent value="foryou" className="mt-5">
+        <TabsContent value="foryou" className="mt-2">
           <Feed />
         </TabsContent>
 

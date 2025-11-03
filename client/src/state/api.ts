@@ -6,7 +6,6 @@ import {
   Customer,
   Manager,
   Payment,
-  Post,
 } from "@/types/prismaTypes";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { fetchAuthSession, getCurrentUser } from "aws-amplify/auth";
@@ -375,13 +374,18 @@ export const api = createApi({
 
     // GET all posts
     // ───────────────────────────────
-    getPosts: build.query<Post[], void>({
-      query: () => "posts", // no parameters, fetch all
-      providesTags: ["Posts"],
-      async onQueryStarted(_, { queryFulfilled }) {
-        await withToast(queryFulfilled, {
-          error: "Failed to fetch posts.",
-        });
+    getPosts: build.query({
+      query: ({
+        userId,
+        userProfileId,
+      }: {
+        userId: string;
+        userProfileId?: string;
+      }) => {
+        const queryParams = new URLSearchParams();
+        queryParams.append("userId", userId.toString());
+        if (userProfileId) queryParams.append("userProfileId", userProfileId);
+        return `posts?${queryParams.toString()}`;
       },
     }),
   }),
