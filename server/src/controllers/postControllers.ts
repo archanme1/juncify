@@ -9,12 +9,16 @@ export const getPosts = async (req: Request, res: Response): Promise<void> => {
 
     // For users posts if we visit profiel
     const userProfileId = req.query.userProfileId as string | undefined;
+    const pageParam = req.query.pageParam as string | undefined;
 
     const filterType = req.query.filterType as
       | "foryou"
       | "following"
       | "otherjunction"
       | undefined;
+
+    const page = Number(pageParam) || 1; // page param
+    const LIMIT = 22;
 
     if (!cognitoId) {
       res.status(400).json({ error: "Missing userId" });
@@ -41,13 +45,8 @@ export const getPosts = async (req: Request, res: Response): Promise<void> => {
     const isManager = !!userRecord.manager;
     const isCustomer = !!userRecord.customer;
 
-    // console.log("userId: ", internalUserId);
-    // console.log("userProfileId: ", userProfileId);
-
     // if userProfileId is there
     if (userProfileId) {
-      // console.log("executed user profile side");
-
       const profilePosts = await prisma.post.findMany({
         where: { parentPostId: null, userId: userProfileId },
         include: {
@@ -60,8 +59,17 @@ export const getPosts = async (req: Request, res: Response): Promise<void> => {
           comments: true,
         },
         orderBy: { createdAt: "desc" },
+        skip: (page - 1) * LIMIT,
+        take: LIMIT,
       });
-      res.status(200).json(profilePosts);
+      const totalProfilePosts = await prisma.post.count({
+        where: { parentPostId: null, userId: userProfileId },
+      });
+      const hasMore = page * LIMIT < totalProfilePosts;
+
+      await new Promise((resolve) => setTimeout(resolve, 1));
+
+      res.status(200).json({ posts: profilePosts, hasMore });
       return;
     }
 
@@ -129,8 +137,6 @@ export const getPosts = async (req: Request, res: Response): Promise<void> => {
     //       },
     //     };
 
-    // console.log("execution continue");
-
     const posts = await prisma.post.findMany({
       where: whereCondition,
       include: {
@@ -155,9 +161,16 @@ export const getPosts = async (req: Request, res: Response): Promise<void> => {
         comments: true,
       },
       orderBy: { createdAt: "desc" },
+      skip: (page - 1) * LIMIT,
+      take: LIMIT,
     });
 
-    res.status(200).json(posts);
+    const totalPosts = await prisma.post.count({ where: whereCondition });
+    const hasMore = page * LIMIT < totalPosts;
+
+    await new Promise((resolve) => setTimeout(resolve, 1));
+
+    res.status(200).json({ posts, hasMore });
   } catch (error) {
     console.error("Error fetching posts:", error);
     res.status(500).json({ error: "Failed to fetch posts" });
@@ -169,14 +182,13 @@ export const getUserProfile = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { username } = req.params; // ✅ Extract from URL params
+    const { username } = req.params;
 
     if (!username) {
       res.status(400).json({ error: "Missing username" });
       return;
     }
 
-    // ✅ Find the user by username and include related info
     const user = await prisma.user.findFirst({
       where: {
         OR: [{ manager: { name: username } }, { customer: { name: username } }],

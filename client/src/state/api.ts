@@ -391,6 +391,26 @@ export const api = createApi({
       },
     }),
 
+    // GET all posts with Infinite
+    //     getPosts: build.query<
+    //   { posts: PostType[]; hasMore: boolean }, // Result type
+    //   {
+    //     userId: string;
+    //     userProfileId?: string;
+    //     filterType?: "foryou" | "following" | "otherjunction";
+    //     page?: number;
+    //   }
+    // >({
+    //   query: ({ userId, userProfileId, filterType = "foryou", page = 1 }) => {
+    //     const params = new URLSearchParams();
+    //     params.append("userId", userId);
+    //     if (userProfileId) params.append("userProfileId", userProfileId);
+    //     params.append("filterType", filterType);
+    //     params.append("page", String(page));
+    //     return `posts?${params.toString()}`;
+    //   },
+    // });
+
     //GET USER PROFILE
     getUserProfile: build.query({
       query: ({ username }: { username: string }) => `posts/${username}`,

@@ -4,6 +4,7 @@ import { useGetAuthUserQuery, useGetPostsQuery } from "@/state/api";
 import Loading from "./Loading";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { PostType } from "@/types/prismaTypes";
+import InfiniteFeed from "./InfiniteFeed";
 
 interface FeedProps {
   type?: "foryou" | "following" | "otherjunction"; // optional, default to "foryou"
@@ -14,7 +15,7 @@ const Feed = ({ type = "foryou", userProfileId }: FeedProps) => {
   const { data: authUser } = useGetAuthUserQuery();
 
   const {
-    data: posts,
+    data: postss,
     error,
     isLoading,
   } = useGetPostsQuery(
@@ -27,7 +28,7 @@ const Feed = ({ type = "foryou", userProfileId }: FeedProps) => {
       : skipToken
   );
 
-  // console.log("data: ", posts);
+  const posts = postss?.posts || [];
 
   if (isLoading) return <Loading />;
   if (error) return <p>Failed to load posts.</p>;
@@ -45,10 +46,11 @@ const Feed = ({ type = "foryou", userProfileId }: FeedProps) => {
   return (
     <div>
       {posts?.map((post: PostType) => (
-        <div key={post.id}>
-          <Post post={post} />
-        </div>
+        <Post key={post.id} post={post} />
       ))}
+      {authUser?.cognitoInfo.userId && (
+        <InfiniteFeed userId={authUser.cognitoInfo.userId} filterType={type} />
+      )}
     </div>
   );
 };

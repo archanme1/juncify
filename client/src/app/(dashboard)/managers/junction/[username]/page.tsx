@@ -6,22 +6,20 @@ import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Feed from "@/components/Feed";
 import { useParams } from "next/navigation";
-import { useGetUserProfileQuery } from "@/state/api";
+import { useGetAuthUserQuery, useGetUserProfileQuery } from "@/state/api";
 import Loading from "@/components/Loading";
 
 const UserPage = () => {
   const params = useParams();
   const username = params?.username as string;
-  // const { data: authUser } = useGetAuthUserQuery();
-  // const userRole = authUser?.userRole;
+  const { data: authUser } = useGetAuthUserQuery();
+  const userRole = authUser?.userRole;
 
   const {
     data: userProfile,
     isLoading,
     error,
   } = useGetUserProfileQuery({ username });
-
-  // console.log("username: ", userProfile);
 
   if (isLoading) return <Loading />;
   if (error) return <p>Failed to load posts.</p>;
@@ -35,7 +33,11 @@ const UserPage = () => {
             <Link href="/managers/junction" className="cursor-pointer">
               <ArrowLeft className="w-5 h-5" />
             </Link>
-            <h1 className="font-bold text-gray-600 text-lg">John Doe</h1>
+            <h1 className="font-bold text-gray-600 text-lg">
+              {userRole === "manager"
+                ? userProfile?.manager.name
+                : userProfile?.customer.name}
+            </h1>
           </div>
 
           {/* Right Section: Icons + Button */}
