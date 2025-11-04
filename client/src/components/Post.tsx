@@ -14,9 +14,23 @@ interface PostProps {
 
 const Post = ({ post }: PostProps) => {
   const { data: authUser } = useGetAuthUserQuery();
-  // Determine if user is manager or customer
+  const user = post?.user;
+
+  const isManagerPost = !!user?.manager;
+  const isCustomerPost = !!user?.customer;
+
   const userName =
-    post.user?.manager?.name || post.user?.customer?.name || "Unknown";
+    (isManagerPost && user?.manager?.name) ||
+    (isCustomerPost && user?.customer?.name) ||
+    "Unknown";
+
+  const userRole = isManagerPost
+    ? "managers"
+    : isCustomerPost
+    ? "customers"
+    : "Unknown";
+
+  const avatarInitial = userName.charAt(0)?.toUpperCase() || "?";
   // const userUsername = post.user?.manager
   //   ? `@${post.user.manager.name.toLowerCase().replace(/\s+/g, "")}`
   //   : post.user?.customer
@@ -43,26 +57,28 @@ const Post = ({ post }: PostProps) => {
       {/* //later content   */}
       <div className="flex gap-4">
         {/* avatar  */}
-        <Avatar>
-          <AvatarImage src={authUser?.userInfo?.image} />
-          <AvatarFallback className="bg-primary-600 text-white">
-            T
-          </AvatarFallback>
-        </Avatar>
+        <Link href={`/${userRole}/junction/${userName}`}>
+          <Avatar>
+            <AvatarImage src={authUser?.userInfo?.image} />
+            <AvatarFallback className="bg-primary-500 text-white">
+              {avatarInitial}
+            </AvatarFallback>
+          </Avatar>
+        </Link>
         {/* content  */}
         <div className="flex-1 flex flex-col gap-2">
           <div className="w-full flex justify-between">
-            <Link href={`/`} className="flex gap-4">
-              <div className={`flex items-center gap-2 flex-wrap`}>
+            <div className={`flex items-center gap-2 flex-wrap`}>
+              <Link href={`/${userRole}/junction/${userName}`}>
                 <h1 className="text-md font-bold">{userName}</h1>
-                {/* <span className={`text-primary-500 `}>{userUsername}</span> */}
-                <span className="text-primary-500">
-                  {formatDistanceToNow(new Date(post.createdAt), {
-                    addSuffix: true,
-                  })}
-                </span>
-              </div>
-            </Link>
+              </Link>
+              {/* <span className={`text-primary-500 `}>{userUsername}</span> */}
+              <span className="text-primary-500">
+                {formatDistanceToNow(new Date(post.createdAt), {
+                  addSuffix: true,
+                })}
+              </span>
+            </div>
             {/* <PostOption /> */}
           </div>
           {/* about post   */}
@@ -75,48 +91,3 @@ const Post = ({ post }: PostProps) => {
 };
 
 export default Post;
-
-// "use client";
-
-// import React from "react";
-// import { PostType } from "@/types/prismaTypes";
-// import { useGetAuthUserQuery } from "@/state/api";
-// import PostInteractions from "./PostInteractions";
-
-// interface PostProps {
-//   post: PostType;
-// }
-
-// const Post = ({ post }: PostProps) => {
-//   const { data: authUser } = useGetAuthUserQuery();
-
-//   return (
-//     <div className="p-4 mb-3 bg-white rounded">
-//       {/* POST TYPE */}
-//       <div className="flex items-center gap-2 text-sm text-textGray mb-2 from-bold">
-//         {post.rePost ? (
-//           <span className="text-primary-500">Reposted</span>
-//         ) : (
-//           <span className="text-primary-500">Posted</span>
-//         )}
-//       </div>
-
-//       {/* Content */}
-//       <div className="flex gap-4">
-//         <div className="flex-1 flex flex-col gap-2">
-//           {/* Post text */}
-//           {post.desc && <p>{post.desc}</p>}
-
-//           {/* Interactions */}
-//           <PostInteractions
-//             likes={post.likes || []}
-//             comments={post.comments || []}
-//             saves={post.saves || []}
-//           />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Post;

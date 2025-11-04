@@ -5,8 +5,27 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Feed from "@/components/Feed";
+import { useParams } from "next/navigation";
+import { useGetUserProfileQuery } from "@/state/api";
+import Loading from "@/components/Loading";
 
 const UserPage = () => {
+  const params = useParams();
+  const username = params?.username as string;
+  // const { data: authUser } = useGetAuthUserQuery();
+  // const userRole = authUser?.userRole;
+
+  const {
+    data: userProfile,
+    isLoading,
+    error,
+  } = useGetUserProfileQuery({ username });
+
+  // console.log("username: ", userProfile);
+
+  if (isLoading) return <Loading />;
+  if (error) return <p>Failed to load posts.</p>;
+
   return (
     <div className="flex">
       <div className="flex-3 xsm:px-4 xxl:px-8 ">
@@ -24,7 +43,7 @@ const UserPage = () => {
             {/* <CircleEllipsis width={20} height={20} />
         <Telescope width={20} height={20} />
         <MessageCircle width={20} height={20} /> */}
-            <span className="text-textGray text-sm">@johndoe</span>
+            {/* <span className="text-textGray text-sm">@johndoe</span> */}
             <Button
               variant="outline"
               className="cursor-pointer text-black bg-white border-gray-400 hover:bg-secondary-500 hover:text-white"
@@ -34,7 +53,9 @@ const UserPage = () => {
           </div>
         </div>
         {/* FEED */}
-        <Feed />
+        <div className="m-3">
+          <Feed userProfileId={userProfile?.id} />
+        </div>
       </div>
     </div>
   );

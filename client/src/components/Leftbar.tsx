@@ -22,26 +22,20 @@ const Leftbar = () => {
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="foryou">For You</TabsTrigger>
           <TabsTrigger value="following">Following</TabsTrigger>
-          <TabsTrigger value="contractorsjunction">
-            Contractors Junction
-          </TabsTrigger>
+          <TabsTrigger value="otherjunction">Others Junction</TabsTrigger>
         </TabsList>
 
         {/* --- Tab Contents --- */}
         <TabsContent value="foryou" className="mt-2">
-          <Feed />
+          <Feed type="foryou" />
         </TabsContent>
 
-        <TabsContent value="following" className="mt-5">
-          <div className="text-gray-600 text-center py-10">
-            <p>Content from accounts you follow will appear here.</p>
-          </div>
+        <TabsContent value="following" className="mt-2">
+          <Feed type="following" />
         </TabsContent>
 
-        <TabsContent value="contractorsjunction" className="mt-5">
-          <div className="text-gray-600 text-center py-10">
-            <p>Explore Contractors Junction content here.</p>
-          </div>
+        <TabsContent value="otherjunction" className="mt-2">
+          <Feed type="otherjunction" />
         </TabsContent>
       </Tabs>
     </div>

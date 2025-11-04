@@ -373,20 +373,27 @@ export const api = createApi({
     }),
 
     // GET all posts
-    // ───────────────────────────────
     getPosts: build.query({
       query: ({
         userId,
         userProfileId,
+        filterType = "foryou",
       }: {
         userId: string;
         userProfileId?: string;
+        filterType?: "foryou" | "following" | "otherjunction";
       }) => {
         const queryParams = new URLSearchParams();
         queryParams.append("userId", userId.toString());
         if (userProfileId) queryParams.append("userProfileId", userProfileId);
+        queryParams.append("filterType", filterType);
         return `posts?${queryParams.toString()}`;
       },
+    }),
+
+    //GET USER PROFILE
+    getUserProfile: build.query({
+      query: ({ username }: { username: string }) => `posts/${username}`,
     }),
   }),
 });
@@ -411,4 +418,5 @@ export const {
   useUpdateApplicationStatusMutation,
   useDeleteManagedContractorMutation,
   useGetPostsQuery,
+  useGetUserProfileQuery,
 } = api;
