@@ -148,7 +148,7 @@ export type PaymentStatus = $Enums.PaymentStatus;
 
 export const PaymentStatus: typeof $Enums.PaymentStatus;
 
-// SOCIAL TYPES 
+// SOCIAL TYPES
 export interface UserType {
   id: string;
   managerCognitoId: string | null;
@@ -199,9 +199,15 @@ export interface PostType {
   parentPostId: number | null;
   user?: UserType | null;
   rePost?: PostType | null;
+  rePosts?: PostType[];
   likes?: LikeType[];
   saves?: SaveType[];
   comments?: CommentType[];
+  _count?: {
+    likes: number;
+    rePosts: number;
+    comments: number;
+  };
 }
 
 /**

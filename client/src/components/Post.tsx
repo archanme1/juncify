@@ -17,6 +17,13 @@ const Post = ({ post }: PostProps) => {
   const isRepost = !!post.rePostId;
   const originalPost = isRepost && post.rePost ? post.rePost : post;
 
+  const likes = originalPost.likes ?? [];
+  const isLiked = likes.length > 0;
+  const reposts = originalPost.rePosts ?? [];
+  const isReposted = reposts.length > 0;
+  const saves = originalPost.saves ?? [];
+  const isSaved = saves.length > 0;
+
   const { data: authUser } = useGetAuthUserQuery();
 
   // User who reposted
@@ -97,7 +104,14 @@ const Post = ({ post }: PostProps) => {
           </div>
           {/* about post   */}
           {originalPost.desc && <p>{originalPost.desc}</p>}
-          <PostInteractions />
+          <PostInteractions
+            username={originalUserName}
+            postId={originalPost.id}
+            count={originalPost._count}
+            isLiked={isLiked}
+            isRePosted={isReposted}
+            isSaved={isSaved}
+          />
         </div>
       </div>
     </div>

@@ -45,23 +45,55 @@ export const getPosts = async (req: Request, res: Response): Promise<void> => {
     const isManager = !!userRecord.manager;
     const isCustomer = !!userRecord.customer;
 
+    //  Reusable post select object DONT NEED WHEN WE USE use sepecifci highlights
+    // const postSelect = {
+    //   id: true,
+    //   desc: true,
+    //   createdAt: true,
+    //   updatedAt: true,
+    //   img: true,
+    //   imgHeight: true,
+    //   video: true,
+    //   isSensitive: true,
+    //   userId: true,
+    //   rePostId: true,
+
+    //   user: { include: { manager: true, customer: true } },
+    //   likes: true,
+    //   saves: true,
+    //   comments: true,
+
+    //   _count: { select: { likes: true, rePosts: true, comments: true } },
+    // };
+
+    // instead of validating userID at client we check here and just check length in client
+    // For User Specific Highlights
+    const postIncludeQuery = {
+      user: { include: { manager: true, customer: true } },
+      likes: { where: { userId: internalUserId }, select: { id: true } },
+      rePosts: { where: { userId: internalUserId }, select: { id: true } },
+      saves: { where: { userId: internalUserId }, select: { id: true } },
+      _count: { select: { likes: true, rePosts: true, comments: true } },
+      comments: true,
+    };
+
     // if userProfileId is there
     if (userProfileId) {
       const profilePosts = await prisma.post.findMany({
         where: { parentPostId: null, userId: userProfileId },
         include: {
-          user: { include: { manager: true, customer: true } },
+          ...postIncludeQuery,
           rePost: {
-            include: { user: { include: { manager: true, customer: true } } },
+            include: {
+              ...postIncludeQuery,
+            },
           },
-          likes: true,
-          saves: true,
-          comments: true,
         },
         orderBy: { createdAt: "desc" },
         skip: (page - 1) * LIMIT,
         take: LIMIT,
       });
+
       const totalProfilePosts = await prisma.post.count({
         where: { parentPostId: null, userId: userProfileId },
       });
@@ -120,45 +152,14 @@ export const getPosts = async (req: Request, res: Response): Promise<void> => {
         whereCondition.user = { manager: { not: null } };
       }
     }
-    // const whereCondition = userProfileId
-    //   ? { parentPostId: null, userId: userProfileId } // posts from clicked user
-    //   : {
-    //       parentPostId: null,
-    //       userId: {
-    //         in: [
-    //           internalUserId,
-    //           ...(
-    //             await prisma.follow.findMany({
-    //               where: { followerId: internalUserId },
-    //               select: { followingId: true },
-    //             })
-    //           ).map((f) => f.followingId),
-    //         ],
-    //       },
-    //     };
 
     const posts = await prisma.post.findMany({
       where: whereCondition,
       include: {
-        user: {
-          include: {
-            manager: true,
-            customer: true,
-          },
-        },
         rePost: {
-          include: {
-            user: {
-              include: {
-                manager: true,
-                customer: true,
-              },
-            },
-          },
+          include: postIncludeQuery,
         },
-        likes: true,
-        saves: true,
-        comments: true,
+        ...postIncludeQuery,
       },
       orderBy: { createdAt: "desc" },
       skip: (page - 1) * LIMIT,

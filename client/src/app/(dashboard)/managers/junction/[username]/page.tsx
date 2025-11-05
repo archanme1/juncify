@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Feed from "@/components/Feed";
-import { useParams } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import { useGetAuthUserQuery, useGetUserProfileQuery } from "@/state/api";
 import Loading from "@/components/Loading";
 
@@ -21,6 +21,7 @@ const UserPage = () => {
     error,
   } = useGetUserProfileQuery({ username });
 
+  if (!userProfile) return notFound();
   if (isLoading) return <Loading />;
   if (error) return <p>Failed to load posts.</p>;
 
