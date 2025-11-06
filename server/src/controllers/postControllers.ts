@@ -9,6 +9,7 @@ export const getPosts = async (req: Request, res: Response): Promise<void> => {
 
     // For users posts if we visit profiel
     const userProfileId = req.query.userProfileId as string | undefined;
+
     const pageParam = req.query.pageParam as string | undefined;
 
     const filterType = req.query.filterType as
@@ -18,7 +19,7 @@ export const getPosts = async (req: Request, res: Response): Promise<void> => {
       | undefined;
 
     const page = Number(pageParam) || 1; // page param
-    const LIMIT = 22;
+    const LIMIT = 3;
 
     if (!cognitoId) {
       res.status(400).json({ error: "Missing userId" });
@@ -99,7 +100,7 @@ export const getPosts = async (req: Request, res: Response): Promise<void> => {
       });
       const hasMore = page * LIMIT < totalProfilePosts;
 
-      await new Promise((resolve) => setTimeout(resolve, 2));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       res.status(200).json({ posts: profilePosts, hasMore });
       return;
@@ -147,9 +148,9 @@ export const getPosts = async (req: Request, res: Response): Promise<void> => {
     if (filterType === "otherjunction") {
       // Opposite-role posts
       if (isManager) {
-        whereCondition.user = { customer: { not: null } };
+        whereCondition.user = { customer: { isNot: null } };
       } else if (isCustomer) {
-        whereCondition.user = { manager: { not: null } };
+        whereCondition.user = { manager: { isNot: null } };
       }
     }
 
@@ -169,7 +170,7 @@ export const getPosts = async (req: Request, res: Response): Promise<void> => {
     const totalPosts = await prisma.post.count({ where: whereCondition });
     const hasMore = page * LIMIT < totalPosts;
 
-    await new Promise((resolve) => setTimeout(resolve, 2));
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
     res.status(200).json({ posts, hasMore });
   } catch (error) {
@@ -253,7 +254,7 @@ export const getPost = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 2));
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
     res.status(200).json(post);
   } catch (error) {

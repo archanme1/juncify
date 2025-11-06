@@ -42,6 +42,14 @@ export const createManager = async (
       },
     });
 
+    // Create the associated user record
+    await prisma.user.create({
+      data: {
+        id: `user_${manager.cognitoId}`, 
+        managerCognitoId: manager.cognitoId,
+      },
+    });
+
     res.status(201).json(manager);
   } catch (error: any) {
     res

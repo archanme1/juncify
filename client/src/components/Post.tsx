@@ -15,7 +15,7 @@ interface PostProps {
 
 const Post = ({ post }: PostProps) => {
   const { data: authUser } = useGetAuthUserQuery();
-  
+
   if (!post) return null;
   const isRepost = !!post.rePostId;
   const originalPost = isRepost && post.rePost ? post.rePost : post;
@@ -44,11 +44,7 @@ const Post = ({ post }: PostProps) => {
     (isCustomerPost && originalUser?.customer?.name) ||
     "Unknown";
 
-  const originalUserRole = isManagerPost
-    ? "managers"
-    : isCustomerPost
-    ? "customers"
-    : "Unknown";
+  const authUserRole = authUser?.userRole;
 
   const avatarInitial = originalUserName.charAt(0)?.toUpperCase() || "?";
   // const userUsername = originalPost.user?.manager
@@ -79,7 +75,7 @@ const Post = ({ post }: PostProps) => {
       {/* //later content   */}
       <div className="flex gap-4">
         {/* avatar  */}
-        <Link href={`/${originalUserRole}/junction/${originalUserName}`}>
+        <Link href={`/${authUserRole}s/junction/${originalUserName}`}>
           <Avatar>
             <AvatarImage src={authUser?.userInfo?.image} />
             <AvatarFallback className="bg-primary-500 text-white">
@@ -91,7 +87,7 @@ const Post = ({ post }: PostProps) => {
         <div className="flex-1 flex flex-col gap-2">
           <div className="w-full flex justify-between">
             <div className={`flex items-center gap-2 flex-wrap`}>
-              <Link href={`/${originalUserRole}/junction/${originalUserName}`}>
+              <Link href={`/${authUserRole}s/junction/${originalUserName}`}>
                 <h1 className="text-md font-bold">{originalUserName}</h1>
               </Link>
               {/* <span className={`text-primary-500 `}>{userUsername}</span> */}
@@ -105,7 +101,7 @@ const Post = ({ post }: PostProps) => {
           </div>
           {/* about post   */}
           <Link
-            href={`/${originalUserRole}/junction/${originalUserName}/status/${originalPost.id}`}
+            href={`/${authUserRole}s/junction/${originalUserName}/status/${originalPost.id}`}
           >
             {originalPost.desc && <p>{originalPost.desc}</p>}
           </Link>

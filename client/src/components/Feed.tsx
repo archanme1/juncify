@@ -51,13 +51,18 @@ const Feed = ({ type = "foryou", userProfileId }: FeedProps) => {
   //   return <p className="text-red-500 text-center mt-5">{errMsg}</p>;
   // }
 
+  console.log("post: ", posts);
   return (
     <div>
       {posts?.map((post: PostType) => (
         <Post key={post.id} post={post} />
       ))}
       {authUser?.cognitoInfo.userId && (
-        <InfiniteFeed userId={authUser.cognitoInfo.userId} filterType={type} />
+        <InfiniteFeed
+          userId={authUser.cognitoInfo.userId}
+          filterType={type}
+          userProfileId={userProfileId}
+        />
       )}
     </div>
   );

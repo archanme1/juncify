@@ -5,6 +5,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { fetchAuthSession } from "aws-amplify/auth";
 import Loading from "./Loading";
 import Post from "./Post";
+import { Badge } from "./ui/badge";
 
 interface InfiniteFeedProps {
   userId: string;
@@ -49,7 +50,7 @@ const InfiniteFeed = ({
   filterType = "foryou",
 }: InfiniteFeedProps) => {
   const { data, error, status, hasNextPage, fetchNextPage } = useInfiniteQuery({
-    queryKey: ["posts", userId, userProfileId, filterType], // ✅ fixed
+    queryKey: ["posts", userId, userProfileId, filterType], 
     queryFn: ({ pageParam = 2 }) =>
       fetchPosts(userId, pageParam, userProfileId, filterType),
     // This skips the first 3 posts (page 1).
@@ -72,7 +73,11 @@ const InfiniteFeed = ({
       next={fetchNextPage}
       hasMore={!!hasNextPage}
       loader={<Loading />}
-      endMessage={<h1>All posts loaded!</h1>}
+      endMessage={
+        <div className="dashboard-container">
+          <Badge>All Posts Loaded!!</Badge>
+        </div>
+      }
     >
       {allPosts.map((post) => (
         <Post key={post.id} post={post} />
