@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Post from "./Post";
 import { useGetAuthUserQuery, useGetPostsQuery } from "@/state/api";
@@ -5,6 +7,7 @@ import Loading from "./Loading";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { PostType } from "@/types/prismaTypes";
 import InfiniteFeed from "./InfiniteFeed";
+import { Badge } from "./ui/badge";
 
 interface FeedProps {
   type?: "foryou" | "following" | "otherjunction"; // optional, default to "foryou"
@@ -31,7 +34,12 @@ const Feed = ({ type = "foryou", userProfileId }: FeedProps) => {
   const posts = postss?.posts || [];
 
   if (isLoading) return <Loading />;
-  if (error) return <p>Failed to load posts.</p>;
+  if (error)
+    return (
+      <div className="dashboard-container">
+        <Badge variant="destructive">Failed to Load Posts!!</Badge>
+      </div>
+    );
 
   // TO Fetch BACKEND ERROR MESSAGE
   // if (error) {

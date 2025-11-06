@@ -155,6 +155,12 @@ export interface UserType {
   customerCognitoId: string | null;
   manager?: ManagerType | null;
   customer?: CustomerType | null;
+
+  posts?: PostType[];
+  likes?: LikeType[];
+  saves?: SaveType[];
+  followers?: FollowType[];
+  followings?: FollowType[];
 }
 
 export interface LikeType {

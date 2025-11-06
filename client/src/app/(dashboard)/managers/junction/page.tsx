@@ -4,13 +4,13 @@ import Leftbar from "@/components/Leftbar";
 
 const page = () => {
   return (
-    <div className="dashboard-container">
+    <div className="dashboard-container ">
       {/* <Header
         title="🚧 The Junction Rises Soon..."
         subtitle="This section is currently under development. Updates will be rolling out soon — stay tuned."
       /> */}
 
-      <div className="flex">
+      <div className="flex ">
         <div className="flex-3 px-2 xsm:px-4 xxl:px-8 ">
           <Leftbar />
         </div>

@@ -14,6 +14,9 @@ interface PostProps {
 }
 
 const Post = ({ post }: PostProps) => {
+  const { data: authUser } = useGetAuthUserQuery();
+  
+  if (!post) return null;
   const isRepost = !!post.rePostId;
   const originalPost = isRepost && post.rePost ? post.rePost : post;
 
@@ -23,8 +26,6 @@ const Post = ({ post }: PostProps) => {
   const isReposted = reposts.length > 0;
   const saves = originalPost.saves ?? [];
   const isSaved = saves.length > 0;
-
-  const { data: authUser } = useGetAuthUserQuery();
 
   // User who reposted
   const repostedByUser = isRepost ? post.user : null;
@@ -103,7 +104,11 @@ const Post = ({ post }: PostProps) => {
             {/* <PostOption /> */}
           </div>
           {/* about post   */}
-          {originalPost.desc && <p>{originalPost.desc}</p>}
+          <Link
+            href={`/${originalUserRole}/junction/${originalUserName}/status/${originalPost.id}`}
+          >
+            {originalPost.desc && <p>{originalPost.desc}</p>}
+          </Link>
           <PostInteractions
             username={originalUserName}
             postId={originalPost.id}

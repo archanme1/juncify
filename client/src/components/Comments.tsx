@@ -4,8 +4,16 @@ import { useState } from "react";
 import Post from "./Post";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
+import { CommentType } from "@/types/prismaTypes";
+import { Badge } from "./ui/badge";
 
-const Comments = () => {
+interface CommentsProps {
+  postId: number;
+  comments: CommentType[];
+  username: string;
+}
+
+const Comments = ({ postId, comments, username }: CommentsProps) => {
   const [reply, setReply] = useState("");
 
   // Optional: Auto-resize textarea height
@@ -28,7 +36,7 @@ const Comments = () => {
         </div>
         <textarea
           name="desc"
-          placeholder="Drop something for the Junction community..."
+          placeholder="Comment......"
           value={reply}
           onChange={handleInput}
           rows={1}
@@ -38,13 +46,14 @@ const Comments = () => {
           Reply
         </Button>
       </form>
-      <div className="pl-12">
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
+      <div className="px-4">
+        {comments.length > 0 ? (
+          comments.map((comment) => (
+            <Post key={comment.id} post={comment} type="comment" />
+          ))
+        ) : (
+          <Badge variant="destructive">No Comments Yet!!</Badge>
+        )}
       </div>
     </div>
   );

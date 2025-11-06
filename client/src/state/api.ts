@@ -391,29 +391,42 @@ export const api = createApi({
       },
     }),
 
-    // GET all posts with Infinite
-    //     getPosts: build.query<
-    //   { posts: PostType[]; hasMore: boolean }, // Result type
-    //   {
-    //     userId: string;
-    //     userProfileId?: string;
-    //     filterType?: "foryou" | "following" | "otherjunction";
-    //     page?: number;
-    //   }
-    // >({
-    //   query: ({ userId, userProfileId, filterType = "foryou", page = 1 }) => {
-    //     const params = new URLSearchParams();
-    //     params.append("userId", userId);
-    //     if (userProfileId) params.append("userProfileId", userProfileId);
-    //     params.append("filterType", filterType);
-    //     params.append("page", String(page));
-    //     return `posts?${params.toString()}`;
-    //   },
-    // });
+    //GET SINGLE POST by USERNAME AND POST>ID
+    getPost: build.query({
+      query: ({
+        username,
+        postId,
+        userId,
+      }: {
+        username: string;
+        postId: string | number;
+        userId?: string;
+      }) => {
+        const queryParams = new URLSearchParams();
+        if (userId) queryParams.append("userId", userId);
+
+        return `posts/post/${username}/${postId}?${queryParams.toString()}`;
+      },
+    }),
 
     //GET USER PROFILE
     getUserProfile: build.query({
-      query: ({ username }: { username: string }) => `posts/${username}`,
+      query: ({ username, userId }: { username: string; userId: string }) => {
+        const queryParams = new URLSearchParams();
+
+        if (userId) queryParams.append("userId", userId);
+
+        return `posts/${username}?${queryParams.toString()}`;
+      },
+    }),
+
+    // GET FRIEND RECCOMMENDATION
+    getFriendRecommendations: build.query({
+      query: ({ userId }: { userId: string }) => {
+        const queryParams = new URLSearchParams();
+        queryParams.append("userId", userId);
+        return `friends/recommendations?${queryParams.toString()}`;
+      },
     }),
   }),
 });
@@ -439,4 +452,6 @@ export const {
   useDeleteManagedContractorMutation,
   useGetPostsQuery,
   useGetUserProfileQuery,
+  useGetFriendRecommendationsQuery,
+  useGetPostQuery,
 } = api;
