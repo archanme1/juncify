@@ -19,7 +19,7 @@ export const getPosts = async (req: Request, res: Response): Promise<void> => {
       | undefined;
 
     const page = Number(pageParam) || 1; // page param
-    const LIMIT = 3;
+    const LIMIT = 22;
 
     if (!cognitoId) {
       res.status(400).json({ error: "Missing userId" });
@@ -352,5 +352,83 @@ export const getFriendRecommendations = async (
   } catch (error) {
     console.error("Error fetching friend recommendations:", error);
     res.status(500).json({ error: "Failed to fetch friend recommendations" });
+  }
+};
+
+//INTERACTION (Check when new manager is signed up with new post ❌ NO SEED)
+export const updatePostInteraction = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const userId = req.query.userId as string;
+    const postId = Number(req.query.postId);
+    const type = req.query.type as "like" | "repost" | "save";
+
+    if (!userId || !postId || !type) {
+      res.status(400).json({ error: "Missing userId, postId, or type" });
+      return;
+    }
+
+    let actionMessage = "";
+
+    // LIKE
+    if (type === "like") {
+      const existingLike = await prisma.like.findFirst({
+        where: { userId, postId },
+      });
+
+      if (existingLike) {
+        await prisma.like.delete({ where: { id: existingLike.id } });
+        actionMessage = "You unliked the post!";
+      } else {
+        await prisma.like.create({ data: { userId, postId } });
+        actionMessage = "You liked the post!";
+      }
+    }
+
+    // SAVE
+    else if (type === "save") {
+      const existingSave = await prisma.savedPosts.findFirst({
+        where: { userId, postId },
+      });
+
+      if (existingSave) {
+        await prisma.savedPosts.delete({ where: { id: existingSave.id } });
+        actionMessage = "Removed from saved posts!";
+      } else {
+        await prisma.savedPosts.create({ data: { userId, postId } });
+        actionMessage = "You saved the post!";
+      }
+    }
+
+    // REPOST
+    else if (type === "repost") {
+      // Toggle repost normally
+      const existingRepost = await prisma.post.findFirst({
+        where: {
+          userId,
+          rePostId: postId,
+        },
+      });
+
+      if (existingRepost) {
+        await prisma.post.delete({ where: { id: existingRepost.id } });
+        actionMessage = "You removed your repost!";
+      } else {
+        await prisma.post.create({
+          data: {
+            userId,
+            rePostId: postId,
+          },
+        });
+        actionMessage = "You reposted the post!";
+      }
+    }
+
+    res.status(200).json({ success: actionMessage, type });
+  } catch (error) {
+    console.error("❌ Error updating interaction:", error);
+    res.status(500).json({ error: "Failed to update post interaction" });
   }
 };

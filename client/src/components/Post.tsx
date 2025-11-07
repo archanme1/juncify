@@ -106,6 +106,7 @@ const Post = ({ post }: PostProps) => {
             {originalPost.desc && <p>{originalPost.desc}</p>}
           </Link>
           <PostInteractions
+          authUserRole={authUserRole}
             username={originalUserName}
             postId={originalPost.id}
             count={originalPost._count}

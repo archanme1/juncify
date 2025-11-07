@@ -48,7 +48,7 @@ export const createCustomer = async (
     // Create the associated user record
     await prisma.user.create({
       data: {
-        id: `user_${customer.cognitoId}`, // Optional: can use UUID or Cognito ID directly
+        id: `user_${customer.cognitoId}`, 
         customerCognitoId: customer.cognitoId,
       },
     });

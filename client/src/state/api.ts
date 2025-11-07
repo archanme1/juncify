@@ -428,6 +428,67 @@ export const api = createApi({
         return `friends/recommendations?${queryParams.toString()}`;
       },
     }),
+
+    // // ADD OR REMOVE LIKE
+    // updateLikePost: build.mutation({
+    //   query: ({
+    //     formattedUserId,
+    //     postId,
+    //   }: {
+    //     formattedUserId: string;
+    //     postId: number;
+    //   }) => {
+    //     const queryParams = new URLSearchParams();
+    //     queryParams.append("userId", formattedUserId);
+    //     queryParams.append("postId", postId.toString());
+
+    //     return {
+    //       url: `posts/like?${queryParams.toString()}`,
+    //       method: "POST",
+    //     };
+    //   },
+    //   invalidatesTags: (result) => [{ type: "Posts", id: result?.post?.id }],
+    //   async onQueryStarted(_, { queryFulfilled }) {
+    //     await withToast(queryFulfilled, {
+    //       success: (await queryFulfilled).data.success,
+    //       error: "Failed!!",
+    //     });
+    //   },
+    // }),
+
+    // UPDATE INTERACTION
+    updatePostInteraction: build.mutation({
+      query: ({
+        formattedUserId,
+        postId,
+        type,
+      }: {
+        formattedUserId: string;
+        postId: number;
+        type: "like" | "repost" | "save";
+      }) => {
+        const queryParams = new URLSearchParams();
+        queryParams.append("userId", formattedUserId);
+        queryParams.append("postId", postId.toString());
+        queryParams.append("type", type);
+
+        return {
+          url: `posts/interact?${queryParams.toString()}`,
+          method: "POST",
+        };
+      },
+      invalidatesTags: (result) => [{ type: "Posts", id: result?.post?.id }],
+      async onQueryStarted(_, { queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          await withToast(Promise.resolve(), { success: data.success });
+        } catch {
+          await withToast(Promise.reject(), {
+            error: "Failed to update interaction!",
+          });
+        }
+      },
+    }),
   }),
 });
 
@@ -454,4 +515,5 @@ export const {
   useGetUserProfileQuery,
   useGetFriendRecommendationsQuery,
   useGetPostQuery,
+  useUpdatePostInteractionMutation,
 } = api;

@@ -4,6 +4,7 @@ import {
   getPost,
   getPosts,
   getUserProfile,
+  updatePostInteraction,
 } from "../controllers/postControllers";
 import { authMiddleware } from "../middleware/authMiddleware";
 
@@ -24,6 +25,11 @@ router.get(
   "/friends/recommendations",
   authMiddleware(["manager", "customer"]),
   getFriendRecommendations
+);
+router.post(
+  "/interact",
+  authMiddleware(["manager", "customer"]),
+  updatePostInteraction
 );
 
 export default router;

@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { CommentType } from "@/types/prismaTypes";
 import { Badge } from "./ui/badge";
+import { useGetAuthUserQuery } from "@/state/api";
 
 interface CommentsProps {
   postId: number;
@@ -15,6 +16,9 @@ interface CommentsProps {
 
 const Comments = ({ postId, comments, username }: CommentsProps) => {
   const [reply, setReply] = useState("");
+  const { data: authUser } = useGetAuthUserQuery();
+  const loggedInUsername = authUser?.userInfo.name;
+  const avatarInitial = loggedInUsername.charAt(0)?.toUpperCase() || "?";
 
   // Optional: Auto-resize textarea height
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -30,7 +34,7 @@ const Comments = ({ postId, comments, username }: CommentsProps) => {
           <Avatar>
             <AvatarImage />
             <AvatarFallback className="bg-primary-600 text-white">
-              T
+              {avatarInitial}
             </AvatarFallback>
           </Avatar>
         </div>

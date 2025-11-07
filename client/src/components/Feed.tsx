@@ -51,7 +51,6 @@ const Feed = ({ type = "foryou", userProfileId }: FeedProps) => {
   //   return <p className="text-red-500 text-center mt-5">{errMsg}</p>;
   // }
 
-  console.log("post: ", posts);
   return (
     <div>
       {posts?.map((post: PostType) => (
