@@ -9,24 +9,20 @@ import Loading from "@/components/Loading";
 import { Badge } from "@/components/ui/badge";
 import { useParams } from "next/navigation";
 import { UserType } from "@/types/prismaTypes";
+import { skipToken } from "@reduxjs/toolkit/query";
 
 const StatusPage = () => {
   const params = useParams();
   const { data: authUser } = useGetAuthUserQuery();
-  const userId = authUser?.userInfo.cognitoId;
+  const userId = authUser?.userInfo?.cognitoId;
 
   const username = params?.username as string;
   const postId = params?.postId as string;
-
   const {
     data: post,
     isLoading,
     error,
-  } = useGetPostQuery({
-    username,
-    postId,
-    userId,
-  });
+  } = useGetPostQuery(userId ? { username, postId, userId } : skipToken);
 
   const getUserName = (user: UserType): string => {
     if (!user) return "Unknown";

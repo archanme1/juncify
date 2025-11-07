@@ -242,7 +242,7 @@ export const getPost = async (req: Request, res: Response): Promise<void> => {
           include: {
             user: { include: { manager: true, customer: true } },
             likes: { where: { userId: internalUserId }, select: { id: true } },
-            _count: { select: { likes: true } },
+            _count: { select: { likes: true, rePosts: true, comments: true } },
           },
           orderBy: { createdAt: "desc" },
         },
@@ -430,5 +430,55 @@ export const updatePostInteraction = async (
   } catch (error) {
     console.error("❌ Error updating interaction:", error);
     res.status(500).json({ error: "Failed to update post interaction" });
+  }
+};
+
+export const addComment = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { userId, postId, desc } = req.body;
+
+    console.log(userId, postId, desc);
+
+    if (!userId || !postId || !desc) {
+      res.status(400).json({ error: "Missing userId, postId, or desc" });
+      return;
+    }
+
+    // Find the internal user ID
+    const userRecord = await prisma.user.findFirst({
+      where: {
+        OR: [{ managerCognitoId: userId }, { customerCognitoId: userId }],
+      },
+      include: {
+        manager: true,
+        customer: true,
+      },
+    });
+
+    if (!userRecord) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    const formattedUserId = `user_${userId}`;
+
+    const newComment = await prisma.post.create({
+      data: {
+        desc,
+        userId: formattedUserId,
+        parentPostId: Number(postId),
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    res.status(200).json({ success: true, comment: newComment });
+  } catch (error) {
+    console.error("Add comment error:", error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };

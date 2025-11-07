@@ -40,7 +40,7 @@ const PostInteractions = ({
 
   const [updatePostInteraction] = useUpdatePostInteractionMutation();
 
-  // ✅ Base state (server-confirmed)
+  // Base state (server-confirmed)
   const [state, setState] = useState({
     likes: count?.likes ?? 0,
     isLiked,
@@ -49,7 +49,7 @@ const PostInteractions = ({
     isSaved,
   });
 
-  // ⚡ Optimistic UI setup
+  // Optimistic UI setup
   const [optimisticState, addOptimistic] = useOptimistic(
     state,
     (currentState, type: InteractionType) => {
@@ -81,16 +81,16 @@ const PostInteractions = ({
     }
   );
 
-  // 🔁 Unified handler (switch-based)
+  // handler (switch-based)
   const handleInteraction = async (type: InteractionType) => {
-    // Step 1: Optimistic UI update
+    //Optimistic UI update
     startTransition(() => addOptimistic(type));
 
     try {
-      // Step 2: Call backend API
+      // Call backend API
       await updatePostInteraction({ formattedUserId, postId, type }).unwrap();
 
-      // Step 3: Sync final state (server-confirmed)
+      // Sync final state (server-confirmed)
       setState((prev) => {
         const newState = { ...prev };
 
@@ -120,7 +120,7 @@ const PostInteractions = ({
     } catch (error) {
       console.error(`Failed to update ${type}:`, error);
 
-      // Step 4: Rollback optimistic UI if failed
+      // Rollback optimistic UI if failed
       startTransition(() => addOptimistic(type));
     }
   };
@@ -128,7 +128,7 @@ const PostInteractions = ({
   return (
     <div className="flex items-center justify-between gap-4 lg:gap-16 my-2 text-textGray">
       <div className="flex items-center gap-6 flex-1">
-        {/* COMMENTS 💬 */}
+        {/* COMMENTS  */}
         <Link href={`/${authUserRole}s/junction/${username}/status/${postId}`}>
           <div className="flex items-center gap-1 cursor-pointer group">
             <svg
@@ -222,7 +222,7 @@ const PostInteractions = ({
         </Button>
       </div>
 
-      {/* SAVE 💾 */}
+      {/* SAVE */}
       <Button
         onClick={() => handleInteraction("save")}
         disabled={isOwner}

@@ -43,3 +43,9 @@ export const settingsSchema = z.object({
 });
 
 export type SettingsFormData = z.infer<typeof settingsSchema>;
+
+export const commentSchema = z.object({
+  desc: z.string().trim().min(1, "Comment is required").max(140, "Max 140 chars"),
+});
+
+export type CommentFormData = z.infer<typeof commentSchema>;

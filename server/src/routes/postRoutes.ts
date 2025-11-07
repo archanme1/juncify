@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  addComment,
   getFriendRecommendations,
   getPost,
   getPosts,
@@ -31,5 +32,7 @@ router.post(
   authMiddleware(["manager", "customer"]),
   updatePostInteraction
 );
+
+router.post("/comment", authMiddleware(["manager", "customer"]), addComment);
 
 export default router;

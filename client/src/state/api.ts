@@ -389,6 +389,27 @@ export const api = createApi({
         queryParams.append("filterType", filterType);
         return `posts?${queryParams.toString()}`;
       },
+      providesTags: (result) => {
+        if (!result) return [{ type: "Posts", id: "LIST" }];
+
+        // handle both result = [] or result = { posts: [] }
+        const posts = Array.isArray(result) ? result : result.posts;
+
+        if (!Array.isArray(posts)) {
+          // fallback when backend sends empty or unexpected data
+          return [{ type: "Posts", id: "LIST" }];
+        }
+
+        return [
+          ...posts.map(({ id }) => ({ type: "Posts" as const, id })),
+          { type: "Posts", id: "LIST" },
+        ];
+      },
+      async onQueryStarted(_, { queryFulfilled }) {
+        await withToast(queryFulfilled, {
+          error: "Failed to fetch posts.",
+        });
+      },
     }),
 
     //GET SINGLE POST by USERNAME AND POST>ID
@@ -406,6 +427,15 @@ export const api = createApi({
         if (userId) queryParams.append("userId", userId);
 
         return `posts/post/${username}/${postId}?${queryParams.toString()}`;
+      },
+      providesTags: (result, error, { postId }) => [
+        { type: "Posts", id: postId },
+      ],
+
+      async onQueryStarted(_, { queryFulfilled }) {
+        await withToast(queryFulfilled, {
+          error: "Failed to fetch post.",
+        });
       },
     }),
 
@@ -428,33 +458,6 @@ export const api = createApi({
         return `friends/recommendations?${queryParams.toString()}`;
       },
     }),
-
-    // // ADD OR REMOVE LIKE
-    // updateLikePost: build.mutation({
-    //   query: ({
-    //     formattedUserId,
-    //     postId,
-    //   }: {
-    //     formattedUserId: string;
-    //     postId: number;
-    //   }) => {
-    //     const queryParams = new URLSearchParams();
-    //     queryParams.append("userId", formattedUserId);
-    //     queryParams.append("postId", postId.toString());
-
-    //     return {
-    //       url: `posts/like?${queryParams.toString()}`,
-    //       method: "POST",
-    //     };
-    //   },
-    //   invalidatesTags: (result) => [{ type: "Posts", id: result?.post?.id }],
-    //   async onQueryStarted(_, { queryFulfilled }) {
-    //     await withToast(queryFulfilled, {
-    //       success: (await queryFulfilled).data.success,
-    //       error: "Failed!!",
-    //     });
-    //   },
-    // }),
 
     // UPDATE INTERACTION
     updatePostInteraction: build.mutation({
@@ -489,6 +492,35 @@ export const api = createApi({
         }
       },
     }),
+
+    // ADD COMMENT
+    addComment: build.mutation({
+      query: ({
+        userId,
+        postId,
+        desc,
+      }: {
+        userId: string;
+        postId: string;
+        desc: string;
+      }) => ({
+        url: `posts/comment`,
+        method: "POST",
+        body: { userId, postId, desc },
+      }),
+
+      invalidatesTags: (result, error, { postId }) => [
+        { type: "Posts", id: postId },
+        { type: "Posts", id: "LIST" },
+      ],
+      async onQueryStarted(_, { queryFulfilled }) {
+        try {
+          await queryFulfilled;
+        } catch (err) {
+          console.error("Add comment failed:", err);
+        }
+      },
+    }),
   }),
 });
 
@@ -516,4 +548,5 @@ export const {
   useGetFriendRecommendationsQuery,
   useGetPostQuery,
   useUpdatePostInteractionMutation,
+  useAddCommentMutation,
 } = api;

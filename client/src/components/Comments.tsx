@@ -1,57 +1,103 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo } from "react";
 import Post from "./Post";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
-import { CommentType } from "@/types/prismaTypes";
 import { Badge } from "./ui/badge";
-import { useGetAuthUserQuery } from "@/state/api";
+import { useGetAuthUserQuery, useAddCommentMutation } from "@/state/api";
+import { CommentType } from "@/types/prismaTypes";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Form } from "./ui/form";
+import { CustomFormField } from "./FormField";
+import { CommentFormData, commentSchema } from "@/lib/schemas";
 
 interface CommentsProps {
-  postId: number;
+  postId: string;
   comments: CommentType[];
-  username: string;
+  username?: string;
 }
 
-const Comments = ({ postId, comments, username }: CommentsProps) => {
-  const [reply, setReply] = useState("");
+const Comments = ({ postId, comments }: CommentsProps) => {
   const { data: authUser } = useGetAuthUserQuery();
-  const loggedInUsername = authUser?.userInfo.name;
-  const avatarInitial = loggedInUsername.charAt(0)?.toUpperCase() || "?";
+  const [addComment, { isLoading }] = useAddCommentMutation();
 
-  // Optional: Auto-resize textarea height
-  const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const target = e.target;
-    target.style.height = "auto";
-    target.style.height = `${target.scrollHeight}px`;
-    setReply(target.value);
+  const userId = authUser?.userInfo?.cognitoId as string | undefined;
+  const loggedInName = authUser?.userInfo?.name as string | undefined;
+
+  const avatarInitial = useMemo(
+    () => loggedInName?.charAt(0)?.toUpperCase() ?? "?",
+    [loggedInName]
+  );
+
+  const form = useForm<CommentFormData>({
+    resolver: zodResolver(commentSchema),
+    defaultValues: { desc: "" },
+    mode: "onSubmit",
+  });
+
+  const onSubmit = async (data: CommentFormData) => {
+    if (!userId) return;
+    console.log("Comment Data: ", userId, postId, data.desc.trim());
+
+    try {
+      await addComment({
+        userId,
+        postId,
+        desc: data.desc.trim(),
+      }).unwrap();
+      form.reset({ desc: "" });
+      // No manual refetch necessary—tag invalidation will refetch the post
+    } catch (e) {
+      // optionally show a toast
+      console.error(e);
+    }
   };
+
   return (
     <div className="">
-      <form className="flex items-center justify-between gap-4 p-4 ">
-        <div className="relative w-10 h-10 rounded-full overflow-hidden">
-          <Avatar>
-            <AvatarImage />
-            <AvatarFallback className="bg-primary-600 text-white">
-              {avatarInitial}
-            </AvatarFallback>
-          </Avatar>
-        </div>
-        <textarea
-          name="desc"
-          placeholder="Comment......"
-          value={reply}
-          onChange={handleInput}
-          rows={1}
-          className="flex-1 resize-none bg-white outline-none placeholder:text-textGray text-xl px-4 py-2 rounded-[5px] border border-gray-300  overflow-hidden"
-        />
-        <Button className="bg-secondary-500 text-primary-50 cursor-pointer">
-          Reply
-        </Button>
-      </form>
+      {/* COMMENT FORM */}
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex items-start gap-4 p-4"
+        >
+          <div className="relative mt-5 w-10 h-10 rounded-full overflow-hidden">
+            <Avatar>
+              <AvatarImage />
+              <AvatarFallback className="bg-primary-600 text-white">
+                {avatarInitial}
+              </AvatarFallback>
+            </Avatar>
+          </div>
+
+          <div className="flex-1">
+            <CustomFormField
+              name="desc"
+              label=""
+              type="textarea"
+              placeholder="Write a reply…"
+              inputClassName="bg-white !min-h-[22px] resize-none"
+            />
+
+            <div className="mt-3 flex justify-end">
+              <Button
+                type="submit"
+                disabled={isLoading || !userId}
+                className="cursor-pointer bg-secondary-500 text-primary-50 disabled:opacity-60"
+              >
+                {isLoading ? "Posting…" : "Reply"}
+              </Button>
+            </div>
+          </div>
+        </form>
+      </Form>
+
+      {/* COMMENTS LIST */}
       <div className="px-4">
-        {comments.length > 0 ? (
+        {comments?.length > 0 ? (
           comments.map((comment) => (
             <Post key={comment.id} post={comment} type="comment" />
           ))
