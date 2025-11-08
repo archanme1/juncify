@@ -269,13 +269,17 @@ export const getUserProfile = async (
 ): Promise<void> => {
   try {
     const { username } = req.params;
-    const cognitoId = req.query.userId as string; // Cognito ID from frontend
+    const cognitoId = req.query.userId as string; // logged-in user's Cognito ID
 
     if (!username) {
       res.status(400).json({ error: "Missing username" });
       return;
     }
 
+    // Logged-in user internal ID
+    const formattedUserId = cognitoId ? `user_${cognitoId}` : undefined;
+
+    // Find target profile user (manager or customer)
     const user = await prisma.user.findFirst({
       where: {
         OR: [{ manager: { name: username } }, { customer: { name: username } }],
@@ -289,10 +293,6 @@ export const getUserProfile = async (
             followings: true,
           },
         },
-        followings: {
-          where: { followerId: cognitoId },
-          select: { id: true },
-        },
       },
     });
 
@@ -301,7 +301,22 @@ export const getUserProfile = async (
       return;
     }
 
-    res.status(200).json(user);
+    // ✅ Determine if logged-in user follows this profile user
+    let isFollowed = false;
+    if (formattedUserId) {
+      const follow = await prisma.follow.findFirst({
+        where: {
+          followerId: formattedUserId,
+          followingId: user.id,
+        },
+      });
+      isFollowed = !!follow;
+    }
+
+    res.status(200).json({
+      ...user,
+      isFollowed,
+    });
   } catch (error) {
     console.error("Error fetching user profile:", error);
     res.status(500).json({ error: "Failed to fetch user profile" });
@@ -479,6 +494,138 @@ export const addComment = async (
     res.status(200).json({ success: true, comment: newComment });
   } catch (error) {
     console.error("Add comment error:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+export const createPost = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { userId, desc } = req.body;
+
+    if (!userId || !desc) {
+      res.status(400).json({ error: "Missing userId or description" });
+      return;
+    }
+
+    console.log("test ", userId, desc);
+
+    // Find matching user record
+    const userRecord = await prisma.user.findFirst({
+      where: {
+        OR: [{ managerCognitoId: userId }, { customerCognitoId: userId }],
+      },
+    });
+
+    if (!userRecord) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    const formattedUserId = `user_${userId}`;
+
+    // Create the post
+    const newPost = await prisma.post.create({
+      data: {
+        desc,
+        userId: formattedUserId,
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    res.status(201).json({ success: true, post: newPost });
+  } catch (error) {
+    console.error("Create post error:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+export const toggleFollowUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { username } = req.body; // visiting profile username
+    const followerCognitoId = req.body.followerCognitoId as string; // logged-in user Cognito ID
+
+    if (!username || !followerCognitoId) {
+      res.status(400).json({
+        success: false,
+        message: "Missing username or followerCognitoId",
+      });
+      return;
+    }
+
+    // Resolve the target profile (manager or customer)
+    const targetUser = await prisma.user.findFirst({
+      where: {
+        OR: [{ manager: { name: username } }, { customer: { name: username } }],
+      },
+      select: { id: true },
+    });
+
+    if (!targetUser) {
+      res
+        .status(404)
+        .json({ success: false, message: "Target user not found" });
+      return;
+    }
+
+    // Format both user IDs
+    const formattedFollowerId = `user_${followerCognitoId}`; // logged-in user
+    const formattedFollowingId = targetUser.id; // profile user
+
+    // Prevent self-follow
+    if (formattedFollowerId === formattedFollowingId) {
+      res
+        .status(400)
+        .json({ success: false, message: "You cannot follow yourself" });
+      return;
+    }
+
+    // Check if follow already exists
+    const existingFollow = await prisma.follow.findFirst({
+      where: {
+        followerId: formattedFollowerId,
+        followingId: formattedFollowingId,
+      },
+    });
+
+    let action: "followed" | "unfollowed" = "followed";
+
+    if (existingFollow) {
+      await prisma.follow.delete({ where: { id: existingFollow.id } });
+      action = "unfollowed";
+    } else {
+      await prisma.follow.create({
+        data: {
+          followerId: formattedFollowerId,
+          followingId: formattedFollowingId,
+        },
+      });
+    }
+
+    // Update counts for the profile user
+    const [followers, followings] = await Promise.all([
+      prisma.follow.count({ where: { followingId: formattedFollowingId } }), // people who follow the profile user
+      prisma.follow.count({ where: { followerId: formattedFollowingId } }), // people the profile user follows
+    ]);
+
+    // Check follow state for the logged-in user
+    const isFollowed = action === "followed";
+
+    res.status(200).json({
+      success: true,
+      action,
+      counts: { followers, followings },
+      isFollowed,
+    });
+  } catch (error) {
+    console.error("Follow/unfollow error:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };

@@ -33,12 +33,17 @@ app.get("/", (req, res) => {
 // DOES NOT REQUIRE AUTH INITALLY
 app.use("/api/applications", applicationRoutes);
 app.use("/api/contractors", contractorRoutes);
-app.use("/api/bookings", bookingRoutes);
-app.use("/api/posts", postRoutes);
 
 // REQUIRED AUTH INITALLY
+app.use(
+  "/api/bookings",
+  authMiddleware(["manager", "customer"]),
+  bookingRoutes
+);
+app.use("/api/posts", authMiddleware(["manager", "customer"]), postRoutes);
 app.use("/api/customers", authMiddleware(["customer"]), customerRoutes);
 app.use("/api/managers", authMiddleware(["manager"]), managerRoutes);
+
 // FOR GOOGLE DEVELOPER API
 // app.use("/api/places", placeRoutes);
 

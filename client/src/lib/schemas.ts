@@ -45,7 +45,21 @@ export const settingsSchema = z.object({
 export type SettingsFormData = z.infer<typeof settingsSchema>;
 
 export const commentSchema = z.object({
-  desc: z.string().trim().min(1, "Comment is required").max(140, "Max 140 chars"),
+  desc: z
+    .string()
+    .trim()
+    .min(1, "Reply cannot be empty!!")
+    .max(255, "Max 255 chars"),
 });
 
 export type CommentFormData = z.infer<typeof commentSchema>;
+
+export const postSchema = z.object({
+  desc: z
+    .string()
+    .trim()
+    .min(1, "Post cannot be empty!!")
+    .max(510, "Post must be less than 510 characters"),
+});
+
+export type PostFormData = z.infer<typeof postSchema>;

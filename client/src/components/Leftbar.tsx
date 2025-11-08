@@ -11,7 +11,10 @@ const Leftbar = () => {
 
   return (
     <div className="">
-      <Header title="Your Junction" subtitle="View and manage your junction" />
+      <Header
+        title="Juncify Community"
+        subtitle="View and manage your junction"
+      />
       <Share />
       <Tabs
         value={activeTab}

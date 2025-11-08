@@ -33,6 +33,7 @@ export const api = createApi({
     "Payments",
     "Applications",
     "Posts",
+    "Users",
   ],
   endpoints: (build) => ({
     getAuthUser: build.query<User, void>({
@@ -521,6 +522,77 @@ export const api = createApi({
         }
       },
     }),
+
+    // CREATE POST
+    createPost: build.mutation({
+      query: ({ userId, desc }: { userId: string; desc: string }) => ({
+        url: `posts/create`,
+        method: "POST",
+        body: { userId, desc },
+      }),
+      invalidatesTags: () => [{ type: "Posts", id: "LIST" }],
+      async onQueryStarted(_, { queryFulfilled }) {
+        try {
+          await queryFulfilled;
+        } catch (err) {
+          console.error("Add post failed:", err);
+        }
+      },
+    }),
+
+    // FOLLOW / UNFOLLOW USER
+    // toggleFollowUser: build.mutation({
+    //   query: ({
+    //     followerId,
+    //     followingId,
+    //   }: {
+    //     followerId: string;
+    //     followingId: string;
+    //   }) => ({
+    //     url: `posts/follow`,
+    //     method: "POST",
+    //     body: { followerId, followingId },
+    //   }),
+
+    //   invalidatesTags: ({ followingId }) => [
+    //     { type: "Users", id: followingId },
+    //   ],
+
+    //   async onQueryStarted(_, { queryFulfilled }) {
+    //     try {
+    //       const { data } = await queryFulfilled;
+    //       await withToast(Promise.resolve(), { success: data.action });
+    //     } catch {
+    //       await withToast(Promise.reject(), {
+    //         error: "Failed Interaction!!",
+    //       });
+    //     }
+    //   },
+    // }),
+
+    toggleFollowUser: build.mutation({
+      query: ({
+        username, // profile username (e.g., "tony.smith")
+        followerCognitoId, // logged-in user's cognitoId
+      }: {
+        username: string;
+        followerCognitoId: string;
+      }) => ({
+        url: `posts/follow`,
+        method: "POST",
+        body: { username, followerCognitoId },
+      }),
+      async onQueryStarted(_, { queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          await withToast(Promise.resolve(), { success: data.action });
+        } catch {
+          await withToast(Promise.reject(), {
+            error: "Failed to follow/unfollow!",
+          });
+        }
+      },
+    }),
   }),
 });
 
@@ -549,4 +621,6 @@ export const {
   useGetPostQuery,
   useUpdatePostInteractionMutation,
   useAddCommentMutation,
+  useCreatePostMutation,
+  useToggleFollowUserMutation,
 } = api;

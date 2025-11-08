@@ -284,7 +284,7 @@ const NewContractor = () => {
 
             <Button
               type="submit"
-              className="bg-secondary-500 font-bold text-white w-full mt-8 cursor-pointer"
+              className="bg-secondary-600 font-bold text-white w-full mt-8 cursor-pointer"
             >
               Create Contractor
             </Button>

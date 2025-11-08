@@ -7,12 +7,11 @@ import {
 
 const router = express.Router();
 
-router.get("/", authMiddleware(["manager", "customer"]), getBookings);
+router.get("/", getBookings);
 router.get(
   "/:id/payments",
-  authMiddleware(["manager", "customer"]),
+
   getBookingPayments
 );
-
 
 export default router;
