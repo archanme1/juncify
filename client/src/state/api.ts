@@ -540,36 +540,6 @@ export const api = createApi({
       },
     }),
 
-    // FOLLOW / UNFOLLOW USER
-    // toggleFollowUser: build.mutation({
-    //   query: ({
-    //     followerId,
-    //     followingId,
-    //   }: {
-    //     followerId: string;
-    //     followingId: string;
-    //   }) => ({
-    //     url: `posts/follow`,
-    //     method: "POST",
-    //     body: { followerId, followingId },
-    //   }),
-
-    //   invalidatesTags: ({ followingId }) => [
-    //     { type: "Users", id: followingId },
-    //   ],
-
-    //   async onQueryStarted(_, { queryFulfilled }) {
-    //     try {
-    //       const { data } = await queryFulfilled;
-    //       await withToast(Promise.resolve(), { success: data.action });
-    //     } catch {
-    //       await withToast(Promise.reject(), {
-    //         error: "Failed Interaction!!",
-    //       });
-    //     }
-    //   },
-    // }),
-
     toggleFollowUser: build.mutation({
       query: ({
         username, // profile username (e.g., "tony.smith")

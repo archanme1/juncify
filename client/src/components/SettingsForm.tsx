@@ -60,7 +60,7 @@ const SettingsForm = ({
             />
             <CustomFormField
               name="phoneNumber"
-              label="Phone Number"
+              label="Phone Number (Approved cx will see this info!)"
               disabled={!editMode}
               className={editMode ? "cursor-pointer" : "cursor-not-allowed"}
             />

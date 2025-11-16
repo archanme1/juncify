@@ -15,6 +15,14 @@ import {
   ContractorTypeEnum,
 } from "@/lib/constants";
 import { useGeoLocation } from "@/hooks/useGeoLocation";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
+const AddressSearchBox = dynamic(
+  () => import("@/components/AddressSearchBox"),
+  {
+    ssr: false, //  disables server-side rendering for this component
+  }
+);
 
 // FOR GOOGLE DEVELOPER API WAY
 // interface FormValues {
@@ -28,6 +36,7 @@ const NewContractor = () => {
   const [createContractor] = useCreateContractorMutation();
   const { data: authUser } = useGetAuthUserQuery();
   const { location } = useGeoLocation();
+  const router = useRouter();
 
   // console.log("auth user: ", authUser);
 
@@ -106,7 +115,14 @@ const NewContractor = () => {
 
     formData.append("managerCognitoId", authUser.cognitoInfo.userId);
 
-    await createContractor(formData);
+    try {
+      await createContractor(formData);
+
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      router.push("/managers/contractors");
+    } catch (error) {
+      console.log("Failed to create contractor:", error);
+    }
   };
 
   return (
@@ -252,34 +268,68 @@ const NewContractor = () => {
             {/* Additional Information */}
             <div className="space-y-6">
               <h2 className="text-lg font-semibold mb-4">
-                Additional Information
+                Contractor Service Location
               </h2>
+              <AddressSearchBox
+                onSelect={(feature) => {
+                  // Extract values safely from the feature
+                  const props = feature.features?.[0]?.properties || {};
+                  const context = props.context || {};
+
+                  const address =
+                    props.address ||
+                    `${context.address?.address_number ?? ""} ${
+                      context.address?.street_name ?? props.name ?? ""
+                    }`.trim();
+
+                  const city =
+                    context.place?.name ||
+                    context.locality?.name ||
+                    context.district?.name ||
+                    "";
+
+                  const state = context.region?.name || "";
+                  const postalCode = context.postcode?.name || "";
+                  const country = context.country?.name || "";
+
+                  form.setValue("address", address, { shouldValidate: true });
+                  form.setValue("city", city, { shouldValidate: true });
+                  form.setValue("state", state, { shouldValidate: true });
+                  form.setValue("postalCode", postalCode, {
+                    shouldValidate: true,
+                  });
+                  form.setValue("country", country, { shouldValidate: true });
+                }}
+              />
               {/* <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Address
                 </label>
                 <LocationAutocomplete onSelect={handleLocationSelect} />
               </div> */}
-              <CustomFormField name="address" label="Address" />
+              <CustomFormField name="address" label="Address" disabled />
 
-              <div className="flex justify-between gap-4">
+              <div className="flex justify-between gap-4 ">
                 <CustomFormField
                   name="city"
                   label="City"
-                  className="w-full           "
+                  className="w-full "
+                  disabled
                 />
                 <CustomFormField
                   name="state"
                   label="State"
                   className="w-full"
+                  disabled
                 />
                 <CustomFormField
                   name="postalCode"
                   label="Postal Code"
                   className="w-full"
+                  disabled
                 />
               </div>
-              <CustomFormField name="country" label="Country" />
+              <CustomFormField name="country" label="Country" disabled />
             </div>
 
             <Button

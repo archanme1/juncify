@@ -334,7 +334,15 @@ export const getContractorBookings = async (
         bookings: {
           include: {
             customer: true,
+            application: {
+              select: {
+                id: true,
+                status: true,
+                applicationDate: true,
+              },
+            },
           },
+          orderBy: { startDate: "desc" },
         },
       },
     });

@@ -108,7 +108,7 @@ const components = {
           <Authenticator.SignUp.FormFields />
           {/* Custom Add  */}
           <RadioGroupField
-            legend="Role"
+            legend="Choose your Role!"
             name="custom:role"
             errorMessage={validationErrors?.["custom:role"]}
             hasError={!!validationErrors?.["custom:role"]}

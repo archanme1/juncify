@@ -78,7 +78,7 @@ const ApplicationModal = ({
             />
             <CustomFormField
               name="message"
-              label="Message (Optional)"
+              label="Overview of the work with preferred TIME & DATE"
               type="textarea"
               placeholder="Enter additional information about your job"
             />

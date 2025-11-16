@@ -272,7 +272,7 @@ const ServiceRecord = () => {
         scroll={false}
       >
         <ArrowLeft className="w-4 h-4 mr-2" />
-        <span>Back to contractors</span>
+        <span>Back to service records</span>
       </Link>
 
       <Header

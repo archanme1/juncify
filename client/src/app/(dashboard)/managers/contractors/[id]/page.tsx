@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { ArrowDownToLine, ArrowLeft, Check, Download } from "lucide-react";
+import { ArrowDownToLine, ArrowLeft, Download } from "lucide-react";
 import Loading from "@/components/Loading";
 import {
   useGetContractorBookingsQuery,
@@ -20,6 +20,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Header from "@/components/Header";
+import { Button } from "@/components/ui/button";
 
 const ContractorCustomers = () => {
   const { id } = useParams();
@@ -45,8 +46,6 @@ const ContractorCustomers = () => {
     );
     return currentMonthPayment?.paymentStatus || "Not Paid";
   };
-
-  // console.log("bookings: ", bookings);
 
   return (
     <div className="dashboard-container">
@@ -75,13 +74,14 @@ const ContractorCustomers = () => {
               </p>
             </div>
             <div>
-              <button
+              <Button
                 className={`bg-white border border-gray-300 text-gray-700 py-2
-              px-4 rounded-md flex items-center justify-center hover:bg-primary-700 hover:text-primary-50`}
+              px-4 rounded-md flex items-center justify-center hover:bg-primary-700 hover:text-primary-50 cursor-not-allowed`}
+                disabled
               >
                 <Download className="w-5 h-5 mr-2" />
-                <span>Download All</span>
-              </button>
+                <span className="">Download All</span>
+              </Button>
             </div>
           </div>
           <hr className="mt-4 mb-1" />
@@ -90,7 +90,7 @@ const ContractorCustomers = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead>Customer</TableHead>
-                  <TableHead>Booking Period</TableHead>
+                  <TableHead>Booking Date</TableHead>
                   <TableHead>Total Fee</TableHead>
                   <TableHead>Current Status</TableHead>
                   <TableHead>Contact</TableHead>
@@ -121,15 +121,15 @@ const ContractorCustomers = () => {
                     </TableCell>
                     <TableCell>
                       <div>
-                        {new Date(booking.startDate).toLocaleDateString()} -
+                        {new Date(booking.startDate).toLocaleDateString()}
                       </div>
-                      <div>
+                      {/* <div>
                         {new Date(booking.endDate).toLocaleDateString()}
-                      </div>
+                      </div> */}
                     </TableCell>
                     <TableCell>${booking.totalFee.toFixed(2)}</TableCell>
                     <TableCell>
-                      <span
+                      {/* <span
                         className={`px-2 py-1 rounded-full text-xs font-semibold ${
                           getCurrentMonthPaymentStatus(booking.id) === "Paid"
                             ? "bg-green-100 text-green-800 border-green-300"
@@ -141,17 +141,33 @@ const ContractorCustomers = () => {
                           <Check className="w-4 h-4 inline-block mr-1" />
                         )}
                         {getCurrentMonthPaymentStatus(booking.id)}
+                      </span> */}
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-semibold border ${
+                          booking.application
+                            ? booking.application.status === "Approved"
+                              ? "bg-green-100 text-green-800 border-green-300"
+                              : "bg-yellow-100 text-yellow-800 border-yellow-300"
+                            : "bg-red-100 text-red-800 border-red-300"
+                        }`}
+                      >
+                        {booking.application
+                          ? booking.application.status
+                          : "Rejected"}
                       </span>
                     </TableCell>
                     <TableCell>{booking.customer.phoneNumber}</TableCell>
                     <TableCell>
-                      <button
-                        className={`border border-gray-300 text-gray-700 py-2 px-4 rounded-md flex 
-                      items-center justify-center font-semibold hover:bg-primary-700 hover:text-primary-50`}
-                      >
-                        <ArrowDownToLine className="w-4 h-4 mr-1" />
-                        Download Agreement
-                      </button>
+                      {booking.application?.status === "Approved" && (
+                        <Button
+                          className={`border border-gray-300 text-gray-700 py-2 px-4 rounded-md flex 
+      items-center justify-center font-semibold hover:bg-primary-700 hover:text-primary-50 cursor-not-allowed`}
+                          disabled
+                        >
+                          <ArrowDownToLine className="w-4 h-4 mr-1" />
+                          Download Agreement
+                        </Button>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}

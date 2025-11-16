@@ -28,6 +28,62 @@ const ContractorDetails = ({ contractorId }: ContractorOverviewProps) => {
 
   return (
     <div className=" mb-6">
+      <div className=" mb-16">
+        <h3 className="text-xl font-semibold text-primary-800 dark:text-primary-100 mb-5">
+          Fees and Instructions
+        </h3>
+        {/* <p className="text-sm text-primary-600 dark:text-primary-300 mt-2">
+          The fees below are based on community-supplied data and may exclude
+          additional fees and utilities.
+        </p> */}
+        <Tabs defaultValue="required-fees" className="mt-8">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="required-fees">Required Fees</TabsTrigger>
+            <TabsTrigger value="isEmergencyAvailable">
+              Emergency Service Available
+            </TabsTrigger>
+            <TabsTrigger value="parking">Parking</TabsTrigger>
+          </TabsList>
+          <TabsContent value="required-fees" className="w-1/3">
+            <p className="font-semibold mt-5 mb-2">
+              Install and Advance charges
+            </p>
+            <hr />
+            <div className="flex justify-between py-2 bg-secondary-50">
+              <span className="text-primary-700 font-medium">
+                Installation Fee
+              </span>
+              <span className="text-primary-700">
+                ${contractor.installationFee}
+              </span>
+            </div>
+            <hr />
+            <div className="flex justify-between py-2 bg-secondary-50">
+              <span className="text-primary-700 font-medium">
+                Advance Payment
+              </span>
+              <span className="text-primary-700">
+                ${contractor.advancePayment}
+              </span>
+            </div>
+            <hr />
+          </TabsContent>
+          <TabsContent value="isEmergencyAvailable">
+            <p className="font-semibold mt-5 mb-2">
+              {contractor.isEmergencyAvailable
+                ? "Emergency Services Available"
+                : "N/A"}
+            </p>
+          </TabsContent>
+          <TabsContent value="parking">
+            <p className="font-semibold mt-5 mb-2">
+              {contractor.offersOnSiteParking
+                ? "Please offer site Parking when we are at the job location"
+                : "Do not required"}
+            </p>
+          </TabsContent>
+        </Tabs>
+      </div>
       {/* Amenities */}
       <div>
         <h2 className="text-xl font-semibold my-3">Contractor Amenities</h2>
@@ -74,60 +130,6 @@ const ContractorDetails = ({ contractorId }: ContractorOverviewProps) => {
       </div>
 
       {/* Tabs Section */}
-      <div>
-        <h3 className="text-xl font-semibold text-primary-800 dark:text-primary-100 mb-5">
-          Fees and Instructions
-        </h3>
-        {/* <p className="text-sm text-primary-600 dark:text-primary-300 mt-2">
-          The fees below are based on community-supplied data and may exclude
-          additional fees and utilities.
-        </p> */}
-        <Tabs defaultValue="required-fees" className="mt-8">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="required-fees">Required Fees</TabsTrigger>
-            <TabsTrigger value="isEmergencyAvailable">
-              Emergency Service Available
-            </TabsTrigger>
-            <TabsTrigger value="parking">Parking</TabsTrigger>
-          </TabsList>
-          <TabsContent value="required-fees" className="w-1/3">
-            <p className="font-semibold mt-5 mb-2">
-              Install and Advance charges
-            </p>
-            <hr />
-            <div className="flex justify-between py-2 bg-secondary-50">
-              <span className="text-primary-700 font-medium">
-                Installation Fee
-              </span>
-              <span className="text-primary-700">
-                ${contractor.installationFee}
-              </span>
-            </div>
-            <hr />
-            <div className="flex justify-between py-2 bg-secondary-50">
-              <span className="text-primary-700 font-medium">
-                Advance Payment
-              </span>
-              <span className="text-primary-700">
-                ${contractor.advancePayment}
-              </span>
-            </div>
-            <hr />
-          </TabsContent>
-          <TabsContent value="isEmergencyAvailable">
-            <p className="font-semibold mt-5 mb-2">
-              {contractor.isEmergencyAvailable ? "Available" : "N/A"}
-            </p>
-          </TabsContent>
-          <TabsContent value="parking">
-            <p className="font-semibold mt-5 mb-2">
-              {contractor.offersOnSiteParking
-                ? "Please offer site Parking when we are at the job location"
-                : "Do not required"}
-            </p>
-          </TabsContent>
-        </Tabs>
-      </div>
     </div>
   );
 };
