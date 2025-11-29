@@ -14,9 +14,9 @@ const page = () => {
         <div className="flex-3 px-2 xsm:px-4 xxl:px-8 ">
           <Leftbar />
         </div>
-        <div className="hidden lg:flex  ml-4 md:ml-8 flex-1 ">
+        {/* <div className="hidden lg:flex  ml-4 md:ml-8 flex-1 ">
           <Rightbar />
-        </div>
+        </div> */}
       </div>
     </div>
   );

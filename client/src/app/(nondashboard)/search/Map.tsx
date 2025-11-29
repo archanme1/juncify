@@ -24,7 +24,7 @@ const Map = () => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current!,
       style: "mapbox://styles/archanme1/cma83196800ez01s7h692ba5s",
-      center: filters.coordinates || [-74.5, 40],
+      center: filters.coordinates || [-79.383555, 43.647938],
       zoom: 9,
     });
 

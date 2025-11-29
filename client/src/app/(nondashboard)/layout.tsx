@@ -1,7 +1,8 @@
 "use client";
+import Loading from "@/components/Loading";
 import Navbar from "@/components/Navbar";
 import { NAVBAR_HEIGHT } from "@/lib/constants";
-import React from "react";
+import React, { Suspense } from "react";
 
 const NonDashboardPageLayout = ({
   children,
@@ -18,7 +19,7 @@ const NonDashboardPageLayout = ({
         className={`h-full flex w-full flex-col`}
         style={{ paddingTop: `${NAVBAR_HEIGHT}px` }}
       >
-        {children}
+        <Suspense fallback={<Loading />}>{children}</Suspense>
       </main>
     </div>
   );

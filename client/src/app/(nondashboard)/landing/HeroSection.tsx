@@ -88,21 +88,30 @@ const HeroSection = () => {
           {/* Search Box */}
           {!isManager && (
             <div className="flex justify-center gap-2">
-              <Input
-                type="text"
-                placeholder="Search by city, neighborhood, or address"
-                className="w-full max-w-lg rounded-l-xl border-none bg-white h-12 px-4"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
               <Button
                 variant="outline"
-                className="cursor-pointer text-white h-12 border-white bg-transparent hover:bg-white hover:text-primary-700 rounded-lg"
-                onClick={handleLocationSearch}
+                className="cursor-pointer text-white h-12 border-white bg-transparent hover:bg-secondary-500 hover:text-white rounded-lg"
+                onClick={() => router.push(`/search`)}
               >
-                Search
+                Search your Tradesman
               </Button>
             </div>
+            // <div className="flex justify-center gap-2">
+            //   <Input
+            //     type="text"
+            //     placeholder="Search by city, neighborhood, or address"
+            //     className="w-full max-w-lg rounded-l-xl border-none bg-white h-12 px-4"
+            //     value={searchQuery}
+            //     onChange={(e) => setSearchQuery(e.target.value)}
+            //   />
+            //   <Button
+            //     variant="outline"
+            //     className="cursor-pointer text-white h-12 border-white bg-transparent hover:bg-white hover:text-primary-700 rounded-lg"
+            //     onClick={handleLocationSearch}
+            //   >
+            //     Search
+            //   </Button>
+            // </div>
           )}
         </div>
       </motion.div>

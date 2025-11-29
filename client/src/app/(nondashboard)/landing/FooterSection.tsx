@@ -1,5 +1,5 @@
-import Link from "next/link";
 import React from "react";
+import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFacebook,
@@ -24,14 +24,14 @@ const FooterSection = () => {
           </div>
           <nav className="mb-4">
             <ul className="flex space-x-6">
-              <li>
+              {/* <li>
                 <Link href="/#">About Us</Link>
               </li>
               <li>
                 <Link href="/#">Contact Us</Link>
-              </li>
+              </li> */}
               <li>
-                <Link href="/# ">FAQ</Link>
+                <Link href="/faq ">FAQ</Link>
               </li>
               <li>
                 <Link href="/terms">Terms</Link>
@@ -75,7 +75,7 @@ const FooterSection = () => {
           <span>©Juncify. All rights reserved.</span>
           <Link href="/privacy">Privacy Policy</Link>
           <Link href="/terms">Terms of Service</Link>
-          <Link href="/#">Cookie Policy</Link>
+          {/* <Link href="/#">Cookie Policy</Link> */}
         </div>
       </div>
     </footer>
