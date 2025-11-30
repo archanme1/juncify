@@ -232,11 +232,11 @@ export const createContractor = async (
       ...contractorData
     } = req.body;
 
-        const photoUrls = await Promise.all(
+    const photoUrls = await Promise.all(
       files.map(async (file) => {
         const uploadParams = {
           Bucket: process.env.S3_BUCKET_NAME!,
-          Key: `properties/${Date.now()}-${file.originalname}`,
+          Key: `contractors/${Date.now()}-${file.originalname}`,
           Body: file.buffer,
           ContentType: file.mimetype,
         };
