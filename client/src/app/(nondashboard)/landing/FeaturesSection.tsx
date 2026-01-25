@@ -35,16 +35,16 @@ const FeaturesSection = () => {
         "Get Started Quickly",
       ]
     : isManager
-    ? [
-        "Grow Your Business with Verified Services",
-        "Offer Your Expertise & Get Discovered",
-        "Seamless Job Management for Service Providers",
-      ]
-    : [
-        "Verified & Trusted Services",
-        "Find Any Service You Need, Anytime",
-        "Seamless Booking for You",
-      ];
+      ? [
+          "Grow Your Business with Verified Services",
+          "Offer Your Expertise & Get Discovered",
+          "Seamless Job Management for Service Providers",
+        ]
+      : [
+          "Verified & Trusted Services",
+          "Find Any Service You Need, Anytime",
+          "Seamless Booking for You",
+        ];
 
   // Descriptions per user type
   const descriptions = !isSignedIn
@@ -54,37 +54,41 @@ const FeaturesSection = () => {
         "Create an account to book and manage services with ease.",
       ]
     : isManager
-    ? [
-        "List your services, from electricians to HVAC, and get discovered by potential clients in your area.",
-        "Easily create your profile, set your service areas, and attract new customers looking for trusted professionals.",
-        "Receive service requests at your convenience—accept jobs on your terms and grow your business effortlessly.",
-      ]
-    : [
-        "Connect with skilled professionals, from electricians to any trades service professionals.",
-        "Easily browse and discover a wide range of home and personal services tailored to your needs.",
-        "Book verified skilled traders instantly and enjoy a hassle-free experience for your home.",
-      ];
+      ? [
+          "List your services, from electricians to HVAC, and get discovered by potential clients in your area.",
+          "Easily create your profile, set your service areas, and attract new customers looking for trusted professionals.",
+          "Receive service requests at your convenience—accept jobs on your terms and grow your business effortlessly.",
+        ]
+      : [
+          "Connect and engage with skilled professionals as well as other happy customers.",
+          "Easily browse and discover a wide range of home and personal services tailored to your needs.",
+          "Mark skilled traders as favroites and enjoy a hassle-free experience.",
+        ];
 
   // Link text per user type
   const linkTexts = !isSignedIn
     ? ["Browse Now", "Explore Services", "Sign Up"]
     : isManager
-    ? ["Create", "Discover", "Find"]
-    : ["Discover", "Search", "Favorites"];
+      ? ["Create", "Junction", "Find"]
+      : ["Junction", "Search", "Favorites"];
 
   // Link hrefs per user type
   const linkHrefs = !isSignedIn
     ? ["/", "/search", "/signup"]
     : isManager
-    ? ["/managers/newcontractor", "/managers/junction", "/managers/contractors"]
-    : ["/customers/junction", "/search", "/customers/favorites"];
+      ? [
+          "/managers/newcontractor",
+          "/managers/junction",
+          "/managers/contractors",
+        ]
+      : ["/customers/junction", "/search", "/customers/favorites"];
 
   // Heading text
   const heading = !isSignedIn
     ? "Welcome! Browse Services Without Signing In"
     : isManager
-    ? "Offer a service? Join as a manager and get discovered!"
-    : "Instantly Find the Right Service for Your Home & Lifestyle!";
+      ? "Offer a service? Join as a manager and get discovered!"
+      : "Instantly Find the Right Service for Your Home & Lifestyle!";
 
   return (
     <motion.div

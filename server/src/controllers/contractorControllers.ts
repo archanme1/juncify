@@ -5,16 +5,13 @@ import { S3Client } from "@aws-sdk/client-s3";
 import { Location } from "@prisma/client";
 import { Upload } from "@aws-sdk/lib-storage";
 import axios from "axios";
+import { s3Client } from "../config/s3";
 
 const prisma = new PrismaClient();
 
-const s3Client = new S3Client({
-  region: process.env.AWS_REGION,
-});
-
 export const getContractors = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const {
@@ -37,19 +34,19 @@ export const getContractors = async (
     if (favoriteIds) {
       const favoriteIdsArray = (favoriteIds as string).split(",").map(Number);
       whereConditions.push(
-        Prisma.sql`c.id IN (${Prisma.join(favoriteIdsArray)})`
+        Prisma.sql`c.id IN (${Prisma.join(favoriteIdsArray)})`,
       );
     }
 
     if (priceMin) {
       whereConditions.push(
-        Prisma.sql`c."installationFee" >= ${Number(priceMin)}`
+        Prisma.sql`c."installationFee" >= ${Number(priceMin)}`,
       );
     }
 
     if (priceMax) {
       whereConditions.push(
-        Prisma.sql`c."installationFee" <= ${Number(priceMax)}`
+        Prisma.sql`c."installationFee" <= ${Number(priceMax)}`,
       );
     }
 
@@ -73,32 +70,32 @@ export const getContractors = async (
       !isNaN(Number(serviceAreaCoverage))
     ) {
       whereConditions.push(
-        Prisma.sql`c."serviceAreaCoverage" >= ${Number(serviceAreaCoverage)}`
+        Prisma.sql`c."serviceAreaCoverage" >= ${Number(serviceAreaCoverage)}`,
       );
     }
 
     if (yearsOfExperienceMin) {
       whereConditions.push(
-        Prisma.sql`c."yearsOfExperience" >= ${Number(yearsOfExperienceMin)}`
+        Prisma.sql`c."yearsOfExperience" >= ${Number(yearsOfExperienceMin)}`,
       );
     }
 
     if (yearsOfExperienceMax) {
       whereConditions.push(
-        Prisma.sql`c."yearsOfExperience" <= ${Number(yearsOfExperienceMax)}`
+        Prisma.sql`c."yearsOfExperience" <= ${Number(yearsOfExperienceMax)}`,
       );
     }
 
     if (contractorType && contractorType !== "any") {
       whereConditions.push(
-        Prisma.sql`c."contractorType" = ${contractorType}::"ContractorType"`
+        Prisma.sql`c."contractorType" = ${contractorType}::"ContractorType"`,
       );
     }
 
     if (amenities && amenities !== "any") {
       const amenitiesArray = (amenities as string).split(",");
       whereConditions.push(
-        Prisma.sql`c.amenities @> ${amenitiesArray}::"Amenity"[]`
+        Prisma.sql`c.amenities @> ${amenitiesArray}::"Amenity"[]`,
       );
     }
 
@@ -113,7 +110,7 @@ export const getContractors = async (
               SELECT 1 FROM "Booking" b 
               WHERE b."contractorId" = c.id 
               AND b."startDate" <= ${date}
-            )`
+            )`,
           );
         }
       }
@@ -130,7 +127,7 @@ export const getContractors = async (
           l.coordinates::geometry,
           ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326),
           ${degrees}
-        )`
+        )`,
       );
     }
 
@@ -172,7 +169,7 @@ export const getContractors = async (
 
 export const getContractor = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const { id } = req.params;
@@ -218,7 +215,7 @@ export const getContractor = async (
 
 export const createContractor = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const files = req.files as Express.Multer.File[];
@@ -247,7 +244,7 @@ export const createContractor = async (
         }).done();
 
         return uploadResult.Location;
-      })
+      }),
     );
 
     // https://nominatim.openstreetmap.org/ui/search.html
@@ -259,7 +256,7 @@ export const createContractor = async (
         postalcode: postalCode,
         format: "json",
         limit: "1",
-      }
+      },
     ).toString()}`;
     const geocodingResponse = await axios.get(geocodingUrl, {
       headers: {
@@ -321,7 +318,7 @@ export const createContractor = async (
 
 export const getContractorBookings = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const { id } = req.params;
@@ -339,6 +336,8 @@ export const getContractorBookings = async (
                 id: true,
                 status: true,
                 applicationDate: true,
+                message: true,
+                phoneNumber: true,
               },
             },
           },
@@ -362,7 +361,7 @@ export const getContractorBookings = async (
 
 export const removeManagedContractor = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const { contractorId, cognitoId } = req.params;
@@ -380,7 +379,7 @@ export const removeManagedContractor = async (
     const contractorIdNumber = Number(contractorId);
 
     const isContractorManaged = manager.managedContractors.some(
-      (contractor) => contractor.id === contractorIdNumber
+      (contractor) => contractor.id === contractorIdNumber,
     );
 
     if (!isContractorManaged) {

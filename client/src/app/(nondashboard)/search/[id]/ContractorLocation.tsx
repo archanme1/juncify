@@ -56,7 +56,7 @@ const ContractorLocation = ({ contractorId }: ContractorDetailsProps) => {
   }
 
   return (
-    <div className="py-16">
+    <div className="py-8">
       <h3 className="text-xl font-semibold text-primary-800 dark:text-primary-100">
         Map and Location
       </h3>
@@ -70,7 +70,7 @@ const ContractorLocation = ({ contractorId }: ContractorDetailsProps) => {
         </div>
         <a
           href={`https://maps.google.com/?q=${encodeURIComponent(
-            contractor.location?.address || ""
+            contractor.location?.address || "",
           )}`}
           target="_blank"
           rel="noopener noreferrer"

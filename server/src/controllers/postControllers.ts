@@ -16,6 +16,7 @@ export const getPosts = async (req: Request, res: Response): Promise<void> => {
       | "foryou"
       | "following"
       | "otherjunction"
+      | "savedPosts"
       | undefined;
 
     const page = Number(pageParam) || 1; // page param
@@ -154,6 +155,17 @@ export const getPosts = async (req: Request, res: Response): Promise<void> => {
       }
     }
 
+    if (filterType === "savedPosts") {
+      whereCondition = {
+        parentPostId: null,
+        saves: {
+          some: {
+            userId: internalUserId,
+          },
+        },
+      };
+    }
+
     const posts = await prisma.post.findMany({
       where: whereCondition,
       include: {
@@ -265,7 +277,7 @@ export const getPost = async (req: Request, res: Response): Promise<void> => {
 
 export const getUserProfile = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const { username } = req.params;
@@ -325,7 +337,7 @@ export const getUserProfile = async (
 
 export const getFriendRecommendations = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const userId = req.query.userId as string;
@@ -373,7 +385,7 @@ export const getFriendRecommendations = async (
 //INTERACTION (Check when new manager is signed up with new post ❌ NO SEED)
 export const updatePostInteraction = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const userId = req.query.userId as string;
@@ -450,7 +462,7 @@ export const updatePostInteraction = async (
 
 export const addComment = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const { userId, postId, desc } = req.body;
@@ -500,7 +512,7 @@ export const addComment = async (
 
 export const createPost = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const { userId, desc } = req.body;
@@ -546,7 +558,7 @@ export const createPost = async (
 
 export const toggleFollowUser = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const { username } = req.body; // visiting profile username

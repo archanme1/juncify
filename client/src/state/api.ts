@@ -60,7 +60,7 @@ export const api = createApi({
               user,
               idToken,
               userRole,
-              fetchWithBQ
+              fetchWithBQ,
             );
           }
 
@@ -382,7 +382,7 @@ export const api = createApi({
       }: {
         userId: string;
         userProfileId?: string;
-        filterType?: "foryou" | "following" | "otherjunction";
+        filterType?: "foryou" | "following" | "otherjunction" | "savedPosts";
       }) => {
         const queryParams = new URLSearchParams();
         queryParams.append("userId", userId.toString());

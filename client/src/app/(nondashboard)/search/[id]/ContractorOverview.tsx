@@ -27,12 +27,12 @@ const ContractorOverview = ({ contractorId }: ContractorOverviewProps) => {
     <div>
       {/* Header */}
       <div className="mb-4">
-        <div className="text-sm text-gray-500 mb-1">
+        {/* <div className="text-sm text-gray-500 mb-1">
           {contractor.location?.country} / {contractor.location?.state} /{" "}
           <span className="font-semibold text-gray-600">
             {contractor.location?.city}
           </span>
-        </div>
+        </div> */}
         <h1 className="text-3xl font-bold my-5">{contractor.name}</h1>
         <div className="flex justify-between items-center">
           <span className="flex items-center text-gray-500">

@@ -25,9 +25,9 @@ const SingleListing = () => {
           <ContractorDetails contractorId={contractorId} />
         </div>
 
-        <div className="order-1 md:order-2">
-          <ContractorLocation contractorId={contractorId} />
+        <div className=" order-1 md:order-2 md:mt-28">
           <Contact onOpenModal={() => setIsModalOpen(true)} />
+          <ContractorLocation contractorId={contractorId} />
         </div>
       </div>
 

@@ -1,4 +1,4 @@
-import { Mail, MapPin, PhoneCall } from "lucide-react";
+import { Mail, MapPin, MessageCircle, PhoneCall } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -8,7 +8,7 @@ const ApplicationCard = ({
   children,
 }: ApplicationCardProps) => {
   const [imgSrc, setImgSrc] = useState(
-    application.contractor.photoUrls?.[0] || "/landing-splash.jpg"
+    application.contractor.photoUrls?.[0] || "/landing-splash.jpg",
   );
 
   // console.log(application);
@@ -17,8 +17,8 @@ const ApplicationCard = ({
     application.status === "Approved"
       ? "bg-green-500"
       : application.status === "Denied"
-      ? "bg-red-500"
-      : "bg-yellow-500";
+        ? "bg-red-500"
+        : "bg-yellow-500";
 
   const contactPerson =
     userType === "manager" ? application.customer : application.manager;
@@ -132,6 +132,10 @@ const ApplicationCard = ({
               <div className="text-sm flex items-center text-primary-600">
                 <Mail className="w-5 h-5 mr-2" />
                 {contactPerson.email}
+              </div>
+              <div className="text-sm flex items-center text-primary-600">
+                <MessageCircle className="w-5 h-5 mr-2" />
+                {application.message}
               </div>
             </div>
           </div>

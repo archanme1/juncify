@@ -19,17 +19,17 @@ const Contact = ({ onOpenModal }: ContactWidgetProps) => {
   return (
     <div className="bg-white border border-primary-200 rounded-2xl p-7 h-fit min-w-[300px]">
       {/* Contact Property */}
-      <div className="flex items-center gap-5 mb-4 border border-primary-200 p-4 rounded-xl">
+      {/* <div className="flex items-center gap-5 mb-4 border border-primary-200 p-4 rounded-xl">
         <div className="flex items-center p-4 bg-primary-900 rounded-full">
           <Send className="text-primary-50" size={15} />
         </div>
         <div>
           <p>Contact This Contractor</p>
-          {/* <div className="text-lg font-bold text-primary-800">
+          <div className="text-lg font-bold text-primary-800">
             (987) 654-3210
-          </div> */}
+          </div>
         </div>
-      </div>
+      </div> */}
       <Button
         className="w-full cursor-pointer bg-secondary-500 text-white hover:bg-primary-700"
         onClick={handleButtonClick}
@@ -37,11 +37,11 @@ const Contact = ({ onOpenModal }: ContactWidgetProps) => {
         {authUser ? "Submit Application" : "Sign In to Apply"}
       </Button>
 
-      <hr className="my-4" />
+      {/* <hr className="my-4" />
       <div className="text-sm">
         <div className="text-primary-700 mb-1">Language: English.</div>
-        <div className="text-primary-700">Open to appointment</div>
-      </div>
+        <div className="text-green-700">Open to appointment</div>
+      </div> */}
     </div>
   );
 };

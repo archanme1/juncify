@@ -21,7 +21,7 @@ const AddressSearchBox = dynamic(
   () => import("@/components/AddressSearchBox"),
   {
     ssr: false, //  disables server-side rendering for this component
-  }
+  },
 );
 
 // FOR GOOGLE DEVELOPER API WAY
@@ -334,7 +334,7 @@ const NewContractor = () => {
 
             <Button
               type="submit"
-              className="bg-secondary-600 font-bold text-white w-full mt-8 cursor-pointer"
+              className="bg-secondary-600 font-bold text-white w-full mt-8 cursor-pointer "
             >
               Create Contractor
             </Button>

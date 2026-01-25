@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { CircleCheckBig, File, Hospital } from "lucide-react";
+import { CircleCheckBig, Download, File, Hospital } from "lucide-react";
 import ApplicationsCard from "@/components/ApplicaionsCard";
 import Header from "@/components/Header";
 import Loading from "@/components/Loading";
@@ -28,8 +28,11 @@ const Applications = () => {
     },
     {
       skip: !authUser?.cognitoInfo?.userId,
-    }
+    },
   );
+
+  // console.log("aplication data", applications);
+
   const [updateApplicationStatus] = useUpdateApplicationStatusMutation();
 
   const handleStatusChange = async (id: number, status: string) => {
@@ -66,7 +69,7 @@ const Applications = () => {
             {filteredApplications
               .filter(
                 (application) =>
-                  tab === "all" || application.status.toLowerCase() === tab
+                  tab === "all" || application.status.toLowerCase() === tab,
               )
               .map((application) => (
                 <ApplicationsCard
@@ -81,8 +84,8 @@ const Applications = () => {
                         application.status === "Approved"
                           ? "bg-green-100"
                           : application.status === "Denied"
-                          ? "bg-red-100"
-                          : "bg-yellow-100"
+                            ? "bg-red-100"
+                            : "bg-yellow-100"
                       }`}
                     >
                       <div className="flex flex-wrap items-center">
@@ -100,8 +103,8 @@ const Applications = () => {
                             application.status === "Approved"
                               ? "text-green-800"
                               : application.status === "Denied"
-                              ? "text-red-800"
-                              : "text-yellow-800"
+                                ? "text-red-800"
+                                : "text-yellow-800"
                           }`}
                         >
                           {application.status === "Approved" &&

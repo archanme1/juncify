@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { setFilters } from "@/state";
 import { useGetAuthUserQuery } from "@/state/api";
+import { Search } from "lucide-react";
 
 const HeroSection = () => {
   const { data: authUser } = useGetAuthUserQuery();
@@ -32,10 +33,10 @@ const HeroSection = () => {
 
       const response = await fetch(
         `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
-          trimmedQuery
+          trimmedQuery,
         )}.json?access_token=${
           process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
-        }&fuzzyMatch=true`
+        }&fuzzyMatch=true`,
       );
       const data = await response.json();
       // console.log("data: ", data);
@@ -46,7 +47,7 @@ const HeroSection = () => {
           setFilters({
             location: trimmedQuery,
             coordinates: [lat, lng],
-          })
+          }),
         );
         const params = new URLSearchParams({
           location: trimmedQuery,
@@ -89,11 +90,14 @@ const HeroSection = () => {
           {!isManager && (
             <div className="flex justify-center gap-2">
               <Button
-                variant="outline"
-                className="cursor-pointer text-white h-12 border-white bg-transparent hover:bg-secondary-500 hover:text-white rounded-lg"
+                variant="secondary"
+                className="cursor-pointer bg-primary-50 text-primary-700 hover:bg-secondary-500 hover:text-primary-50 rounded-lg"
                 onClick={() => router.push(`/search`)}
               >
-                Search your Tradesman
+                <>
+                  <Search className="h-4 w-4" />
+                  Find Trades Professionals...
+                </>
               </Button>
             </div>
             // <div className="flex justify-center gap-2">

@@ -85,7 +85,7 @@ const ContractorDetails = ({ contractorId }: ContractorOverviewProps) => {
         </Tabs>
       </div>
       {/* Amenities */}
-      <div>
+      {/* <div>
         <h2 className="text-xl font-semibold my-3">Contractor Amenities</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {contractor.amenities.map((amenity: AmenityEnum) => {
@@ -103,10 +103,10 @@ const ContractorDetails = ({ contractorId }: ContractorOverviewProps) => {
             );
           })}
         </div>
-      </div>
+      </div> */}
 
       {/* Highlights */}
-      <div className="mt-12 mb-16">
+      {/* <div className="mt-12 mb-16">
         <h3 className="text-xl font-semibold text-primary-800 dark:text-primary-100">
           Highlights
         </h3>
@@ -127,7 +127,7 @@ const ContractorDetails = ({ contractorId }: ContractorOverviewProps) => {
             );
           })}
         </div>
-      </div>
+      </div> */}
 
       {/* Tabs Section */}
     </div>

@@ -2,9 +2,8 @@
 
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useParams } from "next/navigation";
-import { ArrowDownToLine, ArrowLeft, Download } from "lucide-react";
+import { ArrowLeft, Download } from "lucide-react";
 import Loading from "@/components/Loading";
 import {
   useGetContractorBookingsQuery,
@@ -21,6 +20,7 @@ import {
 } from "@/components/ui/table";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const ContractorCustomers = () => {
   const { id } = useParams();
@@ -42,7 +42,7 @@ const ContractorCustomers = () => {
       (payment) =>
         payment.bookingId === bookingId &&
         new Date(payment.dueDate).getMonth() === currentDate.getMonth() &&
-        new Date(payment.dueDate).getFullYear() === currentDate.getFullYear()
+        new Date(payment.dueDate).getFullYear() === currentDate.getFullYear(),
     );
     return currentMonthPayment?.paymentStatus || "Not Paid";
   };
@@ -73,7 +73,7 @@ const ContractorCustomers = () => {
                 Manage and view all customers for this contractor.
               </p>
             </div>
-            <div>
+            {/* <div>
               <Button
                 className={`bg-white border border-gray-300 text-gray-700 py-2
               px-4 rounded-md flex items-center justify-center hover:bg-primary-700 hover:text-primary-50 cursor-not-allowed`}
@@ -82,7 +82,7 @@ const ContractorCustomers = () => {
                 <Download className="w-5 h-5 mr-2" />
                 <span className="">Download All</span>
               </Button>
-            </div>
+            </div> */}
           </div>
           <hr className="mt-4 mb-1" />
           <div className="overflow-x-auto">
@@ -90,11 +90,12 @@ const ContractorCustomers = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead>Customer</TableHead>
+                  <TableHead>Contact</TableHead>
+                  <TableHead>Message</TableHead>
                   <TableHead>Booking Date</TableHead>
                   <TableHead>Total Fee</TableHead>
                   <TableHead>Current Status</TableHead>
-                  <TableHead>Contact</TableHead>
-                  <TableHead>Action</TableHead>
+                  {/* <TableHead>Action</TableHead> */}
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -102,13 +103,13 @@ const ContractorCustomers = () => {
                   <TableRow key={booking.id} className="h-24">
                     <TableCell>
                       <div className="flex items-center space-x-3">
-                        <Image
-                          src="/landing-i1.png"
-                          alt={booking.customer.name}
-                          width={40}
-                          height={40}
-                          className="rounded-full"
-                        />
+                        <Avatar>
+                          <AvatarImage src={""} />
+                          <AvatarFallback className="bg-primary-500 text-white">
+                            {booking.customer.name.charAt(0)?.toUpperCase() ||
+                              "?"}
+                          </AvatarFallback>
+                        </Avatar>
                         <div>
                           <div className="font-semibold">
                             {booking.customer.name}
@@ -118,6 +119,10 @@ const ContractorCustomers = () => {
                           </div>
                         </div>
                       </div>
+                    </TableCell>
+                    <TableCell>{booking.application?.phoneNumber}</TableCell>
+                    <TableCell className="whitespace-normal break-words max-w-[200px]">
+                      {booking.application?.message}
                     </TableCell>
                     <TableCell>
                       <div>
@@ -156,7 +161,7 @@ const ContractorCustomers = () => {
                           : "Rejected"}
                       </span>
                     </TableCell>
-                    <TableCell>{booking.customer.phoneNumber}</TableCell>
+                    {/* <TableCell>{booking.customer.phoneNumber}</TableCell>
                     <TableCell>
                       {booking.application?.status === "Approved" && (
                         <Button
@@ -168,7 +173,7 @@ const ContractorCustomers = () => {
                           Download Agreement
                         </Button>
                       )}
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 ))}
               </TableBody>

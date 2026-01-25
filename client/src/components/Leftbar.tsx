@@ -22,10 +22,11 @@ const Leftbar = () => {
         className="w-full my-5 "
       >
         {/* --- Tab Buttons --- */}
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="foryou">For You</TabsTrigger>
           <TabsTrigger value="following">Following</TabsTrigger>
           <TabsTrigger value="otherjunction">Others Junction</TabsTrigger>
+          <TabsTrigger value="savedPosts">Saved Posts</TabsTrigger>
         </TabsList>
 
         {/* --- Tab Contents --- */}
@@ -39,6 +40,9 @@ const Leftbar = () => {
 
         <TabsContent value="otherjunction" className="mt-2">
           <Feed type="otherjunction" />
+        </TabsContent>
+        <TabsContent value="savedPosts" className="mt-2">
+          <Feed type="savedPosts" />
         </TabsContent>
       </Tabs>
     </div>

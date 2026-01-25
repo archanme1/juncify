@@ -10,14 +10,14 @@ import { Badge } from "./ui/badge";
 interface InfiniteFeedProps {
   userId: string;
   userProfileId?: string;
-  filterType?: "foryou" | "following" | "otherjunction";
+  filterType?: "foryou" | "following" | "otherjunction" | "savedPosts";
 }
 
 const fetchPosts = async (
   userId: string,
   pageParam: number,
   userProfileId?: string,
-  filterType?: "foryou" | "following" | "otherjunction"
+  filterType?: "foryou" | "following" | "otherjunction" | "savedPosts",
 ) => {
   const session = await fetchAuthSession();
   const { idToken } = session.tokens ?? {};
@@ -34,7 +34,7 @@ const fetchPosts = async (
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
-    }
+    },
   );
 
   if (!res.ok) {
@@ -50,7 +50,7 @@ const InfiniteFeed = ({
   filterType = "foryou",
 }: InfiniteFeedProps) => {
   const { data, error, status, hasNextPage, fetchNextPage } = useInfiniteQuery({
-    queryKey: ["posts", userId, userProfileId, filterType], 
+    queryKey: ["posts", userId, userProfileId, filterType],
     queryFn: ({ pageParam = 2 }) =>
       fetchPosts(userId, pageParam, userProfileId, filterType),
     // This skips the first 3 posts (page 1).

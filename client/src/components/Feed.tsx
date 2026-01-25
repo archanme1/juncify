@@ -10,7 +10,7 @@ import InfiniteFeed from "./InfiniteFeed";
 import { Badge } from "./ui/badge";
 
 interface FeedProps {
-  type?: "foryou" | "following" | "otherjunction"; // optional, default to "foryou"
+  type?: "foryou" | "following" | "otherjunction" | "savedPosts"; // optional, default to "foryou"
   userProfileId?: string; // for profile page
 }
 
@@ -25,10 +25,10 @@ const Feed = ({ type = "foryou", userProfileId }: FeedProps) => {
     authUser?.cognitoInfo.userId
       ? {
           userId: authUser.cognitoInfo.userId,
-          filterType: type,
-          userProfileId,
+          userProfileId, // when present → backend ignores filterType
+          filterType: userProfileId ? undefined : type,
         }
-      : skipToken
+      : skipToken,
   );
 
   const posts = postss?.posts || [];

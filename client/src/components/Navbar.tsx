@@ -142,7 +142,7 @@ const Navbar = () => {
                     onClick={() =>
                       router.push(
                         `/${authUser.userRole?.toLowerCase()}s/settings`,
-                        { scroll: false }
+                        { scroll: false },
                       )
                     }
                   >
@@ -164,13 +164,13 @@ const Navbar = () => {
                     authUser.userRole?.toLowerCase() === "manager"
                       ? "/managers/contractors"
                       : "/customers/favorites",
-                    { scroll: false }
+                    { scroll: false },
                   )
                 }
               >
                 <>
                   <LayoutDashboard className="h-4 w-4" />
-                  <span className="hidden md:block ml-2 font-bold">
+                  <span className="hidden md:block ml-2 font-bold cursor-pointer">
                     Go to Dashboard
                   </span>
                 </>
@@ -181,7 +181,7 @@ const Navbar = () => {
               <Link href="/signin">
                 <Button
                   variant="outline"
-                  className="text-white border-white bg-transparent hover:bg-white hover:text-primary-700 rounded-lg"
+                  className="text-white border-white bg-transparent hover:bg-white hover:text-primary-700 rounded-lg cursor-pointer"
                 >
                   Sign In
                 </Button>
@@ -189,7 +189,7 @@ const Navbar = () => {
               <Link href="/signup">
                 <Button
                   variant="secondary"
-                  className="text-white bg-secondary-600 hover:bg-white hover:text-primary-700 rounded-lg"
+                  className="text-white bg-secondary-600 hover:bg-white hover:text-primary-700 rounded-lg cursor-pointer"
                 >
                   Sign Up
                 </Button>
