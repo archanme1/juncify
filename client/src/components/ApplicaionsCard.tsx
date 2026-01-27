@@ -1,6 +1,8 @@
 import { Mail, MapPin, MessageCircle, PhoneCall } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import Link from "next/link";
 
 const ApplicationCard = ({
   application,
@@ -10,8 +12,6 @@ const ApplicationCard = ({
   const [imgSrc, setImgSrc] = useState(
     application.contractor.photoUrls?.[0] || "/landing-splash.jpg",
   );
-
-  // console.log(application);
 
   const statusColor =
     application.status === "Approved"
@@ -106,37 +106,47 @@ const ApplicationCard = ({
         {/* Contact Person Section */}
         <div className="flex flex-col justify-start gap-5 w-full lg:basis-3/12 lg:h-48 py-2">
           <div>
-            <div className="text-lg font-semibold">
+            <div className="text-lg text-primary-500 font-semibold">
               {userType === "manager" ? "Customer" : "Manager"}
             </div>
             <hr className="mt-3" />
           </div>
           <div className="flex gap-4">
             <div>
-              <Image
-                src="/landing-splash.jpg"
-                alt={contactPerson.name}
-                width={40}
-                height={40}
-                className="rounded-full mr-2 min-w-[40px] min-h-[40px]"
-              />
+              <Avatar>
+                <AvatarImage src={""} />
+                <AvatarFallback className="bg-primary-500 text-white">
+                  {application.name.charAt(0)?.toUpperCase() || "?"}
+                </AvatarFallback>
+              </Avatar>
             </div>
             <div className="flex flex-col gap-2">
               <div className="font-semibold">{contactPerson.name}</div>
-              <div className="text-sm flex items-center text-primary-600">
+              <div className="text-sm flex items-center text-primary-500">
                 <PhoneCall className="w-5 h-5 mr-2" />
                 {userType === "manager"
                   ? application.phoneNumber
                   : contactPerson.phoneNumber}
               </div>
-              <div className="text-sm flex items-center text-primary-600">
+              <div className="text-sm flex items-center text-primary-500">
                 <Mail className="w-5 h-5 mr-2" />
                 {contactPerson.email}
               </div>
-              <div className="text-sm flex items-center text-primary-600">
-                <MessageCircle className="w-5 h-5 mr-2" />
-                {application.message}
-              </div>
+              {userType === "manager" && (
+                <Link
+                  href={`/managers/contractors/${application.contractor.id}`}
+                  className=""
+                >
+                  <div className="text-sm flex items-start text-primary-500">
+                    <MessageCircle className="w-5 h-5 mr-2 mt-0.5 shrink-0" />
+                    <span className="break-words">
+                      {application.message.length > 80
+                        ? application.message.slice(0, 80) + "..."
+                        : application.message}
+                    </span>
+                  </div>
+                </Link>
+              )}
             </div>
           </div>
         </div>

@@ -89,14 +89,14 @@ const Applications = () => {
                       }`}
                     >
                       <div className="flex flex-wrap items-center">
-                        <File className="w-5 h-5 mr-2 flex-shrink-0" />
+                        {/* <File className="w-5 h-5 mr-2 flex-shrink-0" />
                         <span className="mr-5">
                           Application submitted
-                          {/* {new Date(
+                          {new Date(
                             application.applicationDate
                           ).toLocaleDateString()}
-                          . */}
-                        </span>
+                          .
+                        </span> */}
                         <CircleCheckBig className="w-5 h-5 mr-2 flex-shrink-0" />
                         <span
                           className={`font-semibold ${

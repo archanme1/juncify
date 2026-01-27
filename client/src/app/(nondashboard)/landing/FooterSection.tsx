@@ -43,14 +43,14 @@ const FooterSection = () => {
           </nav>
           <div className="flex space-x-4 mb-4">
             <a
-              href="#"
+              href="https://www.facebook.com/groups/1846695902277041"
               aria-label="Facebook"
               className=" hover:text-primary-600"
             >
               <FontAwesomeIcon icon={faFacebook} className="h-6 w-6" />
             </a>
             <a
-              href="#"
+              href="https://www.instagram.com/juncify"
               aria-label="Instagram"
               className="hover:text-primary-600"
             >
@@ -60,15 +60,15 @@ const FooterSection = () => {
               <FontAwesomeIcon icon={faTwitter} className="h-6 w-6" />
             </a>
             <a
-              href="#"
+              href="https://www.linkedin.com/company/juncify"
               aria-label="Linkedin"
               className="hover:text-primary-600"
             >
               <FontAwesomeIcon icon={faLinkedin} className="h-6 w-6" />
             </a>
-            <a href="#" aria-label="Youtube" className="hover:text-primary-600">
+            {/* <a href="#" aria-label="Youtube" className="hover:text-primary-600">
               <FontAwesomeIcon icon={faYoutube} className="h-6 w-6" />
-            </a>
+            </a> */}
           </div>
         </div>
         <div className="mt-8 text-center text-sm text-gray-500 flex justify-center space-x-4">
