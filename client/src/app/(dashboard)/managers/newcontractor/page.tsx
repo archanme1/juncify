@@ -64,6 +64,23 @@ const NewContractor = () => {
     },
   });
 
+  // FOR WATCHING MY FILE
+  // const watchedPhotos = form.watch("photoUrls");
+
+  // useEffect(() => {
+  //   if (!watchedPhotos?.length) return;
+
+  //   console.log("🟡 FILES CURRENTLY SELECTED");
+
+  //   watchedPhotos.forEach((file: File) => {
+  //     console.log({
+  //       name: file.name,
+  //       type: file.type,
+  //       size: file.size,
+  //     });
+  //   });
+  // }, [watchedPhotos]);
+
   const { reset } = form;
   useEffect(() => {
     if (location?.city && location?.country) {
@@ -94,34 +111,93 @@ const NewContractor = () => {
   //   form.setValue("country", details.country, { shouldValidate: true });
   // };
 
+  // ❓
+  // const onSubmit = async (data: ContractorFormData) => {
+  //   if (!authUser?.cognitoInfo?.userId) {
+  //     throw new Error("No manager ID found");
+  //   }
+
+  //   const formData = new FormData();
+  //   Object.entries(data).forEach(([key, value]) => {
+  //     if (key === "photoUrls") {
+  //       const files = value as File[];
+  //       console.log(files);
+
+  //       files.forEach((file: File) => {
+  //         formData.append("photos", file);
+  //       });
+  //     } else if (Array.isArray(value)) {
+  //       formData.append(key, JSON.stringify(value));
+  //     } else {
+  //       formData.append(key, String(value));
+  //     }
+  //   });
+
+  //   formData.append("managerCognitoId", authUser.cognitoInfo.userId);
+
+  //   try {
+  //     await createContractor(formData);
+
+  //     await new Promise((resolve) => setTimeout(resolve, 500));
+  //     router.push("/managers/contractors");
+  //   } catch (error) {
+  //     console.log("Failed to create contractor:", error);
+  //   }
+  // };
+
   const onSubmit = async (data: ContractorFormData) => {
     if (!authUser?.cognitoInfo?.userId) {
       throw new Error("No manager ID found");
     }
 
-    const formData = new FormData();
-    Object.entries(data).forEach(([key, value]) => {
-      if (key === "photoUrls") {
-        const files = value as File[];
-        files.forEach((file: File) => {
-          formData.append("photos", file);
-        });
-      } else if (Array.isArray(value)) {
-        formData.append(key, JSON.stringify(value));
-      } else {
-        formData.append(key, String(value));
-      }
-    });
-
-    formData.append("managerCognitoId", authUser.cognitoInfo.userId);
-
     try {
-      await createContractor(formData);
+      const files = data.photoUrls as File[];
 
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      // Ask backend for presigned URLs
+      const presignedResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/uploads/presigned-url`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            files: files.map((file) => ({
+              fileName: file.name,
+              fileType: file.type,
+            })),
+          }),
+        },
+      );
+
+      const presignedUrls = await presignedResponse.json();
+
+      // Upload files directly to S3
+      await Promise.all(
+        presignedUrls.map((item: any, index: number) =>
+          fetch(item.uploadUrl, {
+            method: "PUT",
+            headers: {
+              "Content-Type": files[index].type,
+            },
+            body: files[index],
+          }),
+        ),
+      );
+
+      // Extract final S3 URLs
+      const uploadedPhotoUrls = presignedUrls.map((item: any) => item.fileUrl);
+
+      // Create contractor with URLs only
+      await createContractor({
+        ...data,
+        photoUrls: uploadedPhotoUrls,
+        managerCognitoId: authUser.cognitoInfo.userId,
+      });
+
       router.push("/managers/contractors");
     } catch (error) {
-      console.log("Failed to create contractor:", error);
+      console.error("Failed to create contractor:", error);
     }
   };
 

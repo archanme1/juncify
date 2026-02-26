@@ -78,7 +78,8 @@ export const api = createApi({
     }),
 
     // Manager
-    createContractor: build.mutation<Contractor, FormData>({
+    // createContractor: build.mutation<Contractor, FormData>({
+    createContractor: build.mutation<Contractor, any>({
       query: (newContractor) => ({
         url: `contractors`,
         method: "POST",

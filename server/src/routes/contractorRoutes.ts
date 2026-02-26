@@ -1,5 +1,5 @@
 import express from "express";
-import multer from "multer";
+// import multer from "multer";
 import { authMiddleware } from "../middleware/authMiddleware";
 import {
   createContractor,
@@ -9,8 +9,9 @@ import {
   removeManagedContractor,
 } from "../controllers/contractorControllers";
 
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+// REPLACING WITH AWWS PRESIGNED URL 
+// const storage = multer.memoryStorage();
+// const upload = multer({ storage: storage });
 
 const router = express.Router();
 
@@ -21,7 +22,7 @@ router.get("/:id/bookings", getContractorBookings);
 router.post(
   "/",
   authMiddleware(["manager"]),
-  upload.array("photos"),
+  // upload.array("photos"),
   createContractor
 );
 router.delete(

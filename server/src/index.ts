@@ -13,6 +13,7 @@ import bookingRoutes from "./routes/bookingRoutes";
 import applicationRoutes from "./routes/applicationRoutes";
 import placeRoutes from "./routes/placeRoutes";
 import postRoutes from "./routes/postRoutes";
+import uploadRoutes from "./routes/uploadRoutes";
 
 /* CONFIGURATIONS */
 dotenv.config();
@@ -31,18 +32,19 @@ app.get("/", (req, res) => {
 });
 
 // DOES NOT REQUIRE AUTH INITALLY
-app.use("/api/applications", applicationRoutes);
 app.use("/api/contractors", contractorRoutes);
+app.use("/api/uploads", uploadRoutes);
 
 // REQUIRED AUTH INITALLY
 app.use(
   "/api/bookings",
   authMiddleware(["manager", "customer"]),
-  bookingRoutes
+  bookingRoutes,
 );
 app.use("/api/posts", authMiddleware(["manager", "customer"]), postRoutes);
 app.use("/api/customers", authMiddleware(["customer"]), customerRoutes);
 app.use("/api/managers", authMiddleware(["manager"]), managerRoutes);
+app.use("/api/applications", applicationRoutes);
 
 // FOR GOOGLE DEVELOPER API
 // app.use("/api/places", placeRoutes);
