@@ -6,10 +6,10 @@ const prisma = new PrismaClient();
 
 export const getManager = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
-    const { cognitoId } = req.params;
+    const cognitoId = req.params.cognitoId as string;
     const manager = await prisma.manager.findUnique({
       where: { cognitoId },
     });
@@ -28,7 +28,7 @@ export const getManager = async (
 
 export const createManager = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const { cognitoId, name, email, phoneNumber } = req.body;
@@ -45,7 +45,7 @@ export const createManager = async (
     // Create the associated user record
     await prisma.user.create({
       data: {
-        id: `user_${manager.cognitoId}`, 
+        id: `user_${manager.cognitoId}`,
         managerCognitoId: manager.cognitoId,
       },
     });
@@ -60,10 +60,10 @@ export const createManager = async (
 
 export const updateManager = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
-    const { cognitoId } = req.params;
+    const cognitoId = req.params.cognitoId as string;
     const { name, email, phoneNumber } = req.body;
 
     const updateManager = await prisma.manager.update({
@@ -85,10 +85,10 @@ export const updateManager = async (
 
 export const getManagerContractors = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
-    const { cognitoId } = req.params;
+    const cognitoId = req.params.cognitoId as string;
     const contractors = await prisma.contractor.findMany({
       where: { managerCognitoId: cognitoId },
       orderBy: {
@@ -118,7 +118,7 @@ export const getManagerContractors = async (
             },
           },
         };
-      })
+      }),
     );
 
     res.status(200).json(contractorsWithFormattedLocation);

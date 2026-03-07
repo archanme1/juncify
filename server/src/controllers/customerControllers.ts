@@ -6,10 +6,10 @@ const prisma = new PrismaClient();
 
 export const getCustomer = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
-    const { cognitoId } = req.params;
+    const cognitoId = req.params.cognitoId as string;
     const customer = await prisma.customer.findUnique({
       where: { cognitoId },
       include: {
@@ -31,7 +31,7 @@ export const getCustomer = async (
 
 export const createCustomer = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const { cognitoId, name, email, phoneNumber } = req.body;
@@ -48,7 +48,7 @@ export const createCustomer = async (
     // Create the associated user record
     await prisma.user.create({
       data: {
-        id: `user_${customer.cognitoId}`, 
+        id: `user_${customer.cognitoId}`,
         customerCognitoId: customer.cognitoId,
       },
     });
@@ -63,10 +63,10 @@ export const createCustomer = async (
 
 export const updateCustomer = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
-    const { cognitoId } = req.params;
+    const cognitoId = req.params.cognitoId as string;
     const { name, email, phoneNumber } = req.body;
 
     const updateCustomer = await prisma.customer.update({
@@ -88,10 +88,10 @@ export const updateCustomer = async (
 
 export const getServiceRecords = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
-    const { cognitoId } = req.params;
+    const cognitoId = req.params.cognitoId as string;
     const contractors = await prisma.contractor.findMany({
       where: { customers: { some: { cognitoId } } },
       include: {
@@ -118,7 +118,7 @@ export const getServiceRecords = async (
             },
           },
         };
-      })
+      }),
     );
 
     res.status(200).json(serviceRecordsWithFormattedLocation);
@@ -131,10 +131,11 @@ export const getServiceRecords = async (
 
 export const addFavoriteContractor = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
-    const { cognitoId, contractorId } = req.params;
+    const cognitoId = req.params.cognitoId as string;
+    const contractorId = Number(req.params.contractorId);
     const customer = await prisma.customer.findUnique({
       where: { cognitoId },
       include: { favorites: true },
@@ -145,10 +146,14 @@ export const addFavoriteContractor = async (
       return;
     }
 
-    const contractorIdNumber = Number(contractorId);
+    const contractorIdNumber = contractorId;
     const existingFavorites = customer.favorites || [];
 
-    if (!existingFavorites.some((fav) => fav.id === contractorIdNumber)) {
+    if (
+      !existingFavorites.some(
+        (fav: { id: number }) => fav.id === contractorIdNumber,
+      )
+    ) {
       const updatedCustomer = await prisma.customer.update({
         where: { cognitoId },
         data: {
@@ -171,11 +176,11 @@ export const addFavoriteContractor = async (
 
 export const removeFavoriteContractor = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
-    const { cognitoId, contractorId } = req.params;
-    const contractorIdNumber = Number(contractorId);
+    const cognitoId = req.params.cognitoId as string;
+    const contractorIdNumber = Number(req.params.contractorId);
 
     const updatedCustomer = await prisma.customer.update({
       where: { cognitoId },

@@ -1,11 +1,8 @@
 import { Request, Response } from "express";
 import { PrismaClient, Prisma } from "@prisma/client";
 import { wktToGeoJSON } from "@terraformer/wkt";
-import { S3Client } from "@aws-sdk/client-s3";
 import { Location } from "@prisma/client";
-import { Upload } from "@aws-sdk/lib-storage";
 import axios from "axios";
-import { s3Client } from "../config/s3";
 
 const prisma = new PrismaClient();
 
@@ -365,7 +362,8 @@ export const removeManagedContractor = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { contractorId, cognitoId } = req.params;
+    const contractorId = Number(req.params.contractorId);
+    const cognitoId = req.params.cognitoId as string;
 
     const manager = await prisma.manager.findUnique({
       where: { cognitoId },
@@ -377,10 +375,10 @@ export const removeManagedContractor = async (
       return;
     }
 
-    const contractorIdNumber = Number(contractorId);
+    const contractorIdNumber = contractorId;
 
     const isContractorManaged = manager.managedContractors.some(
-      (contractor) => contractor.id === contractorIdNumber,
+      (contractor: { id: number }) => contractor.id === contractorIdNumber,
     );
 
     if (!isContractorManaged) {

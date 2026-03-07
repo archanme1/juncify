@@ -193,7 +193,8 @@ export const getPosts = async (req: Request, res: Response): Promise<void> => {
 
 export const getPost = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { username, postId } = req.params;
+    const username = String(req.params.username);
+    const postId = Number(req.params.postId);
     const cognitoId = req.query.userId as string; // Logged-in user's cognitoId
 
     if (!username || !postId) {
@@ -280,7 +281,7 @@ export const getUserProfile = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { username } = req.params;
+    const username = String(req.params.username);
     const cognitoId = req.query.userId as string; // logged-in user's Cognito ID
 
     if (!username) {
