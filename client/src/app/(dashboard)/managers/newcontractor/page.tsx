@@ -170,6 +170,10 @@ const NewContractor = () => {
         },
       );
 
+          if (!presignedResponse.ok) {
+      throw new Error("Failed to get presigned URLs");
+    }
+
       const presignedUrls = await presignedResponse.json();
 
       // Upload files directly to S3
