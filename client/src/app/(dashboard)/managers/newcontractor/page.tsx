@@ -17,6 +17,8 @@ import {
 import { useGeoLocation } from "@/hooks/useGeoLocation";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
+import { fetchAuthSession } from "aws-amplify/auth";
+
 const AddressSearchBox = dynamic(
   () => import("@/components/AddressSearchBox"),
   {
@@ -153,6 +155,10 @@ const NewContractor = () => {
     try {
       const files = data.photoUrls as File[];
 
+      // Get Cognito token
+      const session = await fetchAuthSession();
+      const token = session.tokens?.idToken?.toString();
+
       // Ask backend for presigned URLs
       const presignedResponse = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/uploads/presigned-url`,
@@ -160,6 +166,7 @@ const NewContractor = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             files: files.map((file) => ({
@@ -170,9 +177,9 @@ const NewContractor = () => {
         },
       );
 
-          if (!presignedResponse.ok) {
-      throw new Error("Failed to get presigned URLs");
-    }
+      if (!presignedResponse.ok) {
+        throw new Error("Failed to get presigned URLs");
+      }
 
       const presignedUrls = await presignedResponse.json();
 
